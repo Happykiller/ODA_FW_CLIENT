@@ -14,6 +14,13 @@
   "devDependencies": {
     "qunit": "latest"
   },
+  "dependencies": {
+    "bootstrap" : "latest",
+    "datatables" : "latest",
+    "highcharts-release" : "latest",
+    "ckeditor" : "latest",
+    "lz-string" : "latest"
+  },
   "keywords": [
     "oda",
     "javascript",
