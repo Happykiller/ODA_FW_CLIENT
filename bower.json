@@ -7,7 +7,6 @@
   "authors": ["Fabrice Rosito <fabrice.rosito@gmail.com>"],
   "description": "Client for the full framework Oda",
   "ignore": [
-    "**/.*",
     "node_modules",
     "bower_components"
   ],
