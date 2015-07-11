@@ -8,10 +8,8 @@
   "description": "Client for the full framework Oda",
   "ignore": [
     "**/.*",
-    "gulpfile.js",
     "node_modules",
-    "bower_components",
-    "package.json"
+    "bower_components"
   ],
   "devDependencies": {
     "qunit": "latest"
