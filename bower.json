@@ -1,0 +1,24 @@
+{
+  "name": "oda",
+  "version": "0.150711",
+  "main": "dist/Oda.js",
+  "license": "MIT",
+  "homepage": "https://github.com/Happykiller/ODA_FW/",
+  "authors": ["Fabrice Rosito <fabrice.rosito@gmail.com>"],
+  "description": "Client for the full framework Oda",
+  "ignore": [
+    "**/.*",
+    "gulpfile.js",
+    "node_modules",
+    "bower_components",
+    "package.json"
+  ],
+  "devDependencies": {
+    "qunit": "latest"
+  },
+  "keywords": [
+    "oda",
+    "javascript",
+    "library"
+  ]
+}
