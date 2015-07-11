@@ -1,11 +1,8 @@
 {
-	"name": "oda",
-	"version": "0.150711",
+	"name": "Oda",
+	"version": "0.9.150711",
 	"description": "Client for the full framework Oda",
 	"main": "gulpfile.js",
-	"scripts": {
-		"dev": "gulp deploy"
-	},
 	"author": "Fabrice Rosito <fabrice.rosito@gmail.com>",
 	"license": "MIT",
   "dependencies": {

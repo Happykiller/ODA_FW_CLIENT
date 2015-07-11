@@ -13,6 +13,14 @@ var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 
 
-gulp.task('deploy', function(){
+gulp.task('deploy-mini', function(){
+    return "HelloWorld";
+});
+
+gulp.task('deploy-mini', function(){
+    return "HelloWorld";
+});
+
+gulp.task('deploy-mini', function(){
     return "HelloWorld";
 });
