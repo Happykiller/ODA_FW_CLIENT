@@ -63,7 +63,7 @@ gulp.task('server', function() {
  * Launch default browser on local server url
  */
 gulp.task('open', function() {
-    return gulp.src('src/index.html')
+    return gulp.src('index.html')
         .pipe(launch('', {
             url: 'http://localhost:'+opt.port+'/index.html'
         }));
