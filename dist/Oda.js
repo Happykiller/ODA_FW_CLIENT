@@ -523,7 +523,6 @@
 
         init : function(){
             try {
-                //depdends
                 var listDepends = [
                     {"name" : "library" , ordered : false, "list" : [
                         { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
@@ -532,6 +531,24 @@
 
                     ]}
                 ];
+
+                if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
+                    var listDependsMokup = [
+                        {"name" : "mokup" , ordered : false, "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
+                        ]}
+                    ];
+                    listDepends = listDepends.concat(listDependsMokup);
+                }
+
+                if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
+                    var listDependsCache = [
+                        {"name" : "cache" , ordered : false, "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
+                        ]}
+                    ];
+                    listDepends = listDepends.concat(listDependsCache);
+                }
 
                 if($.Oda.Context.ModeExecution.app){
                     var listDependsApp = [
@@ -542,6 +559,25 @@
                             { "elt" : $.Oda.Context.rootPath + "js/OdaApp.js", "type": "script"}
                         ]}
                     ];
+
+                    if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
+                        var listDependsMokup = [
+                            {"name" : "mokup" , ordered : false, "list" : [
+                                { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
+                            ]}
+                        ];
+                        listDepends = listDepends.concat(listDependsMokup);
+                    }
+
+                    if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
+                        var listDependsCache = [
+                            {"name" : "cache" , ordered : false, "list" : [
+                                { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
+                            ]}
+                        ];
+                        listDepends = listDepends.concat(listDependsCache);
+                    }
+
                     listDepends = listDepends.concat(listDependsApp);
                 }
 
@@ -748,26 +784,6 @@
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsScene);
-                }
-
-                if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
-                    var listDependsMokup = [
-                        {"name" : "mokup" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
-                        ]}
-                    ];
-                    listDepends = listDepends.concat(listDependsMokup);
-                }
-
-                if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
-                    var listDependsCache = [
-                        {"name" : "cache" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
-                        ]}
-                    ];
-                    listDepends = listDepends.concat(listDependsCache);
                 }
 
                 $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
