@@ -29,7 +29,7 @@ gulp.task('install-full', ['params'], function() {
     gulp.src(['full/index.html','full/gulpfile.js','full/package.json','full/jsTestDriver.conf'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
-    gulp.src(['full/**/*'])
+    gulp.src(['!full/index.html','!full/gulpfile.js','!full/package.json','!full/jsTestDriver.conf','full/**/*'])
         .pipe(gulp.dest('./../../../'));
     return;
 });
