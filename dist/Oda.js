@@ -64,6 +64,7 @@
                 rooter : false,
                 app : false
             },
+            //TODO mettre le debug dans les params de la lib
             debug : true,
             vendorName : "bower_components",
             rootPath : "",
