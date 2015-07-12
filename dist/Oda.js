@@ -21,10 +21,10 @@
     'use strict';
 
     var
-        /* version */
+    /* version */
         VERSION = '0.150625'
-    ;
-    
+        ;
+
     $.Oda = {
         /* Version number */
         version: VERSION,
@@ -66,7 +66,7 @@
             },
             debug : true,
             vendorName : "bower_components",
-            rootPath : "../../../",
+            rootPath : "",
             projectLabel : "Project",
             mainDiv : "oda-content",
             host : "",
@@ -343,9 +343,9 @@
                             $.Oda.Log.debug("Dependency group loading : "+grp.name);
                             grp.state = $.Oda.Loader.Status.loading;
                             $.Oda.Event.addListener({name : "oda-loader-"+p_params.id+"-"+grp.name, callback : function(e){
-                                    $.Oda.Loader.loading({id : e.detail.idLoader});
-                                    return this;
-                                }
+                                $.Oda.Loader.loading({id : e.detail.idLoader});
+                                return this;
+                            }
                             });
                             $.Oda.Loader.loadingGrp({idLoader : p_params.id, grp : grp});
                             return this;
@@ -526,9 +526,9 @@
                 //depdends
                 var listDepends = [
                     {"name" : "library" , ordered : false, "list" : [
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/css.css", "type" : "css" },
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/css.css", "type" : "css" },
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
 
                     ]}
                 ];
@@ -548,7 +548,7 @@
                 if($.Oda.Context.ModeExecution.scene){
 
                     $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile"],
-                    $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
+                        $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
 
                     $.Oda.Router.addMiddleWare("support",function() {
                         $.Oda.Log.debug("MiddleWares : support");
@@ -639,16 +639,16 @@
                     $.Oda.Router.addDependencies("hightcharts", {
                         ordered : false,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/highcharts-release/highcharts.js", "type" : "script"}
                         ]
                     });
 
                     $.Oda.Router.addDependencies("dataTables", {
                         ordered : false,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/dataTables.bootstrap.css", "type" : "css"},
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/dataTables.bootstrap.css", "type" : "css"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
                         ]
                     });
 
@@ -660,7 +660,7 @@
                     });
 
                     $.Oda.Router.addRoute("auth", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/auth.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/auth.html",
                         "title" : "oda-main.authentification",
                         "urls" : ["auth"],
                         "middleWares" : ["support"],
@@ -668,56 +668,56 @@
                     });
 
                     $.Oda.Router.addRoute("support", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/support.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/support.html",
                         "title" : "oda-main.support-title",
                         "urls" : ["support"],
                         "system" : true
                     });
 
                     $.Oda.Router.addRoute("404", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/404.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/404.html",
                         "title" : "oda-main.404-title",
                         "urls" : ["404"],
                         "system" : true
                     });
 
                     $.Oda.Router.addRoute("contact", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/contact.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/contact.html",
                         "title" : "oda-main.contact",
                         "urls" : ["contact"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("forgot", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/forgot.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/forgot.html",
                         "title" : "oda-main.forgot-title",
                         "urls" : ["forgot"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("subscrib", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/subscrib.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/subscrib.html",
                         "title" : "oda-main.subscrib-title",
                         "urls" : ["subscrib"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("home", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/home.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/home.html",
                         "title" : "oda-main.home-title",
                         "urls" : ["","home"],
                         "middleWares" : ["support", "auth"]
                     });
 
                     $.Oda.Router.addRoute("profile", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/profile.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/profile.html",
                         "title" : "oda-main.profile-title",
                         "urls" : ["profile"],
                         "middleWares" : ["support", "auth"]
                     });
 
                     $.Oda.Router.addRoute("stats", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/stats.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/stats.html",
                         "title" : "oda-stats.title",
                         "urls" : ["stats"],
                         "middleWares" : ["support", "auth"],
@@ -725,7 +725,7 @@
                     });
 
                     $.Oda.Router.addRoute("admin", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/admin.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/admin.html",
                         "title" : "oda-admin.title",
                         "urls" : ["admin"],
                         "middleWares" : ["support", "auth"],
@@ -733,7 +733,7 @@
                     });
 
                     $.Oda.Router.addRoute("supervision", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/supervision.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/supervision.html",
                         "title" : "oda-supervision.title",
                         "urls" : ["supervision"],
                         "middleWares" : ["support", "auth"],
@@ -743,8 +743,8 @@
 
                     var listDependsScene = [
                         {"name" : "scene" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/simple-sidebar.css", "type" : "css" },
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/simple-sidebar.css", "type" : "css" },
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsScene);
@@ -753,7 +753,7 @@
                 if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
                     var listDependsMokup = [
                         {"name" : "mokup" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}},
                             { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
                         ]}
                     ];
@@ -763,7 +763,7 @@
                 if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
                     var listDependsCache = [
                         {"name" : "cache" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}},
                             { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
                         ]}
                     ];
@@ -804,14 +804,14 @@
         },
         Mobile : {
             /* return elet*/
-           funcReturnGPSPosition : null,
+            funcReturnGPSPosition : null,
 
-           funcReturnCaptureImg : null,
+            funcReturnCaptureImg : null,
 
-           /* var intern */
-           networkState : null,
+            /* var intern */
+            networkState : null,
 
-           positionGps : {
+            positionGps : {
                 coords : {
                     latitude : 0,
                     longitude : 0,
@@ -825,28 +825,28 @@
                 statut : ''
             },
 
-           pictureSource : null,
+            pictureSource : null,
 
-           destinationType : null,
+            destinationType : null,
 
-           onMobile : false,
+            onMobile : false,
 
-           onMobileTest : false,
+            onMobileTest : false,
 
-           /**
-            * @name getGPSPosition
-            * @desc getGPSPosition
-            */
-           onSuccessGPSPosition : function(p_position) {
-               try {
-                   $.Oda.Mobile.positionGps.coords = p_position.coords;
-                   $.Oda.Mobile.positionGps.timestamp = p_position.timestamp;
-                   $.Oda.Mobile.positionGps.statut = "OK";
-                   $.Oda.Mobile.funcReturnGPSPosition($.Oda.Mobile.positionGps);
-               } catch (er) {
-                   log(0, "ERROR($.Oda.Mobile.onSuccessGPSPosition):" + er.message);
-               }
-           },
+            /**
+             * @name getGPSPosition
+             * @desc getGPSPosition
+             */
+            onSuccessGPSPosition : function(p_position) {
+                try {
+                    $.Oda.Mobile.positionGps.coords = p_position.coords;
+                    $.Oda.Mobile.positionGps.timestamp = p_position.timestamp;
+                    $.Oda.Mobile.positionGps.statut = "OK";
+                    $.Oda.Mobile.funcReturnGPSPosition($.Oda.Mobile.positionGps);
+                } catch (er) {
+                    log(0, "ERROR($.Oda.Mobile.onSuccessGPSPosition):" + er.message);
+                }
+            },
 
             /**
              * @name getGPSPosition
@@ -968,14 +968,14 @@
                     var retour = "";
 
                     retour += 'Latitude: '      + p_position.coords.latitude            + '\n' +
-                    'Longitude: '               + p_position.coords.longitude           + '\n' +
-                    'Altitude: '                + p_position.coords.altitude            + '\n' +
-                    'Accuracy: '                + p_position.coords.accuracy            + '\n' +
-                    'Altitude Accuracy: '       + p_position.coords.altitudeAccuracy    + '\n' +
-                    'Heading: '                 + p_position.coords.heading             + '\n' +
-                    'Speed: '                   + p_position.coords.speed               + '\n' +
-                    'Timestamp: '               + p_position.timestamp                  + '\n' +
-                    'statut: '                  + p_position.statut                     + '\n';
+                        'Longitude: '               + p_position.coords.longitude           + '\n' +
+                        'Altitude: '                + p_position.coords.altitude            + '\n' +
+                        'Accuracy: '                + p_position.coords.accuracy            + '\n' +
+                        'Altitude Accuracy: '       + p_position.coords.altitudeAccuracy    + '\n' +
+                        'Heading: '                 + p_position.coords.heading             + '\n' +
+                        'Speed: '                   + p_position.coords.speed               + '\n' +
+                        'Timestamp: '               + p_position.timestamp                  + '\n' +
+                        'statut: '                  + p_position.statut                     + '\n';
 
                     return retour;
                 } catch (er) {
@@ -1683,19 +1683,14 @@
                         });
                         $( "body" ).append(htmlTudo);
 
+
+                        $("#avatar").attr('src',$.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
+
                         $("#avatar").click(function(e) {
                             e.preventDefault();
                             $("#wrapper").toggleClass("toggled");
                         });
 
-                        $(document).ready(function(){
-                            $('.iconProfile').hover(function() {
-                                $(this).addClass('transition');
-
-                            }, function() {
-                                $(this).removeClass('transition');
-                            });
-                        });
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Scene.load : " + er.message);
@@ -1710,7 +1705,7 @@
              */
             loading: function (p_params) {
                 try {
-                    p_params.elt.html('<img SRC="'+$.Oda.Context.rootPath + $.Oda.Context.vendorName + '/resources/img/loading.gif" ALT="Chargement" TITLE="Chargement">');
+                    p_params.elt.html('<img SRC="'+$.Oda.Context.rootPath + $.Oda.Context.vendorName + '/Oda/resources/img/loading.gif" ALT="Chargement" TITLE="Chargement">');
                     return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Display.loading : " + er.message);
@@ -1995,10 +1990,10 @@
                 }
             }
         },
-        
+
         //for the application project
         App : {},
-        
+
         Tooling : {
             /**
              * checkParams
@@ -2049,11 +2044,11 @@
                 }
             },
             /**
-            * arrondir
-            * @param {float|int} p_value
-            * @param {int} p_precision
-            * @returns {float|int}
-            */
+             * arrondir
+             * @param {float|int} p_value
+             * @param {int} p_precision
+             * @returns {float|int}
+             */
             arrondir : function(p_value, p_precision){
                 try {
                     var retour = 0;
@@ -2123,7 +2118,7 @@
                 }
             },
             /**
-             * 
+             *
              * @param {string} html
              * @returns {string}
              */
@@ -2174,10 +2169,10 @@
                 }
             },
             /**
-            * 
-            * @param {type} path
-            * @returns {unresolved}
-            */
+             *
+             * @param {type} path
+             * @returns {unresolved}
+             */
             clearSlashes : function(string) {
                 try {
                     return string.toString().replace(/\/$/, '').replace(/^\//, '');
@@ -2223,11 +2218,11 @@
                 }
             },
             /**
-            * isInArray
-            * @param {string} p_value
-            * @param {array} p_array
-            * @returns {Boolean}
-            */
+             * isInArray
+             * @param {string} p_value
+             * @param {array} p_array
+             * @returns {Boolean}
+             */
             isInArray :  function(p_value, p_array) {
                 try {
                     var boolRetour = false;
@@ -2246,11 +2241,11 @@
                 }
             },
             /**
-            * @name isUndefined
-            * @desc is ndefined N
-            * @param {object} p_object
-            * @returns {Boolean}
-            */
+             * @name isUndefined
+             * @desc is ndefined N
+             * @param {object} p_object
+             * @returns {Boolean}
+             */
             isUndefined : function(p_object) {
                 try {
                     var boolReturn = true;
@@ -2267,9 +2262,9 @@
             },
 
             /**
-            * @name getMilise
-            * @returns {string}
-            */
+             * @name getMilise
+             * @returns {string}
+             */
             getMilise : function() {
                 try {
                     var d = new Date();
@@ -2285,7 +2280,7 @@
              * @param p_params.url
              * @returns {Object}
              */
-             getParameterGet : function(p_params) {
+            getParameterGet : function(p_params) {
                 try {
                     var result = {};
                     var tableau = decodeURI(p_params.url).split("?");
@@ -2324,7 +2319,7 @@
                     return null;
                 }
             },
-            
+
             objectSize : function(obj) {
                 try {
                     var size = 0, key;
@@ -2396,7 +2391,7 @@
              * @param {string} p_group
              * @param {string} p_tag
              * @returns {String}
-            */
+             */
             get : function(p_group, p_tag) {
                 try {
                     var returnvalue = "Not define";
@@ -2422,7 +2417,7 @@
              * @name getByString
              * @param {string} p_group
              * @returns {String}
-            */
+             */
             getByString: function(p_tag) {
                 try {
                     var returnvalue = p_tag;
@@ -2439,7 +2434,7 @@
                 }
             }
         },
-        
+
         Security : {
             /**
              * auth
@@ -2460,7 +2455,7 @@
                         };
 
                         var tabSetting = { };
-                        var tabInput = { 
+                        var tabInput = {
                             code_user : code_user
                         };
                         var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getAuthInfo.php", tabSetting, tabInput);
@@ -2488,7 +2483,7 @@
                             $.Oda.Router.navigateTo();
                         }
                     }else {
-                       $.Oda.Display.Notification.error(returns.strErreur);
+                        $.Oda.Display.Notification.error(returns.strErreur);
                     }
                 } catch (er) {
                     $.Oda.Log.Log.error("$.Oda.Security.auth : " + er.message);
@@ -2519,15 +2514,15 @@
                     $.Oda.Log.error("$.Oda.Security.loadRight() : " + er.message);
                 }
             },
-        
+
             /**
-            * @name : logout
-            */
+             * @name : logout
+             */
             logout : function(){
-               try {
+                try {
                     var session = $.Oda.Storage.get("ODA-SESSION");
                     if(session !== null){
-                        var tabInput = { 
+                        var tabInput = {
                             "key" : session.key
                         };
                         var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/deleteSession.php", {}, tabInput);
@@ -2549,12 +2544,12 @@
                     $.Oda.Display.MenuSlide.remove();
                     $.Oda.Display.Menu.remove();
                     $.Oda.Router.routes.auth.go();
-               } catch (er) {
-                   $.Oda.Log.error("$.Oda.Security.logout : " + er.message);
-               }
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Security.logout : " + er.message);
+                }
             }
         },
-        
+
         Controler : {
             Contact : {
                 /**
@@ -2683,8 +2678,8 @@
                                     var url = jsonAjaxParam.url+"?tag=1";
 
                                     for(var key in jsonAjaxParam.data){
-                                       var param = jsonAjaxParam.data[key].toString();
-                                       url += "&"+key+"="+(param.replace(new RegExp("&", "g"), '%26'));
+                                        var param = jsonAjaxParam.data[key].toString();
+                                        url += "&"+key+"="+(param.replace(new RegExp("&", "g"), '%26'));
                                     }
 
                                     xhr_object.open(jsonAjaxParam.type, url, false);
@@ -2695,7 +2690,7 @@
                                 default:
                                     var params = "tag=1";
                                     for(var key in jsonAjaxParam.data){
-                                       var param = jsonAjaxParam.data[key].toString();
+                                        var param = jsonAjaxParam.data[key].toString();
                                         params += "&"+key+"="+(param.replace(new RegExp("&", "g"), '%26'));
                                     }
 
@@ -2721,7 +2716,7 @@
                                     } else {
                                         v_retourSync = "$Oda.callRest : " + xhr_object.status + " " + xhr_object.statusText;
                                     }
-                                break;
+                                    break;
                             }
 
                             delete self.xhr_object;
@@ -2735,9 +2730,9 @@
                     },
 
                     /**
-                    * @name getMilise
-                    * @returns {string}
-                    */
+                     * @name getMilise
+                     * @returns {string}
+                     */
                     getMilise : function() {
                         try {
                             var d = new Date();
@@ -2749,11 +2744,11 @@
                     },
 
                     /**
-                    * arrondir
-                    * @param {float|int} p_value
-                    * @param {int} p_precision
-                    * @returns {float|int}
-                    */
+                     * arrondir
+                     * @param {float|int} p_value
+                     * @param {int} p_precision
+                     * @returns {float|int}
+                     */
                     arrondir : function(p_value, p_precision){
                         try {
                             var retour = 0;
@@ -2782,14 +2777,14 @@
                     $.Oda.Log.error("$Oda.message : " + er.message);
                 }
             },
-            
+
             /**
-            * @name initWorker
-            * @desc pour initialiser un worker 
-            * @param {string} p_nameWorker
-            * @param {string} p_fonctionRetour
-            * @returns {Worker}
-            */
+             * @name initWorker
+             * @desc pour initialiser un worker
+             * @param {string} p_nameWorker
+             * @param {string} p_fonctionRetour
+             * @returns {Worker}
+             */
             initWorker : function(p_nameWorker, p_dataInit, p_functionCore, p_fonctionRetour) {
                 try {
                     var strFunctionLib = $.Oda.Worker.lib.toString();
@@ -2798,11 +2793,11 @@
                     strFunctionLib = strFunctionLib.replace("$$CODEUSER$$",$.Oda.Session.code_user);
                     strFunctionLib = strFunctionLib.replace("$$ODAKEY$$",$.Oda.Session.key);
                     strFunctionLib = strFunctionLib.replace("$$REST$$",$.Oda.Context.rest);
-                    
+
                     var strFunctionCore = p_functionCore.toString();
                     strFunctionCore = strFunctionCore.substring(12);
                     strFunctionCore = strFunctionCore.substring(0, strFunctionCore.length - 1);
-                    
+
                     var blob = new Blob([strFunctionLib+strFunctionCore], {type: 'application/javascript'});
 
                     var monWorker = new Worker(window.URL.createObjectURL(blob));
@@ -2818,11 +2813,11 @@
             },
 
             /**
-            * @name terminateWorker
-            * @desc pour finir le worker
-            * @param {type} p_worker
-            * @returns {undefined}
-            */
+             * @name terminateWorker
+             * @desc pour finir le worker
+             * @param {type} p_worker
+             * @returns {undefined}
+             */
             terminateWorker : function(p_worker) {
                 try {
                     // On aurait pu créer une commande 'stop' qui aurait été traitée
@@ -2833,7 +2828,7 @@
                 }
             }
         },
-        
+
         Tuto : {
             enable : true,
 
@@ -2859,7 +2854,7 @@
                             if(!$.Oda.Tuto.listElt.hasOwnProperty(theTuto.id)){
                                 $.Oda.Tuto.listElt[theTuto.id] = {"id" : theTuto.id, "enable" : true, "props" : theTuto};
                             }
-                            
+
                             var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user, {});
                             if(sessionTuto.hasOwnProperty(theTuto.id)){
                                 $.Oda.Tuto.listElt[theTuto.id].enable = sessionTuto[theTuto.id];
@@ -2867,7 +2862,7 @@
                                 sessionTuto[theTuto.id] = true;
                                 $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
                             }
-                            
+
                             if(($.Oda.Tuto.listElt[theTuto.id].enable)&&($.Oda.Tuto.currentElt === "")){
                                 $.Oda.Tuto.show(theTuto.id);
                             }
@@ -2877,15 +2872,15 @@
                     $.Oda.Log.error("$.Oda.Tuto.start : " + er.message);
                 }
             },
-            
+
             readed : function(id){
                 try {
                     $.Oda.Tuto.listElt[id].enable = false;
-                    
+
                     var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user);
                     sessionTuto[id] = false;
                     $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
-                    
+
                     $("[oda-tuto^='id:"+id+"']").tooltip('destroy');
                     for(var elt in $.Oda.Tuto.listElt){
                         if($.Oda.Tuto.listElt[elt].enable){
@@ -2897,13 +2892,13 @@
                     $.Oda.Log.error("$.Oda.Tuto.readed : " + er.message);
                 }
             },
-            
+
             show : function (id){
                 try {
                     var elt = $("[oda-tuto^='id:"+id+"']");
-                    
+
                     $.Oda.Tuto.currentElt = id;
-                                
+
                     elt.attr("data-toggle","tooltip");
                     if($.Oda.Tuto.listElt[id].props.hasOwnProperty("location")){
                         elt.attr("data-placement",$.Oda.Tuto.listElt[id].props.location);
@@ -2928,7 +2923,7 @@
                 }
             }
         },
-        
+
         Scope : {
             /**
              * @param {Object} p_params
@@ -2950,7 +2945,7 @@
                     //oda-input-text
                     $(divTarget+'[oda-input-text]').each(function(index, value){
                         var id = $(value).attr("oda-input-text");
-                        
+
                         $(value).attr("id",id);
                         $(value).attr("name",id);
 
@@ -2959,7 +2954,7 @@
                             $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.refresh();
                         });
-                        
+
                         var placeHolder = $(value).attr("oda-input-text-placeholder");
                         if(placeHolder !== undefined){
                             var tab = placeHolder.split(".");
@@ -2967,7 +2962,7 @@
                                 $(value).attr("placeholder", $.Oda.I8n.get(tab[0], tab[1]));
                             }
                         }
-                        
+
                         var odaTips = $(value).attr("oda-input-text-tips");
                         if(odaTips !== undefined){
                             var tab = odaTips.split(".");
@@ -3009,11 +3004,11 @@
                     $(divTarget+'[oda-submit]').each(function(index, value){
                         nbOdaSubmit++;
                         var id = $(value).attr("oda-submit");
-                        
+
                         $(value).attr("id",id);
-                        
+
                         $(document).unbind("keypress");
-                        
+
                         $(document).keypress(function(e) {
                             if(e.which === 13) {
                                 if(!$(value).hasClass("disabled")){
@@ -3089,18 +3084,18 @@
                 }
             },
             /**
-             * 
+             *
              * @returns {undefined}
              */
             refresh : function(){
                 try {
-                    
+
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Scope.refresh : " + er.message);
                 }
             }
         },
-        
+
         Storage : {
             /* Version number */
             version : VERSION,
@@ -3108,7 +3103,7 @@
             storageKey : "ODA__default__",
 
             /**
-             * 
+             *
              * @returns {Boolean}
              */
             isStorageAvaible: function(){
@@ -3117,7 +3112,7 @@
 
                     if (localStorage) {
                         boolRetour = true;
-                    } 
+                    }
 
                     return boolRetour;
                 } catch (er) {
@@ -3127,7 +3122,7 @@
             },
 
             /**
-             * 
+             *
              * @param {string} p_key
              * @param {json} p_value
              * @param {integer} p_ttl in seconde
@@ -3302,13 +3297,13 @@
                 }
             }
         },
-        
+
         Router : {
             current : {
                 route : "",
                 args : []
             },
-            
+
             routes : {},
 
             routerExit : false,
@@ -3332,13 +3327,13 @@
                     if ($('#oda-popup').exists()) {
                         $('#oda-popup').modal("hide");
                     }
-                    
+
                     $.Oda.Router.routerExit = false;
-                    
+
                     if($.Oda.Tooling.isUndefined(p_request)){
                         p_request = $.Oda.Router.current;
                     }
-                    
+
                     var founded = false;
                     for(var name in $.Oda.Router.routes){
                         for(var indice in $.Oda.Router.routes[name].urls){
@@ -3349,7 +3344,7 @@
                                 if($.Oda.Session.code_user !== ""){
                                     $.Oda.Interface.addStat($.Oda.Session.code_user, $.Oda.Router.current.route, "request");
                                 }
-                                
+
                                 $.Oda.Router.routes[name].go(p_request);
 
                                 if ($('#wrapper').exists()) {
@@ -3450,7 +3445,7 @@
             },
 
             /**
-             * 
+             *
              * @returns {$.Oda.Router}
              */
             startRooter : function() {
@@ -3483,12 +3478,12 @@
              * @param {object} p_params description
              * @returns {$.Oda.Router}
              */
-             routerGo : function(p_params) {
+            routerGo : function(p_params) {
                 try {
                     $.Oda.Log.debug("RouterGo : " + p_params.routeDef.path);
-        
+
                     $.Oda.Display.loading({elt:$('#' + $.Oda.Context.mainDiv)});
-        
+
                     //HASH
                     if (!p_params.routeDef.system) {
                         var urlRoute = $.Oda.Router.current.route;
@@ -3504,18 +3499,18 @@
                             }
                         }
                         $.Oda.Context.window.location.hash = urlRoute + urlArg;
-        
+
                         var decoded = $.Oda.Tooling.decodeHtml($.Oda.I8n.getByString(p_params.routeDef.title));
-        
+
                         $.Oda.Context.window.document.title = $.Oda.Context.projectLabel + " - " + decoded;
                     }
-        
+
                     // DEPENDENCIES
                     var listDepends = [];
                     for (var indice in p_params.routeDef.dependencies) {
                         listDepends = listDepends.concat($.Oda.Router.routeDependencies[p_params.routeDef.dependencies[indice]]);
                     }
-        
+
                     $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
                         //exec middleware
                         if (data.params.routeDef.middleWares.length > 0) {
@@ -3523,26 +3518,26 @@
                                 $.Oda.Router.MiddleWares[data.params.routeDef.middleWares[indice]]();
                             }
                         }
-        
+
                         if (($.Oda.Router.routerExit) && (!data.params.routeDef.system)) {
                             return true;
                         }
-        
+
                         //load menus
                         if (($.Oda.Context.ModeExecution.scene) && ($.Oda.Session.code_user !== "")) {
                             $.Oda.Display.MenuSlide.show();
                             $.Oda.Display.Menu.show();
                         }
-        
+
                         //show message
                         if (($.Oda.Context.ModeExecution.message) && ($.Oda.Session.code_user !== "")) {
                             $.Oda.Display.Message.show();
                         }
-        
+
                         //call content
                         $.Oda.Router.loadPartial({"routeDef" : data.params.routeDef});
                     }, functionFeedbackParams : {params : p_params}});
-        
+
                     return true;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Router.routerGo : " + er.message);
@@ -3550,7 +3545,7 @@
                 }
             }
         },
-        
+
         Google : {
             gapiStatuts : {
                 "zero" : 0,
@@ -3701,13 +3696,13 @@
                 }
             }
         },
-        
+
         /**
-        * log
-        * @param {int} p_type
-        * @param {string} p_msg
-        * @returns {boolean}
-        */
+         * log
+         * @param {int} p_type
+         * @param {string} p_msg
+         * @returns {boolean}
+         */
         Log : {
             "info" : function(p_msg) {
                 try {
@@ -3791,7 +3786,7 @@
         }
     }
     if(params.hasOwnProperty("vandorName")){
-        $.Oda.Context.vendorName = params.vendorName;
+        $.Oda.Context.vendorName = params.vandorName;
     }
 
     // Initialize
