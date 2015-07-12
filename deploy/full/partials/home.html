@@ -1,0 +1,423 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span oda-label="home.activity">Activit&eacute; de la communaut&eacute;</span></div>
+            <div id="div_activitePaquets" class="panel-body">
+                <oda-loading></oda-loading>
+            </div>
+        </div>  
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span oda-label="home.mectrics">M&eacute;trique des paquets</span></div>
+            <div id="div_metrics_dropRate" class="panel-body">
+                <oda-loading></oda-loading>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<script>
+    chargerActivitePaquets();
+    /**
+     * @name chargerExemple
+     * @desc Hello
+     * @param {type} nom
+     * @return {boolean}
+     */
+    function chargerActivitePaquets(){
+        try {
+            var myReturn = true;
+            
+            var tabSetting = { functionRetour : retourActivitePaquets};
+            var tabInput = { };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/getActivitePaquetsMatchs.php", tabSetting, tabInput);
+            
+            return myReturn;
+        } catch (er) {
+            $.Oda.Log.error("chargerActivitePaquets :" + er.message);
+            return null;
+        }
+    }
+    
+    /**
+     * @name retourExemple
+     * @param {json} p_retour
+     */
+    function retourActivitePaquets(p_retour){
+        try {
+            var myReturn = true;
+            
+            if(p_retour["strErreur"] == ""){
+                
+                var strHtml = '<div class="table-responsive">';
+                strHtml += '<table class="table table-hover">';
+                strHtml += '<thead>';
+                strHtml += '<tr>';
+                strHtml += '<th>Date</th>';
+                strHtml += '<th>Utilisateur</th>';
+                strHtml += '<th>Mode</th>';
+                strHtml += '<th>Poussière</th>';
+                strHtml += '<th>Cool</th>';
+                strHtml += '</tr>';
+                strHtml += '</thead>';
+                strHtml += '<tbody>';
+                
+                var datas = p_retour["data"]["activitePaquets"]["data"];
+                for(var indice in datas){
+                    strHtml += '<tr>';
+                    strHtml += '<td style="text-align: center;">'+datas[indice]["date"]+'</td>';
+                    strHtml += '<td style="text-align: center;">'+datas[indice]["code_user"]+'</td>';
+                    strHtml += '<td style="text-align: center;">'+datas[indice]["mode"]+'</td>';
+                    strHtml += '<td style="text-align: center;">'+datas[indice]["cout"]+'</td>';
+                    if(datas[indice]["cool"] !== "0"){
+                        strHtml += '<td style="text-align: center;"><a href="javascript:afficherCool({\'date\':\''+datas[indice]["date"]+'\',\'code_user\':\''+datas[indice]["code_user"]+'\',\'mode\':\''+datas[indice]["mode"]+'\'})\">Cool!</a></td>';
+                    }else{
+                        strHtml += '<td>&nbsp;</td>';
+                    }
+                    strHtml += '</tr>';
+                }
+                
+                strHtml += '</tbody>';
+                strHtml += '</table>';
+                strHtml += '</div>';
+                
+                $('#div_activitePaquets').html(strHtml);
+            } else{
+                $.Oda.Notification.danger("Erreur : "+p_retour["strErreur"]);
+            }
+            
+            return myReturn;
+        } catch (er) {
+            $.Oda.Log.error("retourActivitePaquets :" + er.message);
+            return null;
+        }
+    }
+    
+    /**
+     * Open cool cards
+     */
+    function afficherCool(p_params){
+        try {
+            var strhtml = "<oda-loading></oda-loading>";
+            $.Oda.Display.Popup.open({"label" : 'Cartes cools !', "details" : strhtml});
+
+            var myReturn = true;
+
+            var tabSetting = { functionRetour : retourCoolCards};
+            var tabInput = { "code_user" : p_params.code_user, "date" : p_params.date, "mode" : p_params.mode };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/getCoolCards.php", tabSetting, tabInput);
+
+            return myReturn;
+        } catch (er) {
+            $.Oda.Log.error("openMissedCards :" + er.message);
+        }
+    }
+    
+    /**
+     * retourCoolCards
+     * 
+     * @param {array} p_retour
+     */
+    function retourCoolCards(json_retour){
+        try {
+            if(json_retour["strErreur"] == ""){
+                var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(json_retour["data"]["resultat"]["data"]);
+                
+                var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display" id="table_CoolCards" style="width: 100%">';
+                $('#oda-popup_content').html(strhtml);
+                
+                var oTable = $('#table_CoolCards').dataTable( {
+                    "bLengthChange": false,
+                    "iDisplayLength": 5,
+                    "aaData": objDataTable.data,
+                    "aaSorting": [[0,'asc']],
+                    "aoColumns": [
+                        { "sTitle": "Carte", "width": "10em" },
+                        { "sTitle": "Dorée", "sClass": "dataTableColCenter", "width": "2em" },
+                        { "sTitle": "Coût", "sClass": "dataTableColCenter", "width": "2em" },
+                        { "sTitle": "Type", "width": "3em" }
+                    ],
+                    "aoColumnDefs": [
+                        {
+                            "mRender" : function ( data, type, row ) {
+                                var dore = "";
+                                if(row[objDataTable.entete["gold"]] == "1"){
+                                    dore = "&amp;premium";
+                                }
+                                var strHtml = '<a href="http://www.wowhead.com/hearthstone/card='+row[objDataTable.entete["id_link"]]+dore+'" style="color: '+$.Oda.App.colorCard[row[objDataTable.entete["qualite"]]]+';text-decoration: none" target="_new">'+row[objDataTable.entete["nom"]]+'</a>';
+                                return strHtml;
+                            },
+                            "aTargets" : [ 0 ]
+                        },
+                        {
+                            "mRender" : function ( data, type, row ) {
+                                return row[objDataTable.entete["gold"]];
+                            },
+                            "aTargets" : [ 1 ]
+                        },
+                        {
+                            "mRender": function ( data, type, row ) {
+                                return row[objDataTable.entete["cout"]];
+                            },
+                            "aTargets" : [ 2 ]
+                        },
+                        {
+                            "mRender": function ( data, type, row ) {
+                                return row[objDataTable.entete["type"]];
+                            },
+                            "aTargets" : [ 3 ]
+                        }
+                    ]
+                    , "fnDrawCallback": function( oSettings ) {
+                        $('#table_CoolCards')
+                            .removeClass( 'display' )
+                            .addClass('table table-striped table-bordered');
+                    }
+                });
+            } else{
+                $.Oda.Notification.danger("Erreur : "+json_retour["strErreur"]);
+            }
+        } catch (er) {
+            $.Oda.Log.error("retourCoolCards :" + er.message);
+        }
+    }
+    
+    var monWorker = $.Oda.Worker.initWorker("monWorker", {}, function(){
+        
+        function messageHandler(event) {
+            try {
+                // On récupère le message envoyé par la page principale
+                var messageSent = event.data;
+
+                // On teste la commande envoyée
+                switch (messageSent.cmd) {
+                    case 'start':
+                        var strhtml = "";
+
+                        //COMMUN
+                        var tabInput = { };   
+                        var json_retour_qualitePaquets = $Oda.callRest($Oda.Context.rest+"phpsql/getQualitePaquets.php", {}, tabInput);
+
+                        if((json_retour_qualitePaquets["strErreur"] === "")&&(json_retour_qualitePaquets["strErreur"] === "")){
+                            var nbPaquets = parseInt(json_retour_qualitePaquets["data"]["nbpaquets"]["nb"]);
+                            var repartitionQualite = json_retour_qualitePaquets["data"]["repartitionQualite"]["data"];
+
+                            var dropRate_comm = 0;
+                            var dropRate_rare = 0;
+                            var dropRate_epic = 0;
+                            var dropRate_legend = 0;
+                            var dropRate_gold = 0;
+
+                            var total = 0;
+                            for (var indice in repartitionQualite){
+                                total += parseInt(repartitionQualite[indice]["nb"]);
+                            }
+
+                            for (var indice in repartitionQualite){
+                                switch (repartitionQualite[indice]["qualite"]){ 
+                                    case "Commune": 
+                                        dropRate_comm = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break; 
+                                    case "Rare": 
+                                        dropRate_rare = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                    case "Épique": 
+                                        dropRate_epic = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                    case "Légendaire": 
+                                        dropRate_legend = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                }
+                            }  
+
+                            dropRate_gold = $Oda.arrondir(parseInt(json_retour_qualitePaquets["data"]["repartitionGold"]["nb"]) / total * 100,2);
+
+                        }else{
+                            $Oda.log("Erreur : "+json_retour_dropRate["strErreur"]+", "+json_retour_qualitePaquets["strErreur"]);
+                        }
+
+                        strhtml += 'Chance au tirage g&eacute;n&eacute;ral : ';
+                        strhtml += '<ul>';
+                        strhtml += '<li>Chance au tirage des communes : '+dropRate_comm+'%</li>';
+                        strhtml += '<li>Chance au tirage des rares : '+dropRate_rare+'%</li>';
+                        strhtml += '<li>Chance au tirage des &eacute;piques : '+dropRate_epic+'%</li>';
+                        strhtml += '<li>Chance au tirage des l&eacute;gendraires : '+dropRate_legend+'%</li>';
+                        strhtml += '<li>Chance au tirage des dor&eacute;es : '+dropRate_gold+'%</li>';
+                        strhtml += '<li>Sur '+nbPaquets+' paquets.</li>';
+                        strhtml += '</ul>';
+
+                        //PERSO
+                        var tabInput = { code_user : $Oda.Session.code_user };
+                        var json_retour_dropRate = $Oda.callRest($Oda.Context.rest+"phpsql/getMetricsDropRate.php", {}, tabInput);
+
+                        var json_retour_qualitePaquets = $Oda.callRest($Oda.Context.rest+"phpsql/getQualitePaquets.php", {}, tabInput);
+
+                        if((json_retour_dropRate["strErreur"] === "")&&(json_retour_qualitePaquets["strErreur"] === "")){
+                            var nbPaquets = parseInt(json_retour_qualitePaquets["data"]["nbpaquets"]["nb"]);
+                            var repartitionQualite = json_retour_qualitePaquets["data"]["repartitionQualite"]["data"];
+                            var metricsDez = json_retour_dropRate["data"]["resultatDez"]["data"];
+                            var metricsAvancement = json_retour_dropRate["data"]["resultatAvan"]["data"];
+
+                            var dropRateCommune = 0;
+                            var dropRateRare = 0;
+                            var dropRateEpique = 0;
+                            var dropRateLegendaire = 0;
+
+                            var total = 0;
+                            for (var indice in repartitionQualite){
+                                total += parseInt(repartitionQualite[indice]["nb"]);
+                            } 
+
+                            for (var indice in repartitionQualite){
+                                switch (repartitionQualite[indice]["qualite"]){ 
+                                    case "Commune": 
+                                        dropRateCommune = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break; 
+                                    case "Rare": 
+                                        dropRateRare = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                    case "Épique": 
+                                        dropRateEpique = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                    case "Légendaire": 
+                                        dropRateLegendaire = $Oda.arrondir(parseInt(repartitionQualite[indice]["nb"]) / total * 100,2);
+                                    break;
+                                }
+                            } 
+
+                            var percDezCommune = 0;
+                            var percDezRare = 0;
+                            var percDezEpique = 0;
+                            var percDezLegendaire = 0;
+                            var percDezGold = 0;
+                            for (var indice in metricsDez){
+                                switch (metricsDez[indice]["qualite"]){ 
+                                    case "Commune": 
+                                        percDezCommune = parseFloat(metricsDez[indice]["percDez"]);
+                                    break; 
+                                    case "Rare": 
+                                        percDezRare = parseFloat(metricsDez[indice]["percDez"]);
+                                    break;
+                                    case "Épique": 
+                                        percDezEpique = parseFloat(metricsDez[indice]["percDez"]);
+                                    break;
+                                    case "Légendaire": 
+                                        percDezLegendaire = parseFloat(metricsDez[indice]["percDez"]);
+                                    break;
+                                    case "gold": 
+                                        percDezGold = parseFloat(metricsDez[indice]["percDez"]);
+                                    break;
+                                }
+                            } 
+
+                            var strAvCommune = 0;
+                            var strAvRare = 0;
+                            var strAvEpique = 0;
+                            var strAvLegendaire = 0;
+                            for (var indice in metricsAvancement){
+                                switch (metricsAvancement[indice]["qualite"]){ 
+                                    case "Commune": 
+                                        var restCommune = parseInt(metricsAvancement[indice]["rest"]);
+                                        strAvCommune = 'reste : '+restCommune+' pour : '+parseInt(metricsAvancement[indice]["nbMy"])+'/'+(parseInt(metricsAvancement[indice]["nbInv"])*2)+', soit : '+parseFloat(metricsAvancement[indice]["avancement"])+'%';
+                                    break; 
+                                    case "Rare": 
+                                        var restRare = parseInt(metricsAvancement[indice]["rest"]);
+                                        strAvRare = 'reste : '+restRare+' pour : '+parseInt(metricsAvancement[indice]["nbMy"])+'/'+(parseInt(metricsAvancement[indice]["nbInv"])*2)+', soit : '+parseFloat(metricsAvancement[indice]["avancement"])+'%';
+                                    break;
+                                    case "Épique": 
+                                        var restEpique = parseInt(metricsAvancement[indice]["rest"]);
+                                        strAvEpique = 'reste : '+restEpique+' pour : '+parseInt(metricsAvancement[indice]["nbMy"])+'/'+(parseInt(metricsAvancement[indice]["nbInv"])*2)+', soit : '+parseFloat(metricsAvancement[indice]["avancement"])+'%';
+                                    break;
+                                    case "Légendaire": 
+                                        var restLegendaire = parseInt(metricsAvancement[indice]["rest"]);
+                                        strAvLegendaire = 'reste : '+restLegendaire+' pour : '+parseInt(metricsAvancement[indice]["nbMy"])+'/'+parseInt(metricsAvancement[indice]["nbInv"])+', soit : '+parseFloat(metricsAvancement[indice]["avancement"])+'%';
+                                    break;
+                                }
+                            } 
+
+                            var burnDownCommune = $Oda.arrondir((restCommune*100)/(dropRateCommune*percDezCommune/100)/5,0);
+                            var burnDownRare = $Oda.arrondir((restRare*100)/(dropRateRare*percDezRare/100)/5,0);
+                            var burnDownEpique = $Oda.arrondir((restEpique*100)/(dropRateEpique*dropRateEpique/100)/5,0);
+                            var burnDownLegendaire = $Oda.arrondir((restLegendaire*100)/(dropRateLegendaire*dropRateLegendaire/100)/5,0);
+
+                            strhtml += 'Vos statistiques de tirage : ';
+                            strhtml += '<ul>';
+
+                            if(dropRateCommune >= dropRate_comm){
+                                var color = messageSent.parameter.color.SUCCESS;
+                            }else{
+                                var color = messageSent.parameter.color.WARNING;
+                            }
+                            strhtml += '<li style="color:'+color+';">Taux de tirage des communes : '+dropRateCommune+'% ('+percDezCommune+'% Dez)</li>';
+
+                            if(dropRateRare >= dropRate_rare){
+                                var color = messageSent.parameter.color.SUCCESS;
+                            }else{
+                                var color = messageSent.parameter.color.WARNING;
+                            }
+                            strhtml += '<li style="color:'+color+';">Taux de tirage des rares : '+dropRateRare+'% ('+percDezRare+'% Dez)</li>';
+
+                            if(dropRateEpique >= dropRate_epic){
+                                var color = messageSent.parameter.color.SUCCESS;
+                            }else{
+                                var color = messageSent.parameter.color.WARNING;
+                            }
+                            strhtml += '<li style="color:'+color+';">Taux de tirage des &eacute;piques : '+dropRateEpique+'% ('+percDezEpique+'% Dez)</li>';
+
+                            if(dropRateLegendaire >= dropRate_legend){
+                                var color = messageSent.parameter.color.SUCCESS;
+                            }else{
+                                var color = messageSent.parameter.color.WARNING;
+                            }
+                            strhtml += '<li style="color:'+color+';">Taux de tirage des l&eacute;gendaires : '+dropRateLegendaire+'% ('+percDezLegendaire+'% Dez)</li>';
+
+                            var myDropRateGold = $Oda.arrondir(parseFloat(json_retour_dropRate["data"]["resultat"]["dropRate_gold"]),2);
+                            if(myDropRateGold >= dropRate_gold){
+                                var color = messageSent.parameter.color.SUCCESS;
+                            }else{
+                                var color = messageSent.parameter.color.WARNING;
+                            }
+                            strhtml += '<li style="color:'+color+';">Taux de tirage des dor&eacute;es : '+myDropRateGold+'% ('+percDezGold+'% Dez)</li>';
+
+                            strhtml += '<li>Sur '+nbPaquets+' paquets.</li>';
+                            strhtml += '</ul>';
+
+                            strhtml += 'Votre avancement : ';
+                            strhtml += '<ul>';
+                            strhtml += '<li>Pour les communes => '+strAvCommune+'</li>';
+                            strhtml += '<li>Pour les rares => '+strAvRare+'</li>';
+                            strhtml += '<li>Pour les &eacute;piques => '+strAvEpique+'</li>';
+                            strhtml += '<li>Pour les l&eacute;gendaires => '+strAvLegendaire+'</li>';
+                            strhtml += '</ul>';
+
+                            strhtml += 'Votre burn down pour finir collection : ';
+                            strhtml += '<ul>';
+                            strhtml += '<li>Pour les communes => '+burnDownCommune+' paquets &agrave; ouvrir</li>';
+                            strhtml += '<li>Pour les rares => '+burnDownRare+' paquets &agrave; ouvrir</li>';
+                            strhtml += '<li>Pour les &eacute;piques => '+burnDownEpique+' paquets &agrave; ouvrir</li>';
+                            strhtml += '<li>Pour les l&eacute;gendaires => '+burnDownLegendaire+' paquets &agrave; ouvrir</li>';
+                            strhtml += '</ul>';
+
+                            this.postMessage(new $Oda.message('resultat',{"html" : strhtml}));
+                        } else{
+                            $Oda.log("Erreur : "+json_retour_dropRate["strErreur"]+", "+json_retour_qualitePaquets["strErreur"]);
+                        }
+                        
+                        break;
+                    }
+            }catch (er) {
+                this.postMessage("Erreur : " + er.message);
+            }
+        }
+        
+        // On définit la fonction à appeler lorsque la page principale nous sollicite
+        this.addEventListener('message', messageHandler, false);
+    },function(msg){
+        $('#div_metrics_dropRate').html(msg.parameter.html);
+        $.Oda.Worker.terminateWorker(monWorker);
+    });
+    
+    monWorker.postMessage(new $.Oda.Worker.message('start', { "color" : $.Oda.Color }));
+    
+</script>

@@ -1,0 +1,38 @@
+[
+    {
+        "key" : "phpsql/getActivitePaquetsMatchs.php",
+        "ttl" : 3600
+    },
+    {
+        "key" : "phpsql/getCards.php",
+        "ttl" : 86400
+    },
+    {
+      "key" : "phpsql/getCollection.php",
+      "ttl" : 3
+    },
+    {
+      "key" : "phpsql/getPaquet.php",
+      "ttl" : 3
+    },
+  {
+    "key" : "getListDeck.php",
+    "ttl" : 60,
+    "onDemande" : true
+  },
+  {
+    "key" : "getMatchs.php",
+    "ttl" : 60,
+    "onDemande" : true
+  },
+  {
+    "key" : "getRepartitionDureeMatchs.php",
+    "ttl" : 60,
+    "onDemande" : true
+  },
+  {
+    "key" : "getEvolRatioMatchs.php",
+    "ttl" : 60,
+    "onDemande" : true
+  }
+]

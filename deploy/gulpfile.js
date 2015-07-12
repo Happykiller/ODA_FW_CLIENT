@@ -26,8 +26,10 @@ gulp.task('params', function(vendorName) {
 
 //ex : gulp install-full --vendorName libs
 gulp.task('install-full', ['params'], function() {
-    gulp.src(['full/index.html','full/gulpfile.js','full/package.json'])
+    gulp.src(['full/index.html','full/gulpfile.js','full/package.json','full/jsTestDriver.conf'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
+        .pipe(gulp.dest('./../../../'));
+    gulp.src(['full/**/*'])
         .pipe(gulp.dest('./../../../'));
     return;
 });

@@ -65,7 +65,8 @@
                 app : false
             },
             debug : true,
-            rootPath : "",
+            vendorName : "bower_components",
+            rootPath : "../../../",
             projectLabel : "Project",
             mainDiv : "oda-content",
             host : "",
@@ -525,9 +526,9 @@
                 //depdends
                 var listDepends = [
                     {"name" : "library" , ordered : false, "list" : [
-                        { "elt" : $.Oda.Context.rootPath+"API/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                        { "elt" : $.Oda.Context.rootPath+"API/css/css.css", "type" : "css" },
-                        { "elt" : $.Oda.Context.rootPath+"API/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/css.css", "type" : "css" },
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
 
                     ]}
                 ];
@@ -535,10 +536,10 @@
                 if($.Oda.Context.ModeExecution.app){
                     var listDependsApp = [
                         {"name": "app", ordered: false, "list": [
-                            { "elt" : $.Oda.Context.rootPath+"config/config.js", "type" : "script" },
-                            { "elt" : $.Oda.Context.rootPath+"css/css.css", "type" : "css" },
-                            { "elt" : $.Oda.Context.rootPath+"i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath+"js/OdaApp.js", "type": "script"}
+                            { "elt" : $.Oda.Context.rootPath + "config/config.js", "type" : "script" },
+                            { "elt" : $.Oda.Context.rootPath + "css/css.css", "type" : "css" },
+                            { "elt" : $.Oda.Context.rootPath + "i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + "js/OdaApp.js", "type": "script"}
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsApp);
@@ -638,16 +639,16 @@
                     $.Oda.Router.addDependencies("hightcharts", {
                         ordered : false,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath+"API/libs/highcharts-release/highcharts.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"}
                         ]
                     });
 
                     $.Oda.Router.addDependencies("dataTables", {
                         ordered : false,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath+"API/css/dataTables.bootstrap.css", "type" : "css"},
-                            { "elt" : $.Oda.Context.rootPath+"API/libs/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
-                            { "elt" : $.Oda.Context.rootPath+"API/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/dataTables.bootstrap.css", "type" : "css"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
                         ]
                     });
 
@@ -659,7 +660,7 @@
                     });
 
                     $.Oda.Router.addRoute("auth", {
-                        "path" : "API/partials/auth.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/auth.html",
                         "title" : "oda-main.authentification",
                         "urls" : ["auth"],
                         "middleWares" : ["support"],
@@ -667,56 +668,56 @@
                     });
 
                     $.Oda.Router.addRoute("support", {
-                        "path" : "API/partials/support.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/support.html",
                         "title" : "oda-main.support-title",
                         "urls" : ["support"],
                         "system" : true
                     });
 
                     $.Oda.Router.addRoute("404", {
-                        "path" : "API/partials/404.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/404.html",
                         "title" : "oda-main.404-title",
                         "urls" : ["404"],
                         "system" : true
                     });
 
                     $.Oda.Router.addRoute("contact", {
-                        "path" : "API/partials/contact.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/contact.html",
                         "title" : "oda-main.contact",
                         "urls" : ["contact"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("forgot", {
-                        "path" : "API/partials/forgot.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/forgot.html",
                         "title" : "oda-main.forgot-title",
                         "urls" : ["forgot"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("subscrib", {
-                        "path" : "API/partials/subscrib.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/subscrib.html",
                         "title" : "oda-main.subscrib-title",
                         "urls" : ["subscrib"],
                         "middleWares" : ["support"]
                     });
 
                     $.Oda.Router.addRoute("home", {
-                        "path" : "API/partials/home.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/home.html",
                         "title" : "oda-main.home-title",
                         "urls" : ["","home"],
                         "middleWares" : ["support", "auth"]
                     });
 
                     $.Oda.Router.addRoute("profile", {
-                        "path" : "API/partials/profile.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/profile.html",
                         "title" : "oda-main.profile-title",
                         "urls" : ["profile"],
                         "middleWares" : ["support", "auth"]
                     });
 
                     $.Oda.Router.addRoute("stats", {
-                        "path" : "API/partials/stats.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/stats.html",
                         "title" : "oda-stats.title",
                         "urls" : ["stats"],
                         "middleWares" : ["support", "auth"],
@@ -724,7 +725,7 @@
                     });
 
                     $.Oda.Router.addRoute("admin", {
-                        "path" : "API/partials/admin.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/admin.html",
                         "title" : "oda-admin.title",
                         "urls" : ["admin"],
                         "middleWares" : ["support", "auth"],
@@ -732,7 +733,7 @@
                     });
 
                     $.Oda.Router.addRoute("supervision", {
-                        "path" : "API/partials/supervision.html",
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/partials/supervision.html",
                         "title" : "oda-supervision.title",
                         "urls" : ["supervision"],
                         "middleWares" : ["support", "auth"],
@@ -742,8 +743,8 @@
 
                     var listDependsScene = [
                         {"name" : "scene" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath+"API/css/simple-sidebar.css", "type" : "css" },
-                            { "elt" : $.Oda.Context.rootPath+"API/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/css/simple-sidebar.css", "type" : "css" },
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsScene);
@@ -752,8 +753,8 @@
                 if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
                     var listDependsMokup = [
                         {"name" : "mokup" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath+"API/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath+"mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsMokup);
@@ -762,8 +763,8 @@
                 if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
                     var listDependsCache = [
                         {"name" : "cache" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath+"API/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath+"cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
                         ]}
                     ];
                     listDepends = listDepends.concat(listDependsCache);
@@ -1709,7 +1710,7 @@
              */
             loading: function (p_params) {
                 try {
-                    p_params.elt.html('<img SRC="API/img/loading.gif" ALT="Chargement" TITLE="Chargement">');
+                    p_params.elt.html('<img SRC="'+$.Oda.Context.rootPath + $.Oda.Context.vendorName + '/resources/img/loading.gif" ALT="Chargement" TITLE="Chargement">');
                     return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Display.loading : " + er.message);
@@ -3788,6 +3789,9 @@
             default:
                 break;
         }
+    }
+    if(params.hasOwnProperty("vandorName")){
+        $.Oda.Context.vendorName = params.vendorName;
     }
 
     // Initialize

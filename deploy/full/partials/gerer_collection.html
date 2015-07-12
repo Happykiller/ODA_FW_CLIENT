@@ -1,0 +1,324 @@
+<div class="container">
+    <h2 oda-label="gerer-coll.title"></h2>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span oda-label="paquet-add.labrary"></span></div>
+                <div id="div_inventaire" class="panel-body">
+                    <oda-loading></oda-loading>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <span>Importer des sets entier.</span>
+                    <nav class="navbar navbar-inverse">
+                        <ul class="nav navbar-nav" id="contentChoixSet">
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-12">
+                    <span>Filtrer les cartes.</span>
+                    <nav class="navbar navbar-inverse">
+                        <ul class="nav navbar-nav">
+                            <li class="active" id="bt-commune"><a href="javascript:filtreQualite({id:'commune'});">Commune</a></li>
+                            <li class="active" id="bt-rare"><a href="javascript:filtreQualite({id:'rare'});">Rare</a></li>
+                            <li class="active" id="bt-epique"><a href="javascript:filtreQualite({id:'epique'});">Epique</a></li>
+                            <li class="active" id="bt-legendaire"><a href="javascript:filtreQualite({id:'legendaire'});">L&eacute;gendaire</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><span oda-label="gerer-coll.collection"></span></div>
+                        <div id="div_collection" class="panel-body">
+                            <oda-loading></oda-loading>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * Build NavBar Sets
+     */
+    function buildNavBarSets(){
+        try {
+            var strHtml = '';
+            for (var indice in $.Oda.App.tab_sets) {
+                strHtml += '<li role="presentation"><a href="javascript:importSet(\'' + $.Oda.App.tab_sets[indice] + '\');">' + $.Oda.App.tab_sets[indice] + '</a></li>';
+            }
+            $('#contentChoixSet').html(strHtml);
+        } catch (er) {
+            $.Oda.Log.error("buildNavBarSets : " + er.message);
+        }
+    }
+
+    /**
+     * @name filtreQualite
+     */
+    function filtreQualite(params) {
+        try {
+            if(!$.Oda.Tooling.isUndefined(params)){
+                var elt = $('#bt-'+params.id);
+                if(elt.hasClass('active')){
+                    elt.removeClass('active');
+                }else{
+                    elt.addClass('active');
+                }
+            }
+
+            var checkbox_commune = $('#bt-commune').hasClass('active');
+            var checkbox_rare = $('#bt-rare').hasClass('active');
+            var checkbox_epique = $('#bt-epique').hasClass('active');
+            var checkbox_legendaire = $('#bt-legendaire').hasClass('active');
+
+            $.Oda.Display.loading({elt : $('#div_collection')});
+
+            var tabSetting = { functionRetour : retourCollection};
+            var tabInput = { code_user : $.Oda.Session.code_user
+                , qualite_commune : checkbox_commune
+                , qualite_rare : checkbox_rare
+                , qualite_epique : checkbox_epique
+                , qualite_legendaire : checkbox_legendaire
+            };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/getCollection.php", tabSetting, tabInput);
+        } catch (er) {
+            $.Oda.Log.error("filtreQualite : " + er.message);
+        }
+    };
+
+    /**
+     * chargerCars
+     */
+    function chargerCars(){
+        try {
+            $.Oda.Display.loading({elt : $('#div_inventaire')});
+            var tabSetting = { "functionRetour" : retourCards};
+            var tabInput = { "type" : "", "code_user" : $.Oda.Session.code_user };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/getCards.php", tabSetting, tabInput);
+        } catch (er) {
+            $.Oda.Log.error("chargerCars : " + er.message);
+        }
+    }
+
+    /**
+     * @name importSet
+     */
+    function importSet(p_setName) {
+        try {
+            $.Oda.Display.loading({elt : $('#div_collection')});
+            var tabSetting = { functionRetour : function(datas) {
+                if(datas["strErreur"] == ""){
+                    $.Oda.Display.Notification.success("Import r&eacute;ussi.");
+                    filtreQualite();
+                }else{
+                    $.Oda.Display.Notification.error(datas["strErreur"]);
+                }
+            }};
+            var tabInput = { code_user : $.Oda.Session.code_user, set : p_setName};
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/importSet.php", tabSetting, tabInput);
+        } catch (er) {
+            $.Oda.Log.error("importSet : " + er.message);
+        }
+    }
+
+    /**
+     * choisir
+     */
+    function choisir(p_id_card, p_gold){
+        try {
+            var tabInput = { code_user : $.Oda.Session.code_user, id_card : p_id_card, gold : p_gold };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/addCollection.php", { functionRetour : function(datas) {
+                if(datas["strErreur"] == ""){
+                    $.Oda.Display.Notification.success("Bravo");
+                    filtreQualite();
+                    if(parseInt(datas["data"]["resultat"]["nb_non_gold"]) >= 2){
+                        $('#bt_card_'+datas["data"]["resultat"]["id"]+'_1').addClass('disabled');
+                    }
+                    if(parseInt(datas["data"]["resultat"]["nb_gold"]) >= 2){
+                        $('#bt_card_'+datas["data"]["resultat"]["id"]+'_2').addClass('disabled');
+                    }
+                }else{
+                    $.Oda.Display.Notification.error(datas["strErreur"]);
+                }
+            }}, tabInput);
+        } catch (er) {
+            $.Oda.Log.error("choisir : " + er.message);
+        }
+    }
+
+    /**
+     * dez
+     */
+    function dez(p_nb_avant, p_id_coll){
+        try {
+            var tabInput = { id_coll : p_id_coll, code_user : $.Oda.Session.code_user };
+            $.Oda.Interface.callRest($.Oda.Context.rest+"phpsql/removeCollection.php", { functionRetour : function(datas) {
+                if(datas["strErreur"] == ""){
+                    $.Oda.Display.Notification.success("Bravo");
+                    filtreQualite();
+                    if(p_nb_avant == 2){
+                        chargerCars();
+                    }
+                }else{
+                    $.Oda.Display.Notification.error(datas["strErreur"]);
+                }
+            }}, tabInput);
+        } catch (er) {
+            $.Oda.Log.error("dez : " + er.message);
+        }
+    }
+
+    /**
+     * retourCards
+     *
+     * @param {Array} json_retour
+     */
+    function retourCards(json_retour){
+        try {
+            if(json_retour["strErreur"] === ""){
+                var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display hover" id="table_cards" style="width:100%"></table>';
+                $('#div_inventaire').html(strhtml);
+
+                var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(json_retour["data"]["cartes"]["data"]);
+                var oTable = $('#table_cards').dataTable( {
+                    "pagingType": "simple",
+                    "aaData": objDataTable.data,
+                    "aaSorting": [[0,'asc']],
+                    "dom": 'ftpi',
+                    "aoColumns": [
+                        { sTitle: "Nom"  },
+                        { sTitle: "Mana", sClass: "dataTableColCenter", sWidth: "30px" },
+                        { sTitle: "Action", sClass: "dataTableColCenter", sWidth: "30px", orderable: false }
+                    ],
+                    aoColumnDefs: [
+                        {//Nom
+                            mRender: function ( data, type, row ) {
+                                var strHtml = '<a href="http://www.wowhead.com/hearthstone/card='+row[4]+'" style="color: '+$.Oda.App.colorCard[row[6]]+';text-decoration: none">'+row[3]+'</a>';
+                                return strHtml;
+                            },
+                            aTargets: [ 0 ]
+                        },
+                        {//Mana
+                            mRender: function ( data, type, row ) {
+                                var strHtml = String(row[9]);
+                                return strHtml;
+                            },
+                            aTargets: [ 1 ]
+                        },
+                        {//Ajouter
+                            mRender: function ( data, type, row ) {
+                                var strHtml = '';
+                                strHtml += '<a href="javascript:choisir('+row[0]+',0)" class="btn btn-xs" id="bt_card_'+row[0]+'_1" title="'+$.Oda.I8n.get("paquet-add","titleAddNorm")+'"><span class="glyphicon glyphicon-plus"></span></a>';
+                                strHtml += '<a href="javascript:choisir('+row[0]+',1)" class="btn btn-xs" id="bt_card_'+row[0]+'_2" title="'+$.Oda.I8n.get("paquet-add","titleAddGold")+'"><span class="glyphicon glyphicon-plus" style="color:DarkOrange"></span></a>';
+                                return strHtml;
+                            },
+                            aTargets: [ 2 ]
+                        }
+                    ],
+                    "fnDrawCallback": function( oSettings ) {
+                        $('#table_cards')
+                            .removeClass( 'display' )
+                            .addClass('table table-striped table-bordered');
+                    }
+                });
+            } else{
+                $.Oda.Display.Notification.error(json_retour["strErreur"]);
+            }
+        } catch (er) {
+            $.Oda.Log.error("retourCards : " + er.message);
+        }
+    }
+
+    /**
+     * retourCollection
+     *
+     * @param {array} p_retour
+     */
+    function retourCollection(json_retour){
+        try {
+            if(json_retour["strErreur"] == ""){
+                var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display hover" id="table_collection" style="width: 100%"></table></br></br>';
+                $('#div_collection').html(strhtml).trigger('create');
+
+                var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(json_retour["data"]["collection"]["data"]);
+
+                var oTable = $('#table_collection').dataTable( {
+                    "sPaginationType": "full_numbers",
+                    "aaData": objDataTable.data,
+                    "aaSorting": [],
+                    "aoColumns": [
+                        { sTitle: "Nombre", sClass: "dataTableColCenter", sWidth: "30px" },
+                        { sTitle: "Nom", sClass: "left"  },
+                        { sTitle: "Classe", sClass: "dataTableColCenter", sWidth: "30px" },
+                        { sTitle: "Action", sClass: "dataTableColCenter", sWidth: "30px" }
+                    ],
+                    aoColumnDefs: [
+                        {//Nom
+                            mRender: function ( data, type, row ) {
+                                var strHtml = row[objDataTable.entete["nb"]];
+                                return strHtml;
+                            },
+                            aTargets: [ 0 ]
+                        },
+                        {//Nombre
+                            mRender: function ( data, type, row ) {
+                                var dore = "";
+                                if(row[objDataTable.entete["gold"]] == "1"){
+                                    dore = "&amp;premium";
+                                }
+                                var strHtml = '<a href="http://www.wowhead.com/hearthstone/card='+row[objDataTable.entete["id_link"]]+dore+'" style="color: '+$.Oda.App.colorCard[row[objDataTable.entete["qualite"]]]+';text-decoration: none">'+row[objDataTable.entete["nom"]]+'</a>';
+                                return strHtml;
+                            },
+                            aTargets: [ 1 ]
+                        },
+                        {//Mana
+                            mRender: function ( data, type, row ) {
+                                var strHtml = row[objDataTable.entete["classe"]];
+                                return strHtml;
+                            },
+                            aTargets: [ 2 ]
+                        },
+                        {//Ajouter
+                            mRender: function ( data, type, row ) {
+
+                                var theme = "";
+                                if(row[objDataTable.entete["gold"]] == "1"){
+                                    theme = ' style="color:DarkOrange"';
+                                }
+                                var strHtml = '<a href="javascript:dez('+row[objDataTable.entete["nb"]]+','+row[objDataTable.entete["max_id_collec"]]+')" class="btn btn-xs" id="bt_remove_card_'+row[objDataTable.entete["nom"]]+'"><span class="glyphicon glyphicon-remove" '+theme+'></span></a>';
+
+                                return strHtml;
+                            },
+                            aTargets: [ 3 ]
+                        }
+                    ],
+                    "fnDrawCallback": function( oSettings ) {
+                        $('#table_collection')
+                            .removeClass( 'display' )
+                            .addClass('table table-striped table-bordered');
+                    }
+                });
+            } else{
+                $.Oda.Display.Notification.error(json_retour["strErreur"]);
+            }
+        } catch (er) {
+            $.Oda.Log.error("retourCollection : " + er.message);
+        }
+    };
+
+    buildNavBarSets()
+    chargerCars();
+    filtreQualite();
+
+</script>
+
+<style>
+
+</style>

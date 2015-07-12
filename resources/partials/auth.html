@@ -1,0 +1,81 @@
+<div class="container">
+    <h2 oda-label="oda-main.authentification">Authentification</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+              <label for="login" oda-label="oda-main.login">Login :</label>
+              <input required type="text" class="form-control" oda-input-text="login" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="Oda.Regexs:login">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+              <label for="mdp" oda-label="oda-main.password">Password :</label>
+              <input required type="password" class="form-control" oda-input-text="mdp" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <p>
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="goIn();" class="btn btn-primary disabled">Submit</button >
+                <button type="button" oda-label="oda-main.bt-forgot" onclick="$.Oda.Router.navigateTo({'route':'forgot','args':[]});" class="btn btn-info">Forgot</button >
+                <button type="button" oda-label="oda-main.bt-subscrib" onclick="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});" class="btn btn-info">Subscrib</button >
+            </p>
+        </div>
+        <div class="col-md-12">
+            <p id="google">
+                &nbsp;
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    function goIn(){
+        $.Oda.Security.auth({'login' : $('#login').val(), 'mdp' : $('#mdp').val(), 'reload' : true});
+    }
+    
+    /**
+     * goInWithGoogle
+     */
+    function goInWithGoogle() {
+        try {
+            gapi.client.oauth2.userinfo.get().execute(function(resp) {
+                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getAccountsFromEmail.php", {}, { "email" : resp.email});
+                if(retour.strErreur == ""){
+                    if(retour.data.nombre == 0){
+                        $.Oda.Display.Notification.warning("Pas de compte rattach&eacute; à l'email : "+resp.email);
+                    }else if(retour.data.nombre == 1){
+                        $.Oda.Security.auth({"login" : retour.data.data[0].code_user, "mdp" : "authByGoogle-"+resp.email, "reload" : true});
+                    }else {
+                        var strHtml = '<div class="list-group"">';
+                        for (var indice in retour.data.data) {
+                            var elt = retour.data.data[indice];
+                            strHtml += "<a class=\"list-group-item\" href=\"javascript:$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
+                        }
+                        strHtml += '</div>';
+                        $.Oda.Display.Popup.open({"label" : "Choisir le compte.", "details" : strHtml});
+                    }
+                }
+            });
+        } catch (er) {
+            $.Oda.log("ERROR(goInWithGoogle):" + er.message);
+        }
+    }
+    
+    $.Oda.Scope.refresh = function(){
+        if(($("#login").data("isOk")) && ($("#mdp").data("isOk"))){
+            $("#submit").removeClass("disabled");
+        }else{
+            $("#submit").addClass("disabled");
+        }
+    };
+
+    $.Oda.Google.startSessionAuth(
+        function(){
+            $('#google').html('<button type="button" onclick="goInWithGoogle();" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+        }
+        , function(){
+            $('#google').html('<button type="button" onclick="$.Oda.Google.callServiceGoogleAuth(goInWithGoogle);" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+        }
+    );
+</script>

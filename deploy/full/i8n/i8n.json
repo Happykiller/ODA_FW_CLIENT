@@ -1,0 +1,85 @@
+[
+    {
+        "groupName" : "home"
+        , "fr" : {
+            "activity" : "Activit&eacute; de la communaut&eacute;"
+            , "mectrics" : "M&eacute;trique des paquets" 
+        }
+        , "en" : {
+            "activity" : "Community activity"
+            , "mectrics" : "Metric packets"
+        }
+    }
+    ,{
+        "groupName" : "paquet-add"
+        , "fr" : {
+            "title" : "Saisir un paquet"
+            , "labrary" : "La librairie"
+            , "packet" : "Le paquet"
+            , "noMore" : "Plus d'ajout possible."
+            , "validateAndAdd" : "Valider &amp; Ajouter dans ma collection"
+            , "titleAddNorm" : "Ajouter une carte normale"
+            , "titleAddGold" : "Ajouter une carte dor&eacute;e"
+        }
+        , "en" : {
+            "title" : "Add a packet"
+            , "labrary" : "Library"
+            , "packet" : "Packet"
+            , "noMore" : "No more add possible."
+            , "validateAndAdd" : "Validate &amp; Add in my collection"
+            , "titleAddNorm" : "Add normal card"
+            , "titleAddGold" : "Add gold card"
+        }
+    }
+    ,{
+        "groupName" : "rapports-cartes"
+        , "fr" : {
+              "title" : "Rapport des cartes"
+              , "metrics-coll" : "Métriques Collection"
+              , "infos-packet" : "Informations sur les paquets"
+        }
+        , "en" : {
+              "title" : "Rapport cards"
+              , "metrics-coll" : "Metrics Collection"
+              , "infos-packet" : "Informations packets"
+        }
+    }
+    ,{
+        "groupName" : "gerer-coll"
+        , "fr" : {
+              "title" : "Gérer sa collection"
+              , "collection" : "Sa collection"
+        }
+        , "en" : {
+              "title" : "Manage your collection"
+            , "collection" : "Your collection"
+        }
+    }
+    ,{
+        "groupName" : "gerer-deck"
+          , "fr" : {
+              "title" : "Gérer ses decks",
+              "listDeck" : "Liste des decks",
+              "detailsDeck" : "Détails du deck",
+              "deckActif" : "Actif",
+              "deckName" : "Nom",
+              "deckType" : "Type",
+              "deckCmt" : "Commentaires",
+              "newDeck" : "Nouveau Deck",
+              "deckClass" : "La classe"
+        }
+        , "en" : {
+            "title" : "Manage yours decks",
+            "listDeck" : "List decks"
+        }
+    },
+    {
+      "groupName" : "rec-matchs"
+      , "fr" : {
+          "title" : "Saisir les matchs"
+        }
+      , "en" : {
+          "title" : "Record matchs"
+      }
+    }
+]
