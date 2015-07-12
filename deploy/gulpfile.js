@@ -33,3 +33,23 @@ gulp.task('install-full', ['params'], function() {
         .pipe(gulp.dest('./../../../'));
     return;
 });
+
+//ex : gulp install-full --vendorName libs
+gulp.task('install-app', ['params'], function() {
+    gulp.src(['app/index.html','app/gulpfile.js','app/package.json','app/jsTestDriver.conf'])
+        .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
+        .pipe(gulp.dest('./../../../'));
+    gulp.src(['!app/index.html','!app/gulpfile.js','!app/package.json','!app/jsTestDriver.conf','app/**/*'])
+        .pipe(gulp.dest('./../../../'));
+    return;
+});
+
+//ex : gulp install-full --vendorName libs
+gulp.task('install-mini', ['params'], function() {
+    gulp.src(['mini/index.html','mini/gulpfile.js','mini/package.json','mini/jsTestDriver.conf'])
+        .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
+        .pipe(gulp.dest('./../../../'));
+    gulp.src(['!mini/index.html','!mini/gulpfile.js','!mini/package.json','!mini/jsTestDriver.conf','mini/**/*'])
+        .pipe(gulp.dest('./../../../'));
+    return;
+});
