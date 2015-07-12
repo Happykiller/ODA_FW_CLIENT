@@ -1,6 +1,5 @@
 /* global er */
 // Library of tools for the exemple
-// TODO Oda.js doit venir de bower, quid du deploy ?
 
 /**
  * @author FRO
@@ -1700,7 +1699,7 @@
                         });
                         $( "body" ).append(htmlTudo);
 
-
+                        //TODO gerer les avatar dans le profile
                         $("#avatar").attr('src',$.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
 
                         $("#avatar").click(function(e) {
