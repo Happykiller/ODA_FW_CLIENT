@@ -561,21 +561,21 @@
                     ];
 
                     if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
-                        var listDependsMokup = [
-                            {"name" : "mokup" , ordered : false, "list" : [
+                        var listDependsMokupApp = [
+                            {"name" : "mokupApp" , ordered : false, "list" : [
                                 { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
                             ]}
                         ];
-                        listDepends = listDepends.concat(listDependsMokup);
+                        listDepends = listDepends.concat(listDependsMokupApp);
                     }
 
                     if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
-                        var listDependsCache = [
-                            {"name" : "cache" , ordered : false, "list" : [
+                        var listDependsCacheApp = [
+                            {"name" : "cacheApp" , ordered : false, "list" : [
                                 { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
                             ]}
                         ];
-                        listDepends = listDepends.concat(listDependsCache);
+                        listDepends = listDepends.concat(listDependsCacheApp);
                     }
 
                     listDepends = listDepends.concat(listDependsApp);
