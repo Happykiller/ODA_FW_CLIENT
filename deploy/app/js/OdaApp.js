@@ -42,8 +42,7 @@
                 $.Oda.Router.addRoute("home", {
                     "path" : "partials/home.html",
                     "title" : "oda-main.home-title",
-                    "urls" : ["","home"],
-                    "middleWares" : ["support"]
+                    "urls" : ["","home"]
                 });
 
                 $.Oda.Router.startRooter();
