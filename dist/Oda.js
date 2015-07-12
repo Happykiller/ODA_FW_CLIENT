@@ -675,7 +675,7 @@
                     $.Oda.Router.addDependencies("hightcharts", {
                         ordered : false,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/highcharts-release/highcharts.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"}
                         ]
                     });
 
