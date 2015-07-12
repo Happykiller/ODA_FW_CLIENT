@@ -4,7 +4,7 @@
 
 /**
  * @author FRO
- * @date 15/05/08
+ * @date 2015-07-12
  *
  * If you want to define the modeExecute
  * ?modeExecution = full, app, or mini
