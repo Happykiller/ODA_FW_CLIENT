@@ -1,5 +1,5 @@
 /* global er */
-// Library of tools for the exemple
+// Library of tools for the framework Oda
 
 /**
  * @author FRO
@@ -63,8 +63,7 @@
                 rooter : false,
                 app : false
             },
-            //TODO mettre le debug dans les params de la lib
-            debug : true,
+            debug : false,
             vendorName : "bower_components",
             rootPath : "",
             projectLabel : "Project",
@@ -1735,9 +1734,10 @@
                  */
                 show : function(){
                     try {
-                        if(!this.display){
+                        if (this.display) {
+                        } else {
                             var strHtml = "";
-                            strHtml += '<li class="sidebar-brand"><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':[]});">'+$.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName+'</a></li>';
+                            strHtml += '<li class="sidebar-brand"><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':[]});">' + $.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName + '</a></li>';
                             strHtml += '<li><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':[]});" oda-label="oda-main.profile">Your profile</a></li>';
                             strHtml += '<li><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':[]});" oda-label="oda-main.contact">Contact</a></li>';
                             strHtml += '<li><a href="javascript:$.Oda.Security.logout();" oda-label="oda-main.logout">Logout</a></li>';
@@ -3803,6 +3803,9 @@
     }
     if(params.hasOwnProperty("vandorName")){
         $.Oda.Context.vendorName = params.vandorName;
+    }
+    if(params.hasOwnProperty("debug")){
+        $.Oda.Context.debug = params.debug;
     }
 
     // Initialize
