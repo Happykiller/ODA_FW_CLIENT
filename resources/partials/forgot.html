@@ -38,7 +38,7 @@
             var p_email = $("#email").val();
             
             var tabInput = { identifiant : p_identifiant, email : p_email};
-            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getRecupUtilisateur.php", {}, tabInput);
+            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getRecupUtilisateur.php", {}, tabInput);
             if(results["strErreur"] == ""){
                 for(var indice in results["data"]["resultat"]["data"]){
                     var compte = results["data"]["resultat"]["data"][indice];

@@ -24,7 +24,7 @@
             
             var tabSetting = { "functionRetour" : retourInformations };
             var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getDetailsUser.php", tabSetting, tabInput);
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getDetailsUser.php", tabSetting, tabInput);
             
             return retour;
         } catch (er) {
@@ -165,7 +165,7 @@
             var mdp = $('#input_old_password').val();
             var value = $('#input_'+p_champs).val();
             var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/setChangeProfile.php", {}, tabInput);
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/setChangeProfile.php", {}, tabInput);
             
             if(retour["strErreur"] == ""){
                 $('#lab_'+p_champs).html(value);
@@ -176,7 +176,7 @@
                 var tabInput = { 
                     code_user : $.Oda.Session.code_user
                 };
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getAuthInfo.php", {}, tabInput);
+                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAuthInfo.php", {}, tabInput);
                 if(retour.strErreur === ""){
                     var userInfo = {
                         "locale" : retour.data.resultat.langue

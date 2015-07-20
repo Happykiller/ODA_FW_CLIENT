@@ -22,7 +22,7 @@
     function afficherActivite() {
         try {
             var tabInput = {  };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getUserActivite.php", {functionRetour : function(datas) {
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getUserActivite.php", {functionRetour : function(datas) {
                 if(datas["strErreur"] === ""){
                     var nombre = datas["data"]["resultat"]['nombre'];
                     var datas = datas["data"]["resultat"]["data"];
@@ -89,7 +89,7 @@
     function afficherPageActivite() {
         try {
             var tabInput = {  };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getPageActivite.php", {functionRetour : function(datas) {
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getPageActivite.php", {functionRetour : function(datas) {
                 if(datas["strErreur"] === ""){
                     var nombre = datas["data"]["resultat"]['nombre'];
                     var datas = datas["data"]["resultat"]["data"];

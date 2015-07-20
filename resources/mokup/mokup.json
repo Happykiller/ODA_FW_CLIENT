@@ -1,6 +1,6 @@
 [
   {
-    "interface" : "API/phpsql/getParam.php",
+    "interface" : "getParam.php",
     "value" : [
       {
         "args" : {
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "interface" : "API/phpsql/addStat.php",
+    "interface" : "addStat.php",
     "value"  : [
       {
         "args" : "default",
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "interface" : "API/phpsql/getMessagesToDisplay.php",
+    "interface" : "getMessagesToDisplay.php",
     "value"  : [
       {
         "args" : "default",
@@ -29,7 +29,7 @@
     ]
   },
   {
-    "interface" : "API/phpsql/checkSession.php",
+    "interface" : "checkSession.php",
     "value" : [
       {
         "args" : "default",

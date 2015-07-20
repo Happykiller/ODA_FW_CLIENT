@@ -51,7 +51,7 @@
             var retour = true;
 
             var tabInput = { indice_user : $.Oda.Session.code_user};
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getListutilisateurs.php", { functionRetour : function(datas) {
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getListutilisateurs.php", { functionRetour : function(datas) {
                 if (datas["strErreur"] == "") {
                     var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(datas["data"]["resultats"]["data"]);
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display hover" id="table_listUtilisateurs">';
@@ -189,7 +189,7 @@
 
             var tabSetting = { };
             var tabInput = { };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getListMail.php", { functionRetour : function(datas) {
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getListMail.php", { functionRetour : function(datas) {
                 if(datas["strErreur"] == ""){
                     var strhtml = getHtmlListDiffusion(datas["data"]["resultat"]["data"]);
                     $('#div_listDiffusion').html(strhtml);
@@ -212,7 +212,7 @@
     function editer(p_code_user) {
         try {
             var tabInput = { code_user : p_code_user, profile : $.Oda.Session.userInfo.profile };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getDetailsUser.php", { functionRetour : function(datas) {
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getDetailsUser.php", { functionRetour : function(datas) {
                 if(datas["strErreur"] == ""){
                     user_edit = p_code_user;
 
@@ -272,7 +272,7 @@
             var rang = $('#input_rang').val();
 
             var tabInput = { code_user : code_user, mail : mail, actif : actif, rang : rang, desc : desc };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/updateUser.php", {}, tabInput);
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/updateUser.php", {}, tabInput);
             if(retour["strErreur"] == ""){
                 user_edit = "";
                 $.Oda.Display.Popup.close();
@@ -293,7 +293,7 @@
         try {
             $.Oda.Display.loading({elt : $('#div_messages')});
             var tabInput = { code_user : $.Oda.Session.code_user };
-            $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getMessages.php", {functionRetour : retourMessages}, tabInput);
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getMessages.php", {functionRetour : retourMessages}, tabInput);
         } catch (er) {
             $.Oda.Log.error("chargerMessages : " + er.message);
         }
@@ -357,7 +357,7 @@
                     , date_expiration : input_date_expiration
                     , profile : input_profile
                 };
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/addMessage.php", {}, tabInput);
+                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/addMessage.php", {}, tabInput);
                 if(retour["strErreur"] == ""){
                     $('#input_message').val("");
                     $('#input_niveau').val("");

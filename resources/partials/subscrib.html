@@ -65,7 +65,7 @@
             var p_identifiant = $("#login").text();
             
             var tabInput = { nom : p_nom, prenom : p_prenom, email : p_email, motDePasse : p_motDePasse, codeUtilisateur : p_identifiant };
-            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/addUtilisateur.php", {}, tabInput);
+            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/addUtilisateur.php", {}, tabInput);
 
             if(results["strErreur"] == ""){
                 var infoUser = results["data"]["infosUser"];

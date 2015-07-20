@@ -38,7 +38,7 @@
             $.Oda.Display.loading({elt : $('#div_metrics_interface')});
             var tabInput = { };
             var tabSetting = { functionRetour : retourMetricsInterface };
-            $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getMetricsInterface.php", tabSetting, tabInput);
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getMetricsInterface.php", tabSetting, tabInput);
         } catch (er) {
             $.Oda.Log.error("chargerMetricsInterface : " + er.message);
         }
@@ -137,7 +137,7 @@
 
             var tabSetting = { functionRetour : this.retourMaintenance};
             var tabInput = { exec : p_execution };
-            $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/maintenanceDb.php", tabSetting, tabInput);
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/maintenanceDb.php", tabSetting, tabInput);
 
             return true;
         } catch (er) {

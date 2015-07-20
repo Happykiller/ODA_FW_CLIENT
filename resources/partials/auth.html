@@ -40,7 +40,7 @@
     function goInWithGoogle() {
         try {
             gapi.client.oauth2.userinfo.get().execute(function(resp) {
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"API/phpsql/getAccountsFromEmail.php", {}, { "email" : resp.email});
+                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAccountsFromEmail.php", {}, { "email" : resp.email});
                 if(retour.strErreur == ""){
                     if(retour.data.nombre == 0){
                         $.Oda.Display.Notification.warning("Pas de compte rattach&eacute; à l'email : "+resp.email);
