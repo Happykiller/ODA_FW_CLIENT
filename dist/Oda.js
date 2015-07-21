@@ -1043,7 +1043,7 @@
 
                     var elt;
                     for(var indice in $.Oda.MokUp.mokup){
-                        if($.Oda.MokUp.mokup[indice].interface === strInterface){
+                        if(params.url.includes($.Oda.MokUp.mokup[indice].interface)){
                             elt = $.Oda.MokUp.mokup[indice];
                             break;
                         }
