@@ -1713,21 +1713,32 @@
                 },
                 /**
                  * @param {Object} p_params
+                 * @param p_params.code_user
                  * @param p_params.callback
                  * @returns {$.Oda.Display.Scene.avatar}
                  */
                 avatar : function (p_params) {
                     try {
-                        $.ajax({
-                            url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png",
-                            type:'HEAD',
-                            error: function(){
-                                p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
-                            },
-                            success: function(){
-                                p_params.callback({src : $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png"});
-                            }
-                        });
+                        var targetUser = $.Oda.Session.code_user;
+                        if(p_params.hasOwnProperty("code_user") && p_params.code_user !== ""){
+                            targetUser = p_params.code_user;
+                        }
+
+                        if(targetUser !== ""){
+                            $.ajax({
+                                url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png",
+                                type:'HEAD',
+                                error: function(){
+                                    p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
+                                },
+                                success: function(){
+                                    p_params.callback({src : $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png"});
+                                }
+                            });
+                        }else{
+                            p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
+                        }
+
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Scene.avatar : " + er.message);
