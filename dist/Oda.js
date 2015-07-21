@@ -1360,10 +1360,10 @@
                 },
                 "mokup": function (params) {
                     var retour = $.Oda.MokUp.get({url: params.url, tabInput: params.data});
-                    retour.context = params.context;
-                    if((retour.strErreur.startsWith("No mokup found for")) && (params.odaInterface.length>0)){
+                    if((retour.hasOwnProperty("strErreur")) && (retour.strErreur.startsWith("No mokup found for")) && (params.odaInterface.length>0)){
                         return $.Oda.Interface.call(params);
                     }else{
+                        retour.context = params.context;
                         $.Oda.Log.debug("Call mokup success for : "+params.url);
                         if ($.Oda.Tooling.isUndefined(params.functionRetour)) {
                             return retour;
