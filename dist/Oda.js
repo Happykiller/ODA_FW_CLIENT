@@ -70,7 +70,7 @@
             mainDiv : "oda-content",
             host : "",
             rest : "",
-            resources : "",
+            resources : "resources/",
             window : window,
             console : console,
             startDate : false
@@ -1698,7 +1698,6 @@
                         });
                         $( "body" ).append(htmlTudo);
 
-                        //TODO gerer les avatar dans le profile
                         $("#avatar").attr('src',$.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
 
                         $("#avatar").click(function(e) {
@@ -1709,6 +1708,29 @@
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Scene.load : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.callback
+                 * @returns {$.Oda.Display.Scene.avatar}
+                 */
+                avatar : function (p_params) {
+                    try {
+                        $.ajax({
+                            url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png",
+                            type:'HEAD',
+                            error: function(){
+                                p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
+                            },
+                            success: function(){
+                                p_params.callback({src : $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png"});
+                            }
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Scene.avatar : " + er.message);
                         return null;
                     }
                 },
@@ -2385,6 +2407,7 @@
                     return objRetour;
                 }
             },
+
             /**
              * pad2
              * @param {int} number
@@ -2395,6 +2418,88 @@
                     return (number < 10 ? '0' : '') + number;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.pad2 : " + er.message);
+                    return null;
+                }
+            },
+
+            /**
+             * @name uploadFile
+             * @desc Hello
+             * @param {Object} p_params
+             * @param p_params.idInput
+             * @param p_params.folder
+             * @param p_params.name
+             * @returns {Object}
+             */
+            uploadFile : function(p_params) {
+                try {
+                    if(p_params.idInput != ""){
+                        var retour = {};
+                        var inputElement = $("#"+p_params.idInput);
+
+                        if(inputElement[0].files.length > 0){
+                            var data = new FormData();
+                            $.each(inputElement[0].files, function(i, file) {
+                                data.append('file-'+i, file);
+                            });
+
+                            retour = $.Oda.Tooling.sendFile(data, p_params.folder, p_params.name);
+
+                            if(retour.code = "ok"){
+                                $.Oda.Display.Notification.success("Upload réussi.");
+                            }else{
+                                $.Oda.Log.error("Erreur upload : "+retour.message);
+                            }
+                        }else{
+                            $.Oda.Log.error("Erreur pas de fichier sélectionné");
+                        }
+                    }else{
+                        $.Oda.Log.error("Erreur pas d'élement selectionné.");
+                    }
+
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.uploadFile : " + er.message);
+                    return null;
+                }
+            },
+
+            /**
+             * @param {type} p_fichiers
+             * @param {type} p_dossier
+             * @param {type} p_nom
+             */
+            sendFile : function(p_fichier, p_dossier, p_nom) {
+                try {
+                    var retour = { appel : "ko", code : "ko", message : "init" };
+
+                    var strUrl = $.Oda.Context.rest+'vendor/happykiller/oda/resources/scriptphp/uploadFile.php?dossier='+p_dossier+'&nom='+p_nom;
+
+                    var ajax = $.ajax({
+                        url: strUrl,
+                        data: p_fichier,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        async:false,
+                        success : function(p_resultat, p_statut){
+                            var json_retour = JSON.parse(p_resultat);
+                            retour.appel = "ok";
+                            retour.code = json_retour["code"];
+                            retour.message = json_retour["message"];
+                        },
+                        error : function(p_resultat, p_statut, p_erreur){
+                            var json_retour = JSON.parse(p_resultat);
+                            retour.appel = "ko";
+                            retour.code = json_retour["code"];
+                            retour.message = json_retour["message"];
+                        }
+                    });
+
+                    return retour;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.sendFile : " + er.message);
                     return null;
                 }
             }
@@ -2560,6 +2665,7 @@
                     $.Oda.Display.MenuSlide.remove();
                     $.Oda.Display.Menu.remove();
                     $.Oda.Router.routes.auth.go();
+                    $.Oda.Display.Scene.avatar({callback : function(data){$("#avatar").attr('src',data.src);}});
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Security.logout : " + er.message);
                 }
@@ -2628,6 +2734,26 @@
                         $.Oda.Log.error("$.Oda.contact() : " + er.message);
                     }
                 }
+            },
+            Profile : {
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.elt
+                 * @returns {$.Oda.Controler.Profile.setAvatar}
+                 */
+                setAvatar : function (p_params) {
+                    try {
+                        $.Oda.Tooling.uploadFile({idInput : p_params.elt.id, folder : "avatars/", name : $.Oda.Session.code_user + ".png"});
+                        $.Oda.Display.Scene.avatar({callback : function(data){
+                            $("#avatar").attr('src',data.src);
+                            $("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');
+                        }});
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Profile.setAvatar : " + er.message);
+                        return null;
+                    }
+                },
             }
         },
 
@@ -3543,6 +3669,7 @@
                         if (($.Oda.Context.ModeExecution.scene) && ($.Oda.Session.code_user !== "")) {
                             $.Oda.Display.MenuSlide.show();
                             $.Oda.Display.Menu.show();
+                            $.Oda.Display.Scene.avatar({callback : function(data){$("#avatar").attr('src',data.src);}});
                         }
 
                         //show message
