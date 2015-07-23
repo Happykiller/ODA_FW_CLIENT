@@ -1310,7 +1310,7 @@
                                 }
                             }
 
-                            if (data.strErreur !== "") {
+                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "")) {
                                 $.Oda.Event.send({name : "oda-notification-flash", data : {type : "error", msg : "$.Oda.Interface.Methode.ajax : " + data.strErreur} });
                             } else if ($.Oda.Tooling.isInArray("cache", $.Oda.Context.modeInterface)){
                                 var attrs = $.Oda.Tooling.clone(this.odaAttrs);
