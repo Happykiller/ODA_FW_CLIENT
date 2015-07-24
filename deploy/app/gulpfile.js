@@ -6,7 +6,7 @@ var gulp = require('gulp');
 var bower = require('gulp-bower');
 var connect = require('gulp-connect');
 var jshint = require('gulp-jshint');
-var launch = require('gulp-open');
+var open = require('gulp-open');
 var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -63,10 +63,7 @@ gulp.task('server', function() {
  * Launch default browser on local server url
  */
 gulp.task('open', function() {
-    return gulp.src('index.html')
-        .pipe(launch('', {
-            url: 'http://localhost:'+opt.port+'/index.html'
-        }));
+    return gulp.src('index.html').pipe(open({uri: 'http://localhost:'+opt.port}));
 });
 
 gulp.task('run-dev', ['bower', 'watch', 'server', 'open']);
