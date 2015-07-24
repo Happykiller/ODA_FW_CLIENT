@@ -2231,6 +2231,38 @@
                 }
             },
             /**
+             * @param {Object} p_params
+             * @param p_params.id
+             * @returns {$.Oda.Tooling.getLangBrowser}
+             */
+            getLangBrowser : function (p_params) {
+                try {
+                    var lang = "";
+                    if(!$.Oda.Tooling.isUndefined(navigator.language)){
+                        switch (true) {
+                            case navigator.language.includes('fr') :
+                                lang = 'fr';
+                                break;
+                            case navigator.language.includes('en') :
+                                lang = 'en';
+                                break;
+                            case navigator.language.includes('es') :
+                                lang = 'es';
+                                break;
+                            case navigator.language.includes('it') :
+                                lang = 'it';
+                                break;
+                            default:
+                                lang = navigator.language;
+                        }
+                    }
+                    return lang;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.getLangBrowser : " + er.message);
+                    return null;
+                }
+            },
+            /**
              * getListValeurPourAttribut
              * @param {json} p_obj
              * @param {string} p_attribut
