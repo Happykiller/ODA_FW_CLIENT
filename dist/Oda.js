@@ -522,6 +522,8 @@
 
         init : function(){
             try {
+                $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
+
                 var listDepends = [
                     {"name" : "library" , ordered : false, "list" : [
                         { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
@@ -2231,9 +2233,7 @@
                 }
             },
             /**
-             * @param {Object} p_params
-             * @param p_params.id
-             * @returns {$.Oda.Tooling.getLangBrowser}
+             * @returns {String}
              */
             getLangBrowser : function (p_params) {
                 try {
