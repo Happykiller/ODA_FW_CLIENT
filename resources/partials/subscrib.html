@@ -50,9 +50,11 @@
             var login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
             $("#login").text(login);
             $("#submit").removeClass("disabled");
+            $("#submit").removeAttr("disabled");
         }else{
             $("#login").text("");
             $("#submit").addClass("disabled");
+            $("#submit").attr("disabled", true);
         }
     };
     

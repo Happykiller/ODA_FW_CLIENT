@@ -27,8 +27,10 @@
     $.Oda.Scope.refresh = function(){
         if(($("#login").data("isOk")) || ($("#mdp").data("isOk"))){
             $("#submit").removeClass("disabled");
+            $("#submit").removeAttr("disabled");
         }else{
             $("#submit").addClass("disabled");
+            $("#submit").attr("disabled", true);
         }
     };
     
