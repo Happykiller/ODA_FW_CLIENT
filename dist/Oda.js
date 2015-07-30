@@ -795,9 +795,6 @@
                     if($.Oda.Context.ModeExecution.notification){
                         $.Oda.Display.Notification.load();
                     }
-                    if($.Oda.Context.ModeExecution.popup){
-                        $.Oda.Display.Popup.load();
-                    }
                     if($.Oda.Context.ModeExecution.scene) {
                         if($("#"+ $.Oda.Context.mainDiv).exists()){
                             $("#"+ $.Oda.Context.mainDiv).remove();
@@ -1908,26 +1905,11 @@
                 }
             },
             Popup : {
-                /**
-                 * @param {Object} p_params
-                 * @param p_params.attr
-                 * @returns {$.Oda.Display.Popup}
-                 */
-                load: function (p_params) {
-                    try {
-                        var htmlPopUp = $.Oda.Display.TemplateHtml.create({
-                            template : "oda-popup-tpl"
-                        });
-                        $( "body" ).append(htmlPopUp);
-                        return this;
-                    } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.Popup.load : " + er.message);
-                        return null;
-                    }
-                },
+                iterator : 0,
                 /**
                  * affichePopUp
                  * @param {Object} p_params
+                 * @param p_params.name
                  * @param p_params.size (sm, lg)
                  * @param p_params.label
                  * @param p_params.details
@@ -1937,51 +1919,71 @@
                  */
                 open : function(p_params){
                     try {
-                        if(p_params.hasOwnProperty("size")){
-                            $('#oda-popup .modal-dialog').addClass("modal-"+p_params.size);
+                        if(!p_params.hasOwnProperty("name")){
+                            $.Oda.Display.Popup.iterator++;
+                            p_params.name = 'oda-popup' + $.Oda.Display.Popup.iterator;
                         }
 
-                        $('#oda-popup_label').html("<b>"+p_params.label+"</b>");
-                        $.Oda.Scope.init({id:'oda-popup_label'});
+                        var htmlPopUp = $.Oda.Display.TemplateHtml.create({
+                            template : "oda-popup-tpl",
+                            scope : {
+                                name : p_params.name
+                            }
+                        });
+                        $( "body" ).append(htmlPopUp);
+
+                        if(p_params.hasOwnProperty("size")){
+                            $('#'+p_params.name+' .modal-dialog').addClass("modal-"+p_params.size);
+                        }
+
+                        $('#'+p_params.name+'_label').html("<b>"+p_params.label+"</b>");
+                        $.Oda.Scope.init({id:p_params.name+'_label'});
 
                         var contentPopup = p_params.details;
-                        $('#oda-popup_content').html(contentPopup);
-                        $.Oda.Scope.init({id:'oda-popup_content'});
+                        $('#'+p_params.name+'_content').html(contentPopup);
+                        $.Oda.Scope.init({id:p_params.name+'_content'});
 
                         if(p_params.hasOwnProperty("footer")){
-                            $('#oda-popup_footer').html(p_params.footer);
+                            $('#'+p_params.name+'_footer').html(p_params.footer);
                         }else{
-                            $('#oda-popup_footer').html('<button type="button" class="btn btn-default" data-dismiss="modal" oda-label="oda-main.bt-close"></button>');
+                            $('#'+p_params.name+'_footer').html('<button type="button" class="btn btn-default" data-dismiss="modal" oda-label="oda-main.bt-close"></button>');
                         }
-                        $.Oda.Scope.init({id:'oda-popup_footer'});
+                        $.Oda.Scope.init({id:p_params.name+'_footer'});
 
                         if(p_params.hasOwnProperty("callback")) {
-                            $('#oda-popup').on('shown.bs.modal', function (e) {
+                            $('#'+p_params.name).on('shown.bs.modal', function (e) {
                                 if(p_params.hasOwnProperty("callbackParams")) {
                                     p_params.callback(p_params.callbackParams);
                                 }else{
                                     p_params.callback();
                                 }
-                            })
+                            });
                         }else{
-                            $( "#oda-popup" ).unbind( "shown.bs.modal" );
+                            $( "#"+p_params.name ).unbind( "shown.bs.modal" );
                         }
 
-                        $('#oda-popup').modal("show");
+                        $('#'+p_params.name).on('hidden.bs.modal', function (e) {
+                            $.Oda.Display.Popup.close({name:p_params.name});
+                        })
+
+                        $('#'+p_params.name).modal("show");
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Popup.open : " + er.message);
                     }
                 },
                 /**
                  * @param {object} p_params
+                 * @param p_params.name
                  * @returns {$.Oda.Display.Popup}
                  */
                 close: function (p_params) {
                     try {
-                        $('#oda-popup_label').html("");
-                        $('#oda-popup_content').html("");
-                        $('#oda-popup_footer').html("");
-                        $('#oda-popup').modal("hide");
+                        if(!$.Oda.Tooling.isUndefined(p_params)){
+                            p_params.name = 'oda-popup' + $.Oda.Display.Popup.iterator;
+                        }
+
+                        $('#'+p_params.name).modal("hide");
+                        $('#'+p_params.name).remove();
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Popup.close : " + er.message);
