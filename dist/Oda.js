@@ -1963,7 +1963,7 @@
                         }
 
                         $('#'+p_params.name).on('hidden.bs.modal', function (e) {
-                            $.Oda.Display.Popup.close({name:p_params.name});
+                            $('#'+p_params.name).remove();
                         })
 
                         $('#'+p_params.name).modal("show");
@@ -1978,15 +1978,32 @@
                  */
                 close: function (p_params) {
                     try {
-                        if(!$.Oda.Tooling.isUndefined(p_params)){
+                        if($.Oda.Tooling.isUndefined(p_params)){
+                            var p_params = {};
+                        }
+
+                        if(p_params.hasOwnProperty('name')){
                             p_params.name = 'oda-popup' + $.Oda.Display.Popup.iterator;
                         }
 
                         $('#'+p_params.name).modal("hide");
-                        $('#'+p_params.name).remove();
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Popup.close : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @returns {$.Oda.Display.Popup}
+                 */
+                closeAll: function () {
+                    try {
+                        $('.modal').each(function(index, value) {
+                            $(value).modal("hide");
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Popup.closeAll : " + er.message);
                         return null;
                     }
                 }
