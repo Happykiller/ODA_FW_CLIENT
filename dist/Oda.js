@@ -3154,7 +3154,13 @@
                         $(value).attr("name",id);
 
                         $.Oda.Scope.checkInputText({elt:value});
+
                         $(value).keyup(function(elt){
+                            $.Oda.Scope.checkInputText({elt:elt.target});
+                            $.Oda.Scope.refresh();
+                        });
+
+                        $(value).mouseup(function(elt){
                             $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.refresh();
                         });
