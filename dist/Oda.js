@@ -58,7 +58,6 @@
                 init : false,
                 scene : false,
                 notification : false,
-                popup : false,
                 message : false,
                 rooter : false,
                 app : false
@@ -3155,14 +3154,14 @@
 
                         $.Oda.Scope.checkInputText({elt:value});
 
-                        $(value).keyup(function(elt){
+                        $(value).bind("keyup mouseup",function(elt){
+                            //TODO MOVE WHEN REMOVE
                             $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.refresh();
                         });
 
-                        $(value).mouseup(function(elt){
-                            $.Oda.Scope.checkInputText({elt:elt.target});
-                            $.Oda.Scope.refresh();
+                        $(value).bind("keyup mouseup",function(elt){
+                            $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
 
                         var placeHolder = $(value).attr("oda-input-text-placeholder");
@@ -3198,7 +3197,9 @@
                         $.Oda.Scope.checkInputSelect({elt:value});
                         $(value).change(function(elt){
                             $.Oda.Scope.checkInputSelect({elt:elt.target});
+                            //TODO MOVE WHEN REMOVE
                             $.Oda.Scope.refresh();
+                            $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
                     });
 
@@ -3210,9 +3211,7 @@
                     });
 
                     //oda-submit
-                    var nbOdaSubmit = 0;
                     $(divTarget+'[oda-submit]').each(function(index, value){
-                        nbOdaSubmit++;
                         var id = $(value).attr("oda-submit");
 
                         $(value).attr("id",id);
@@ -3227,9 +3226,6 @@
                             }
                         });
                     });
-                    if(nbOdaSubmit > 1){
-                        $.Oda.Log.warning("Too many oda-submit in document.");
-                    }
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Scope.init : " + er.message);
                 }
@@ -3294,7 +3290,7 @@
                 }
             },
             /**
-             * //TODO passer en mode collection, quant on ajouter un refresh il prend une liste d'id de widget, un id et du code, comme ça quant un widget change on sait quels refresh changer, l'id permettra de le suppr
+             * //TODO REMOVE IMPL
              * @returns {undefined}
              */
             refresh : function(){
@@ -3303,6 +3299,74 @@
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Scope.refresh : " + er.message);
                 }
+            },
+            Gardian : {
+                inventory : {},
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @param p_params.listElt
+                 * @param p_params.function
+                 * @returns {$.Oda.Scope}
+                 */
+                add : function (p_params) {
+                    try {
+                        $.Oda.Scope.Gardian.inventory[p_params.id] = {
+                            listElt : p_params.listElt,
+                            function : p_params.function
+                        };
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Scope.Gardian.add : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.Scope}
+                 */
+                remove : function (p_params) {
+                    try {
+                        $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
+                            delete $.Oda.Scope.Gardian.inventory[key];
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Scope.Gardian.remove : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @returns {$.Oda.Scope}
+                 */
+                removeAll : function () {
+                    try {
+                        $.Oda.Scope.Gardian.inventory = {};
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Scope.Gardian.removeAll : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.Scope}
+                 */
+                findByElt : function (p_params) {
+                    try {
+                        $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
+                            if($.Oda.Tooling.isInArray(p_params.id, value.listElt)){
+                                value.function({elt : p_params.id});
+                            };
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Scope.findByElt : " + er.message);
+                        return null;
+                    }
+                },
             }
         },
 
@@ -3745,6 +3809,9 @@
                             $.Oda.Display.Message.show();
                         }
 
+                        //reset gardians
+                        $.Oda.Scope.Gardian.removeAll();
+
                         //call content
                         $.Oda.Router.loadPartial({"routeDef" : data.params.routeDef});
                     }, functionFeedbackParams : {params : p_params}});
@@ -3976,20 +4043,17 @@
                 $.Oda.Context.ModeExecution.scene = true;
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
-                $.Oda.Context.ModeExecution.popup = true;
                 $.Oda.Context.ModeExecution.message = true;
                 break;
             case "app":
                 $.Oda.Context.ModeExecution.app = true;
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
-                $.Oda.Context.ModeExecution.popup = true;
                 $.Oda.Context.ModeExecution.message = true;
                 break;
             case "mini":
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
-                $.Oda.Context.ModeExecution.popup = true;
                 $.Oda.Context.ModeExecution.message = true;
                 break;
             default:
