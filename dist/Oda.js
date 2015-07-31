@@ -1982,7 +1982,7 @@
                             var p_params = {};
                         }
 
-                        if(p_params.hasOwnProperty('name')){
+                        if(!p_params.hasOwnProperty('name')){
                             p_params.name = 'oda-popup' + $.Oda.Display.Popup.iterator;
                         }
 
@@ -3294,7 +3294,7 @@
                 }
             },
             /**
-             *
+             * //TODO passer en mode collection, quant on ajouter un refresh il prend une liste d'id de widget, un id et du code, comme ça quant un widget change on sait quels refresh changer, l'id permettra de le suppr
              * @returns {undefined}
              */
             refresh : function(){
