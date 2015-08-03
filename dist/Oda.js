@@ -1227,7 +1227,7 @@
             call : function(params){
                 var response = {"strErreur": "No call", "data": {}, "statut": 4}
                 if(params.odaInterface.length>0){
-                    var theInterface = params.odaInterface[0]
+                    var theInterface = params.odaInterface[0];
                     params.odaInterface.splice(0,1);
                     response = $.Oda.Interface.Methode[theInterface](params);
                 }
