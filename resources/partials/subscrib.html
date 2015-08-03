@@ -4,26 +4,26 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-              <label for="fristName" oda-label="oda-main.subscrib-fristName">frist</label>
-              <input required="" type="text" class="form-control" oda-input-text="fristName" oda-input-text-tips="oda-main.subscrib-fristName-tips" oda-input-text-placeholder="oda-main.subscrib-fristName-placeholder" oda-input-text-check="Oda.Regexs:firstName">
+                <label for="fristName" oda-label="oda-main.subscrib-fristName">frist</label>
+                <input required="" type="text" class="form-control" oda-input-text="fristName" oda-input-text-tips="oda-main.subscrib-fristName-tips" oda-input-text-placeholder="oda-main.subscrib-fristName-placeholder" oda-input-text-check="Oda.Regexs:firstName">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-              <label for="lastName" oda-label="oda-main.subscrib-lastName">last</label>
-              <input type="text" class="form-control" oda-input-text="lastName" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName">
+                <label for="lastName" oda-label="oda-main.subscrib-lastName">last</label>
+                <input type="text" class="form-control" oda-input-text="lastName" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-              <label for="email" oda-label="oda-main.contact-mail">email</label>
-              <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
+                <label for="email" oda-label="oda-main.contact-mail">email</label>
+                <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-              <label for="mdp" oda-label="oda-main.password">pass</label>
-              <input type="password" class="form-control" oda-input-text="mdp" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
+                <label for="mdp" oda-label="oda-main.password">pass</label>
+                <input type="password" class="form-control" oda-input-text="mdp" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
             </div>
         </div>
         <div class="col-md-12">
@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="creercompte();" class="btn btn-primary disabled">Submit</button >
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="creercompte();" class="btn btn-primary disabled" disabled>Submit</button >
                 <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
             </p>
         </div>
@@ -41,23 +41,27 @@
 </div>
 
 <script>
-    $.Oda.Scope.refresh = function(){
-        if(($("#fristName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
-            
-            var first = $("#fristName").val().replace(/[^\w\s]/gi, '');
-            var last = $("#lastName").val().replace(/[^\w\s]/gi, '');
-            
-            var login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
-            $("#login").text(login);
-            $("#submit").removeClass("disabled");
-            $("#submit").removeAttr("disabled");
-        }else{
-            $("#login").text("");
-            $("#submit").addClass("disabled");
-            $("#submit").attr("disabled", true);
+    $.Oda.Scope.Gardian.add({
+        id : "gardianSubscrib",
+        listElt : ["fristName", "lastName", "email", "mdp"],
+        function : function(params){
+            if(($("#fristName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
+
+                var first = $("#fristName").val().replace(/[^\w\s]/gi, '');
+                var last = $("#lastName").val().replace(/[^\w\s]/gi, '');
+
+                var login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
+                $("#login").text(login);
+                $("#submit").removeClass("disabled");
+                $("#submit").removeAttr("disabled");
+            }else{
+                $("#login").text("");
+                $("#submit").addClass("disabled");
+                $("#submit").attr("disabled", true);
+            }
         }
-    };
-    
+    });
+
     function creercompte() {
         try {
             var p_nom = $("#fristName").val();
@@ -65,11 +69,9 @@
             var p_email = $("#email").val();
             var p_motDePasse = $("#mdp").val();
             var p_identifiant = $("#login").text();
-            
-            var tabInput = { nom : p_nom, prenom : p_prenom, email : p_email, motDePasse : p_motDePasse, codeUtilisateur : p_identifiant };
-            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/addUtilisateur.php", {}, tabInput);
 
-            if(results["strErreur"] == ""){
+            var tabInput = { nom : p_nom, prenom : p_prenom, email : p_email, motDePasse : p_motDePasse, codeUtilisateur : p_identifiant };
+            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/addUtilisateur.php", {functionRetour : function(results){
                 var infoUser = results["data"]["infosUser"];
 
                 var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
@@ -90,7 +92,7 @@
                 message_html += "</body></html>";
 
                 var paramsMail = {
-                    email_mails_dest : infoUser["mail"]+"," 
+                    email_mails_dest : infoUser["mail"]+","
                     ,email_mail_ori : contact_mail_administrateur
                     , email_labelle_ori : "Service Mail ODA"
                     , email_mail_reply : contact_mail_administrateur
@@ -104,14 +106,11 @@
 
                 var strHtml = "F&eacute;licitation votre compte a bien &eacute;t&eacute; cr&eacute;&eacute; (N&deg;"+infoUser["id"]+", identifiant : "+infoUser["code_user"]+").";
                 $.Oda.Display.Notification.success(strHtml);
-                
+
                 $.Oda.Router.navigateTo();
-            }else{
-                var strHtml = "Erreur de cr&eacute;ation de votre compte, merci de contacter l'administrateur.";
-                $.Oda.Notification.danger(strHtml);
-            }
+            }}, tabInput);
         } catch (er) {
-            $.Oda.log("ERROR(creercompte):" + er.message);
+            $.Oda.Log.error("creercompte : " + er.message);
         }
     }
 </script>
