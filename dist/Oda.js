@@ -2734,6 +2734,88 @@
         },
 
         Controler : {
+            Auth : {
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.Controler.Auth}
+                 */
+                start : function (p_params) {
+                    try {
+                        $.Oda.Scope.Gardian.add({
+                            id : "gardianAuth",
+                            listElt : ["login", "mdp"],
+                            function : function(params){
+                                if( ($("#login").data("isOk")) && ($("#mdp").data("isOk")) ){
+                                    $("#submit").removeClass("disabled");
+                                    $("#submit").removeAttr("disabled");
+                                }else{
+                                    $("#submit").addClass("disabled");
+                                    $("#submit").attr("disabled", true);
+                                }
+                            }
+                        });
+
+                        $.Oda.Google.startSessionAuth(
+                            function(){
+                                $('#google').html('<button type="button" onclick="$.Oda.Controler.Auth.goInWithGoogle();" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                            }
+                            , function(){
+                                $('#google').html('<button type="button" onclick="$.Oda.Google.callServiceGoogleAuth($.Oda.Controler.Auth.goInWithGoogle);" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                            }
+                        );
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Auth.start : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.Controler.Auth}
+                 */
+                goIn : function (p_params) {
+                    try {
+                        $.Oda.Security.auth({'login' : $('#login').val(), 'mdp' : $('#mdp').val(), 'reload' : true});
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Auth.goIn : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.Controler.Auth}
+                 */
+                goInWithGoogle : function (p_params) {
+                    try {
+                        gapi.client.oauth2.userinfo.get().execute(function(resp) {
+                            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAccountsFromEmail.php", {}, { "email" : resp.email});
+                            if(retour.strErreur == ""){
+                                if(retour.data.nombre == 0){
+                                    $.Oda.Display.Notification.warning("Pas de compte rattach&eacute; à l'email : "+resp.email);
+                                }else if(retour.data.nombre == 1){
+                                    $.Oda.Security.auth({"login" : retour.data.data[0].code_user, "mdp" : "authByGoogle-"+resp.email, "reload" : true});
+                                }else {
+                                    var strHtml = '<div class="list-group"">';
+                                    for (var indice in retour.data.data) {
+                                        var elt = retour.data.data[indice];
+                                        strHtml += "<a class=\"list-group-item\" href=\"javascript:$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
+                                    }
+                                    strHtml += '</div>';
+                                    $.Oda.Display.Popup.open({"label" : "Choisir le compte.", "details" : strHtml});
+                                }
+                            }
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Auth.goInWithGoogle : " + er.message);
+                        return null;
+                    }
+                },
+            },
             Contact : {
                 /**
                  * saisirContact

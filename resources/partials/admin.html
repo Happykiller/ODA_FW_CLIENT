@@ -54,7 +54,7 @@
             var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getListutilisateurs.php", { functionRetour : function(datas) {
                 if (datas["strErreur"] == "") {
                     var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(datas["data"]["resultats"]["data"]);
-                    var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display hover" id="table_listUtilisateurs">';
+                    var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_listUtilisateurs">';
                     strhtml += '<tfoot><tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th oda-attr="select">6</th><th>7</th></tr></tfoot></table>';
                     $('#div_listUtilisateurs').html(strhtml);
 
@@ -116,12 +116,7 @@
                                 },
                                 "aTargets": [6]
                             }
-                        ],
-                        "fnDrawCallback": function (oSettings) {
-                            $('#table_listUtilisateurs')
-                                .removeClass('display')
-                                .addClass('table table-striped table-bordered');
-                        }
+                        ]
                     });
 
                     // DataTable
@@ -239,18 +234,24 @@
                     });
 
                     var strHtmlFooter = '';
-                    strHtmlFooter += '<button type="button" onclick="validerEdition();" class="btn btn-primary" oda-submit="bt_valider"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-main','bt-submit')+'</button>';
+                    strHtmlFooter += '<button type="button" onclick="validerEdition();" class="btn btn-primary disabled" disabled oda-submit="bt_validerEdit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-main','bt-submit')+'</button>';
                     strHtmlFooter += '<a href="javascript:$.Oda.Display.Popup.close();" class="btn btn-default" id="bt_annuler_user"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-main','bt-cancel')+'</a>';
 
                     $.Oda.Display.Popup.open({label : label, details : strHtml, footer : strHtmlFooter});
 
-                    $.Oda.Scope.refresh = function(){
-                        if(($("#edit_mail").data("isOk")) && ($("#edit_desc").data("isOk"))){
-                            $("#bt_valider").removeClass("disabled");
-                        }else{
-                            $("#bt_valider").addClass("disabled");
+                    $.Oda.Scope.Gardian.add({
+                        id : "gardianEdit",
+                        listElt : ["edit_mail", "edit_desc","edit_actif", "input_rang"],
+                        function : function(params){
+                            if(($("#edit_mail").data("isOk")) && ($("#edit_desc").data("isOk")) && ($("#edit_actif").data("isOk")) && ($("#input_rang").data("isOk"))){
+                                $("#bt_validerEdit").removeClass("disabled");
+                                $("#bt_validerEdit").removeAttr("disabled");
+                            }else{
+                                $("#bt_validerEdit").addClass("disabled");
+                                $("#bt_validerEdit").attr("disabled", true);
+                            }
                         }
-                    };
+                    });
                 }else{
                     $.Oda.Display.Notification.error("Aie erreur!");
                 }
@@ -307,31 +308,47 @@
             var label = "Cr&eacute;er un message";
 
             var strHtml = "";
-            strHtml += '<div class="form-group"><label for="input_message">Message :</label><textarea id="input_message" name="input_message" rows="10" cols="80"></textarea></div>';
+            strHtml += '<div class="form-group"><label for="input_message">Message :</label><textarea oda-input-text="input_message" rows="10" cols="80" required></textarea></div>';
 
-            strHtml += '<div class="form-group"><label for="input_niveau">Niveau d\'alerte :</label><select id="input_niveau" class="form-control">';
+            strHtml += '<div class="form-group"><label for="input_niveau">Niveau d\'alerte :</label><select oda-input-select="input_niveau" class="form-control" required>';
+            strHtml += '<option value="" oda-label="oda-main.select-default"></option>';
             strHtml += '<option value="info">info</option>';
             strHtml += '<option value="danger">danger</option>';
             strHtml += '<option value="warning">warning</option>';
             strHtml += '<option value="success">success</option>';
             strHtml += '</select></div>';
 
-            var rangs = $.Oda.getRangs();
-            strHtml += '<div class="form-group"><label for="input_profile">Profile minimum :</label><select id="input_profile" class="form-control">';
+            var rangs = $.Oda.Interface.getRangs();
+            strHtml += '<div class="form-group"><label for="input_profile">Profile minimum :</label><select oda-input-select="input_profile" class="form-control" required>';
+            strHtml += '<option value="" oda-label="oda-main.select-default"></option>';
             for(var indice in rangs){
                 strHtml += '<option value="'+rangs[indice].indice+'">'+rangs[indice].labelle+'</option>';
             }
             strHtml += '</select></div>';
 
-            strHtml += '<div class="form-group"><label for="input_date_expiration">Date d\'expiration (7J par defaut) :</label><input type="date" name="input_date_expiration" id="input_date_expiration" class="form-control"/></div>';
+            strHtml += '<div class="form-group"><label for="input_date_expiration">Date d\'expiration (7J par defaut) :</label><input type="date" oda-input-text="input_date_expiration" class="form-control"/></div>';
 
             var strHtmlFooter = '';
-            strHtmlFooter += '<button type="button" onclick="creeMessage();" class="btn btn-primary" oda-submit="bt_valider"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-main','bt-submit')+'</button>';
+            strHtmlFooter += '<button type="button" onclick="creeMessage();" class="btn btn-primary disabled" disabled oda-submit="bt_validerCreerMsg"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-main','bt-submit')+'</button>';
             strHtmlFooter += '<a href="javascript:$.Oda.Display.Popup.close();" class="btn btn-default">Annuler</a>';
 
             $.Oda.Display.Popup.open({ label : label, details : strHtml, footer : strHtmlFooter});
 
             CKEDITOR.replace( 'input_message' );
+
+            $.Oda.Scope.Gardian.add({
+                id : "gardianNewMsg",
+                listElt : ["input_niveau","input_profile"],
+                function : function(params){
+                    if((CKEDITOR.instances['input_message'].getData() !== "") && ($("#input_niveau").data("isOk")) && ($("#input_profile").data("isOk"))){
+                        $("#bt_validerCreerMsg").removeClass("disabled");
+                        $("#bt_validerCreerMsg").removeAttr("disabled");
+                    }else{
+                        $("#bt_validerCreerMsg").addClass("disabled");
+                        $("#bt_validerCreerMsg").attr("disabled", true);
+                    }
+                }
+            });
         } catch (er) {
             $.Oda.Log.error("afficherCreerMessage : " + er.message);
         }
@@ -342,8 +359,6 @@
      */
     function creeMessage() {
         try {
-            console.log("coucou");
-
             var input_message = CKEDITOR.instances['input_message'].getData();
             var input_niveau = $('#input_niveau').val();
             var input_date_expiration = $('#input_date_expiration').val();
@@ -405,8 +420,8 @@
     function retourMessages(p_retour){
         try {
             if(p_retour["strErreur"] == ""){
-                var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="display hover" id="table_messages"></table>';
-                strhtml += '<button type="button" onclick="afficherCreerMessage();" class="btn btn-primary" id="bt_valider"><span class="glyphicon glyphicon-new" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-admin','bt-create-new-message')+'</button>';
+                var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_messages"></table>';
+                strhtml += '<button type="button" onclick="afficherCreerMessage();" class="btn btn-primary" id="bt_validerRetourMsg"><span class="glyphicon glyphicon-new" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-admin','bt-create-new-message')+'</button>';
                 $('#div_messages').html(strhtml).trigger('create');
 
                 var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(p_retour["data"]["messages"]["data"]);
@@ -477,12 +492,7 @@
                             },
                             aTargets: [ 6 ]
                         }
-                    ],
-                    "fnDrawCallback": function( oSettings ) {
-                        $('#table_messages')
-                            .removeClass( 'display' )
-                            .addClass('table table-striped table-bordered');
-                    }
+                    ]
                 });
 
             } else{
@@ -519,15 +529,16 @@
         </div>
         <div class="form-group">
             <label for="edit_actif" oda-label="oda-admin.edit_actif">edit_actif</label>
-            <select class="form-control" name="edit_actif" id="edit_actif">
+            <select class="form-control" oda-input-select="edit_actif" required>
+                <option value="" oda-label="oda-main.select-default"></option>
                 <option value="0" {{(edit_actif_selected==='0')?'selected':''}}>Off</option>
                 <option value="1" {{(edit_actif_selected==='1')?'selected':''}}>On</option>
             </select>
         </div>
         <div class="form-group">
             <label for="input_rang" oda-label="oda-admin.input_rang">input_rang</label>
-            <select class="form-control" name="input_rang" id="input_rang">
-                <option>Choisir...</option>
+            <select class="form-control" oda-input-select="input_rang" required>
+                <option value="" oda-label="oda-main.select-default"></option>
                 {{rangs}}
             </select>
         </div>
