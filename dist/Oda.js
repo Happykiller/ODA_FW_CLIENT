@@ -1337,7 +1337,7 @@
                             }
                         })
                         .fail(function (jqXHR, textStatus, errorThrown) {
-                            var msg = textStatus + " - " + errorThrown.message + " on " + params.url;
+                            var msg = textStatus + " - " + errorThrown + " on " + params.url;
                             $.Oda.Log.error("$.Oda.Interface.Methode.ajax : " + msg);
 
                             var data = {"strErreur": msg, "data": {}, "statut": 404};
