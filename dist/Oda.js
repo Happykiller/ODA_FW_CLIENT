@@ -3660,10 +3660,7 @@
              */
             navigateTo : function(p_request) {
                 try {
-                    //hode popup if show
-                    if ($('#oda-popup').exists()) {
-                        $('#oda-popup').modal("hide");
-                    }
+                    $.Oda.Display.Popup.closeAll();
 
                     $.Oda.Router.routerExit = false;
 
