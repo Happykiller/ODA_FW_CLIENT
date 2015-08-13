@@ -2187,6 +2187,28 @@
                 }
             },
             /**
+             * @param {Object} p_params
+             * @param p_params.callback
+             * @param p_params.delay
+             * @returns {$.Oda.Tooling}
+             */
+            debounce : function (p_params) {
+                try {
+                    var timer = null;
+                    return function(){
+                        var context = this;
+                        var args = arguments;
+                        clearTimeout(timer);
+                        timer = setTimeout(function(){
+                            p_params.callback.apply(context,args);
+                        }, p_params.delay)
+                    }
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.debounce : " + er.message);
+                    return null;
+                }
+            },
+            /**
              *
              * @param {string} html
              * @returns {string}
@@ -2563,7 +2585,37 @@
                     $.Oda.Log.error("$.Oda.Tooling.sendFile : " + er.message);
                     return null;
                 }
-            }
+            },
+            /**
+             * @param {Object} p_params
+             * @param p_params.callback
+             * @param p_params.delay
+             * @returns {$.Oda.Tooling}
+             */
+            throttle : function (p_params) {
+                try {
+                    var last;
+                    var timer;
+                    return function(){
+                        var now = + new Date();
+                        var context = this;
+                        var args = arguments;
+                        if(last && now  < last + p_params.delay){
+                            clearTimeout(timer);
+                            timer = setTimeout(function(){
+                                p_params.callback.apply(context, args);
+                                last = now;
+                            }, p_params.delay);
+                        }else{
+                            p_params.callback.apply(context, args);
+                            last = now;
+                        }
+                    };
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.throttle : " + er.message);
+                    return null;
+                }
+            },
         },
 
         I8n : {
@@ -3236,6 +3288,7 @@
 
                         $.Oda.Scope.checkInputText({elt:value});
 
+                        //TODO use debounce ?
                         $(value).bind("keyup mouseup",function(elt){
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
