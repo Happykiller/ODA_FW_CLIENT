@@ -3237,12 +3237,6 @@
                         $.Oda.Scope.checkInputText({elt:value});
 
                         $(value).bind("keyup mouseup",function(elt){
-                            //TODO MOVE WHEN REMOVE
-                            $.Oda.Scope.checkInputText({elt:elt.target});
-                            $.Oda.Scope.refresh();
-                        });
-
-                        $(value).bind("keyup mouseup",function(elt){
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
 
@@ -3279,8 +3273,6 @@
                         $.Oda.Scope.checkInputSelect({elt:value});
                         $(value).change(function(elt){
                             $.Oda.Scope.checkInputSelect({elt:elt.target});
-                            //TODO MOVE WHEN REMOVE
-                            $.Oda.Scope.refresh();
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
                     });
@@ -3369,17 +3361,6 @@
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Scope.checkInputSelect : " + er.message);
                     return null;
-                }
-            },
-            /**
-             * //TODO REMOVE IMPL
-             * @returns {undefined}
-             */
-            refresh : function(){
-                try {
-
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Scope.refresh : " + er.message);
                 }
             },
             Gardian : {
