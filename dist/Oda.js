@@ -3290,6 +3290,7 @@
 
                         //TODO use debounce ?
                         $(value).bind("keyup mouseup",function(elt){
+                            $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });
 
