@@ -13,6 +13,8 @@
  * oda-notification-flash : the system want notify
  * oda-gapi-loaded : When Gapi is ready
  *
+ * TODO : Ajouter une option de supression de cache Oda dans le profile
+ *
  */
 (function() {
     jQuery.fn.exists = function(){return this.length>0;};
