@@ -37,8 +37,6 @@
          */
         startApp: function (p_params) {
             try {
-                $.Oda.Context.projectLabel = "myApp";
-
                 $.Oda.Router.addRoute("home", {
                     "path" : "partials/home.html",
                     "title" : "oda-main.home-title",
