@@ -52,6 +52,24 @@
             }
         },
 
+        Controler : {
+            Home : {
+                /**
+                 * @param {Object} p_params
+                 * @param p_params.id
+                 * @returns {$.Oda.App.Controler.Home}
+                 */
+                start : function (p_params) {
+                    try {
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.App.Controler.Home.start : " + er.message);
+                        return null;
+                    }
+                },
+            }
+        },
+
         /**
          * @param {object} p_params
          * @param p_params.id
