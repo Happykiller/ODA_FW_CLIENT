@@ -624,6 +624,7 @@
                                     }
                                 }}, tabInput);
                             } else {
+                                $.Oda.Log.error("MiddleWares auth : route not allowed "+$.Oda.Router.current.route);
                                 $.Oda.Router.routerExit = true;
                                 $.Oda.Security.logout();
                             }
