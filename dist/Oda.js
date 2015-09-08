@@ -2738,7 +2738,7 @@
                         var datas = data.data.resultat.data;
 
                         for (var indice in datas) {
-                            if((datas[indice].id_categorie !== "98") && ((datas[indice].id_categorie !== "1"))){
+                            if((datas[indice].id_categorie !== "1")){
                                 var route = datas[indice].Lien;
                                 route = route.replace("api_page_","");
                                 route = route.replace("page_","");
@@ -3827,6 +3827,9 @@
                         if($.Oda.Session.code_user !== ""){
                             $.Oda.Tuto.start();
                         }
+                    })
+                    .fail(function(){
+                        $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
                     });
                     return this;
                 } catch (er) {
