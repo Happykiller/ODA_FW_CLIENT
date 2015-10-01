@@ -3267,6 +3267,31 @@
         Scope : {
             /**
              * @param {Object} p_params
+             * @param p_params.str
+             * @exemple $.Oda.Scope.transform({str:"<span oda-label='oda-main.logout'>logout</span>"});
+             * @returns {String}
+             */
+            transform : function (p_params) {
+                try {
+                    var strReturn = '';
+
+                    $(" body ").append('<div id="tmp_scopeTransform" style="display: none;"></div>');
+
+                    $("#tmp_scopeTransform").html(p_params.str);
+                    $.Oda.Scope.init({id:'tmp_scopeTransform'});
+                    strReturn = $("#tmp_scopeTransform").html();
+
+                    $("#tmp_scopeTransform").remove();
+
+                    return strReturn;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Scope.transform : " + er.message);
+                    return null;
+                }
+            },
+
+            /**
+             * @param {Object} p_params
              * @param p_params.id
              * @returns {undefined}
              */
