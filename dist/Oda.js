@@ -2028,6 +2028,8 @@
                             }
                         }
 
+                        strHtml = $.Oda.Scope.transform({str:strHtml});
+
                         return strHtml;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.TemplateHtml.create : " + er.message);
