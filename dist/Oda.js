@@ -1826,7 +1826,7 @@
                                             route = route.replace("api_page_","");
                                             route = route.replace("page_","");
                                             route = route.replace(".html","");
-                                            strHTML += "<li><a href=\"javascript:$.Oda.Router.navigateTo({'route':'"+route+"','args':{});\">"+datas[indice].Description_courte+"</a></li>";
+                                            strHTML += "<li><a href=\"javascript:$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">"+datas[indice].Description_courte+"</a></li>";
                                         }
                                     }
                                     $('#menu').html(strHTML);
