@@ -54,7 +54,6 @@
             , "io-login-tips" : "More than 3 letters"
             , "io-pass-tips" : "More than 4 letters"
             , "bt-submit" : "Submit"
-            , "bt-submit" : "Soumettre"
             , "logout" : "Logout"
             , "profile" : "Your profile"
             , "contact" : "Contact us"
