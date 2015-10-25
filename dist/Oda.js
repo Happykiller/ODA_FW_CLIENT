@@ -2255,6 +2255,10 @@
              */
             replaceAll: function (p_params) {
                 try {
+                    if((p_params.find === '')||(p_params.by === '')){
+                        return p_params.str;
+                    }
+
                     var opt = "g";
                     if(p_params.hasOwnProperty('ignoreCase') && p_params.ignoreCase){
                         opt = 'gi';
