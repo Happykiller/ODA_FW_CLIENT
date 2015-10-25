@@ -2069,6 +2069,9 @@
         App : {},
 
         Tooling : {
+            timerDebounce : null,
+            timerThrottle : null,
+            lastThrottle : null,
             /**
              * checkParams
              * @param {Object} p_params
@@ -2192,22 +2195,19 @@
                 }
             },
             /**
-             * @param {Object} p_params
-             * @param p_params.callback
-             * @param p_params.delay
+             * @param callback Function
+             * @param delay Integer
              * @returns {$.Oda.Tooling}
              */
-            debounce : function (p_params) {
+            debounce : function (callback, delay) {
                 try {
-                    var timer = null;
-                    return function(){
-                        var context = this;
-                        var args = arguments;
-                        clearTimeout(timer);
-                        timer = setTimeout(function(){
-                            p_params.callback.apply(context,args);
-                        }, p_params.delay)
-                    }
+                    var args = arguments;
+                    var context = this;
+                    clearTimeout($.Oda.Tooling.timerDebounce);
+                    $.Oda.Tooling.timerDebounce = setTimeout(function(){
+                        callback.apply(context, args);
+                    }, delay);
+                    return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.debounce : " + er.message);
                     return null;
@@ -2592,30 +2592,26 @@
                 }
             },
             /**
-             * @param {Object} p_params
-             * @param p_params.callback
-             * @param p_params.delay
+             * @param callback Function
+             * @param delay Integer
              * @returns {$.Oda.Tooling}
              */
-            throttle : function (p_params) {
+            throttle : function (callback, delay) {
                 try {
-                    var last;
-                    var timer;
-                    return function(){
-                        var now = + new Date();
-                        var context = this;
-                        var args = arguments;
-                        if(last && now  < last + p_params.delay){
-                            clearTimeout(timer);
-                            timer = setTimeout(function(){
-                                p_params.callback.apply(context, args);
-                                last = now;
-                            }, p_params.delay);
-                        }else{
-                            p_params.callback.apply(context, args);
-                            last = now;
-                        }
-                    };
+                    var now = +new Date();
+                    var context = this;
+                    var args = arguments;
+                    if($.Oda.Tooling.lastThrottle && (now  < $.Oda.Tooling.lastThrottle + delay)){
+                        clearTimeout($.Oda.Tooling.timerThrottle);
+                        $.Oda.Tooling.timerThrottle = setTimeout(function(){
+                            callback.apply(context, args);
+                            $.Oda.Tooling.lastThrottle = now;
+                        }, delay);
+                    }else{
+                        callback.apply(context, args);
+                        $.Oda.Tooling.lastThrottle = now;
+                    }
+                    return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.throttle : " + er.message);
                     return null;
@@ -3854,9 +3850,9 @@
                             $.Oda.Tuto.start();
                         }
                     })
-                    .fail(function(){
-                        $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
-                    });
+                        .fail(function(){
+                            $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
+                        });
                     return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Router.loadPartial : " + er.message);
