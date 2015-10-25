@@ -2250,12 +2250,17 @@
              * @param p_params.str
              * @param p_params.find
              * @param p_params.by
+             * @param p_params.ignoreCase by default false
              * @returns {String}
              */
             replaceAll: function (p_params) {
                 try {
-                    var str = p_params.find.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-                    var re = new RegExp(str, 'g');
+                    var opt = "g";
+                    if(p_params.hasOwnProperty('ignoreCase') && p_params.ignoreCase){
+                        opt = 'gi';
+                    }
+                    var str = p_params.find.replace(/([.?*+^$[\]\\(){}|-])/, "\\$1");
+                    var re = new RegExp(str, opt);
 
                     var strReturn = p_params.str.replace(re, p_params.by);
                     return strReturn;
