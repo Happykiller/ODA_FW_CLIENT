@@ -2111,6 +2111,20 @@
                     return null;
                 }
             },
+            /**
+             * @param {Object} p_params
+             * @param p_params.strPath relative from resources/
+             * @returns {String}
+             */
+            urlDownloadFromServerResources : function (p_params) {
+                try {
+                    var url = $.Oda.Context.rest+'vendor/happykiller/oda/resources/scriptphp/download.php&fic=../../../../../../../resources/'+p_params.strPath;
+                    return url;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.urlDownloadFromServerResources : " + er.message);
+                    return null;
+                }
+            },
             timeout : function(func, time, arg){
                 try {
                     setTimeout(func, time, arg);
