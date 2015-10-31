@@ -3897,11 +3897,18 @@
                         $(" body ").append('<!-- content --><div id="'+ $.Oda.Context.mainDiv + '" class="container" style="padding-top:40px;"><oda-loading></oda-loading></div>');
                     }
 
-                    var hash = $.Oda.Context.window.location.hash;
+                    var hash = decodeURI($.Oda.Context.window.location.hash.substring(1).replace(/\?(.*)$/, ''));
+                    var loc = $.Oda.Context.window.location + '';
+                    var locationRacine = loc.replace(/#(.*)$/, '').replace(/\?(.*)$/, '')+'#';
+
+                    var paramsGet = $.Oda.Tooling.getParameterGet({url: decodeURI($.Oda.Context.window.location)});
+
+                    var obj = { Page: hash, Url: locationRacine };
+                    $.Oda.Context.window.history.pushState(obj, obj.Page, obj.Url);
 
                     $.Oda.Router.current = {
-                        route: $.Oda.Tooling.clearSlashes(decodeURI(hash)).substring(1).replace(/\?(.*)$/, ''),
-                        args: $.Oda.Tooling.getParameterGet({url: $.Oda.Context.window.location})
+                        route: hash,
+                        args: paramsGet
                     };
 
                     this.navigateTo($.Oda.Router.current);
