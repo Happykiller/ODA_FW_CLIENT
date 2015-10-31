@@ -3901,7 +3901,7 @@
 
                     $.Oda.Router.current = {
                         route: $.Oda.Tooling.clearSlashes(decodeURI(hash)).substring(1).replace(/\?(.*)$/, ''),
-                        args: $.Oda.Tooling.getParameterGet({url: $.Oda.Context.window.location.hash})
+                        args: $.Oda.Tooling.getParameterGet({url: $.Oda.Context.window.location})
                     };
 
                     this.navigateTo($.Oda.Router.current);
