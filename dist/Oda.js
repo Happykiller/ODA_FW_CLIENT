@@ -1301,12 +1301,14 @@
                     var retour;
                     var jqXHRMaster = $.ajax(params)
                         .done(function (data, textStatus, jqXHR) {
-                            if (typeof data === 'object') {
-                                if ((data.hasOwnProperty("strErreur")) && ((data.strErreur == "key auth expiree.") || (data.strErreur == "key auth invalid."))) {
-                                    $.Oda.Security.logout();
-                                }
-                            } else {
-                                if (params.dataType === "json") {
+                            if(data === undefined){
+                                data = {"strErreur": '', "data": {}, "statut": 4};
+                            }else{
+                                if (typeof data === 'object') {
+                                    if ((data.hasOwnProperty("strErreur")) && ((data.strErreur == "key auth expiree.") || (data.strErreur == "key auth invalid."))) {
+                                        $.Oda.Security.logout();
+                                    }
+                                } else {
                                     data = {"strErreur": data, "data": {}, "statut": 4};
                                 }
                             }
