@@ -2558,11 +2558,14 @@
 
                             retour = $.Oda.Tooling.sendFile(data, p_params.folder, p_params.name);
 
-                            if(retour.code = "ok"){
-                                $.Oda.Display.Notification.success("Upload réussi.");
-                            }else{
-                                $.Oda.Log.error("Erreur upload : "+retour.message);
-                            }
+                            $.each( retour, function( key, value ) {
+                                if(value.code === "ok"){
+                                    $.Oda.Display.Notification.success("Upload réussi.");
+                                }else{
+                                    $.Oda.Display.Notification.error("Erreur upload : " + value.message);
+                                    $.Oda.Log.error("Erreur upload : " + value.message);
+                                }
+                            });
                         }else{
                             $.Oda.Log.error("Erreur pas de fichier sélectionné");
                         }
@@ -2584,7 +2587,7 @@
              */
             sendFile : function(p_fichier, p_dossier, p_nom) {
                 try {
-                    var retour = { appel : "ko", code : "ko", message : "init" };
+                    var retour = {"resultat_file-0" : { code : "ko", message : "init" }};
 
                     var strUrl = $.Oda.Context.rest+'vendor/happykiller/oda/resources/scriptphp/uploadFile.php?dossier='+p_dossier+'&nom='+p_nom;
 
@@ -2594,19 +2597,14 @@
                         cache: false,
                         contentType: false,
                         processData: false,
+                        dataType : "json",
                         type: 'POST',
                         async:false,
                         success : function(p_resultat, p_statut){
-                            var json_retour = JSON.parse(p_resultat);
-                            retour.appel = "ok";
-                            retour.code = json_retour["code"];
-                            retour.message = json_retour["message"];
+                            retour = p_resultat.data;
                         },
                         error : function(p_resultat, p_statut, p_erreur){
-                            var json_retour = JSON.parse(p_resultat);
-                            retour.appel = "ko";
-                            retour.code = json_retour["code"];
-                            retour.message = json_retour["message"];
+                            retour = {"resultat_file-0" : { code : "ko", message : p_erreur }};
                         }
                     });
 
