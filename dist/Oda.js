@@ -2040,6 +2040,8 @@
                     }
                 },
                 /**
+                 * @param {Object} p_params.exrp
+                 * @param {Object} p_params.scope
                  * @param {Object} p_params
                  * @returns {String}
                  */
@@ -2059,7 +2061,6 @@
                         var result = compiled.apply(p_params.scope, result);
 
                         return result;
-                        return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.TemplateHtml.eval : " + er.message);
                         return null;
@@ -2272,7 +2273,7 @@
              */
             replaceAll: function (p_params) {
                 try {
-                    if((p_params.find === '')||(p_params.by === '')){
+                    if(p_params.find === ''){
                         return p_params.str;
                     }
 
