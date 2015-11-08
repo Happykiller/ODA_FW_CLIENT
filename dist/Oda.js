@@ -40,6 +40,7 @@
         Session : {
             "code_user" : "",
             "key" : "",
+            "id" : 0,
             "userInfo" : {
                 "locale" : "fr",
                 "firstName" : "",
@@ -2728,6 +2729,7 @@
                                 "showTooltip" : retour.data.resultat.montrer_aide_ihm
                             };
                             session.userInfo = userInfo;
+                            session.id = retour.data.resultat.id_user;
                             $.Oda.Storage.set("ODA-SESSION",session,43200);
                             $.Oda.Session = session;
 
@@ -3867,12 +3869,12 @@
             loadPartial : function(p_params) {
                 try {
                     $.get(p_params.routeDef.path, function(data) {
-                        $('#'+$.Oda.Context.mainDiv).html(data);
-                        $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
-                        if($.Oda.Session.code_user !== ""){
-                            $.Oda.Tuto.start();
-                        }
-                    })
+                            $('#'+$.Oda.Context.mainDiv).html(data);
+                            $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
+                            if($.Oda.Session.code_user !== ""){
+                                $.Oda.Tuto.start();
+                            }
+                        })
                         .fail(function(){
                             $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
                         });
