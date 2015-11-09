@@ -43,6 +43,7 @@
             , "bt-cancel" : "Annuler"
             , "bt-edit" : "Editer"
             , "bt-close" : "Fermer"
+            , "bt-delete" : "Supprimer"
             , "select-default" : "Choisir une option"
         }
         , "en" : {
@@ -87,6 +88,7 @@
             , "bt-cancel" : "Cancel"
             , "bt-edit" : "Edit"
             , "bt-close" : "Close"
+            , "bt-delete" : "Delete"
             , "select-default" : "Choose option"
         }
     }
