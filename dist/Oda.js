@@ -1730,7 +1730,7 @@
 
                         if(targetUser !== ""){
                             $.ajax({
-                                url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png",
+                                url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png?mili=" + $.Oda.Tooling.getMilise(),
                                 type:'HEAD',
                                 error: function(){
                                     p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
