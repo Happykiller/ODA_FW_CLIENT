@@ -1774,10 +1774,10 @@
                         if (this.display) {
                         } else {
                             var strHtml = "";
-                            strHtml += '<li class="sidebar-brand"><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName + '</a></li>';
-                            strHtml += '<li><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">Your profile</a></li>';
-                            strHtml += '<li><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>';
-                            strHtml += '<li><a href="javascript:$.Oda.Security.logout();" oda-label="oda-main.logout">Logout</a></li>';
+                            strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName + '</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">Your profile</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Security.logout();" oda-label="oda-main.logout">Logout</a></li>';
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -1792,7 +1792,7 @@
                 remove : function(){
                     try {
                         $("#wrapper").removeClass("toggled");
-                        $('#menuSlide').html('<li class="sidebar-brand" id="profileDisplay"><span oda-label="oda-project.userLabel">Profile Name</span></li><li class="divider"></li><li><a href="javascript:$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>');
+                        $('#menuSlide').html('<li class="sidebar-brand" id="profileDisplay"><span oda-label="oda-project.userLabel">Profile Name</span></li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>');
                         this.display = false;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.MenuSlide.remove : " + er.message);
@@ -1829,7 +1829,7 @@
                                             route = route.replace("api_page_","");
                                             route = route.replace("page_","");
                                             route = route.replace(".html","");
-                                            strHTML += "<li><a href=\"javascript:$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">"+datas[indice].Description_courte+"</a></li>";
+                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">"+datas[indice].Description_courte+"</a></li>";
                                         }
                                     }
                                     $('#menu').html(strHTML);
@@ -2881,7 +2881,7 @@
                                     var strHtml = '<div class="list-group"">';
                                     for (var indice in retour.data.data) {
                                         var elt = retour.data.data[indice];
-                                        strHtml += "<a class=\"list-group-item\" href=\"javascript:$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
+                                        strHtml += "<a class=\"list-group-item\" onclick=\"$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
                                     }
                                     strHtml += '</div>';
                                     $.Oda.Display.Popup.open({"label" : "Choisir le compte.", "details" : strHtml});
