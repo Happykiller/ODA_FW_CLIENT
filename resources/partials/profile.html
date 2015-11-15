@@ -181,6 +181,11 @@
 
                 if(response.strErreur === ""){
                     $.Oda.Display.Popup.close({"name":"popChangeProfile"});
+
+                    if(p_champs === "langue"){
+                        $.Oda.Context.window.location.reload();
+                    }
+
                     $('#lab_'+p_champs).html(value);
                     var tabInput = {
                         code_user : $.Oda.Session.code_user
