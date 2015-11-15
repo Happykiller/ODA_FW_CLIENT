@@ -22,25 +22,7 @@
         try {
             var retour = true;
 
-            var tabSetting = { "functionRetour" : retourInformations };
-            var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getDetailsUser.php", tabSetting, tabInput);
-
-            return retour;
-        } catch (er) {
-            $.Oda.Log.error("chargerInformations : " + er.message);
-            return null;
-        }
-    }
-
-    /**
-     * retourInformations
-     *
-     * @param {object} p_retour
-     */
-    function retourInformations(p_retour){
-        try {
-            if(p_retour["strErreur"] === ""){
+            var tabSetting = { "functionRetour" : function(p_retour){
                 var mail = p_retour["data"]["detailsUser"]["mail"];
                 var code_user = p_retour["data"]["detailsUser"]["code_user"];
                 var nom = p_retour["data"]["detailsUser"]["nom"];
@@ -87,11 +69,14 @@
                 strhtml += "</table>";
                 $('#div_infos').html(strhtml);
                 $.Oda.Display.Scene.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');}});
-            } else{
-                $.Oda.Notification.danger("Erreur : "+p_retour["strErreur"]);
-            }
+            } };
+            var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getDetailsUser.php", tabSetting, tabInput);
+
+            return retour;
         } catch (er) {
-            $.Oda.Log.error("retourInformations : " + er.message);
+            $.Oda.Log.error("chargerInformations : " + er.message);
+            return null;
         }
     }
 
@@ -107,26 +92,25 @@
 
             details += '<div data-role="fieldcontain">';
             details += '<label for="input_old_password">Mot de passe actuel :</label>';
-            details += '<input class="form-control" type="password" name="input_old_password" id="input_old_password" value="" />';
+            details += '<input class="form-control" type="password" oda-input-text="input_old_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />';
             details += '</div>';
 
-            switch (p_obj.id)
-            {
+            switch (p_obj.id){
                 case "bt_ch-pass":
                     label = "Mise &agrave; jour du mot de passe";
                     details += '<div data-role="fieldcontain">';
                     details += '<label for="input_password">Nouveau mot de passe :</label>';
-                    details += '<input class="form-control" type="text" name="input_password" id="input_password" value="" />';
+                    details += '<input class="form-control" type="text" oda-input-text="input_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />';
                     details += '</div>';
-                    footer += '<a class="btn btn-info" id="bt_soumettreChange" onclick="soumettreChange(\'password\');" href="#" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
+                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'password\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
                     break;
                 case "bt_ch-nom":
                     label = "Mise &agrave; jour du nom";
                     details += '<div data-role="fieldcontain">';
                     details += '<label for="input_nom">Nouveau nom :</label>';
-                    details += '<input class="form-control" type="text" name="input_nom" id="input_nom" value="" />';
+                    details += '<input class="form-control" type="text" oda-input-text="input_nom" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="Oda.Regexs:login" />';
                     details += '</div>';
-                    footer += '<a class="btn btn-info" id="bt_soumettreChange" onclick="soumettreChange(\'nom\');" href="#" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
+                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'nom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
                     break;
                 case "bt_ch-prenom":
                     label = "Mise &agrave; jour du prenom";
@@ -134,7 +118,7 @@
                     details += '<label for="input_prenom">Nouveau pr&eacute;nom :</label>';
                     details += '<input class="form-control" type="text" name="input_prenom" id="input_prenom" value="" />';
                     details += '</div>';
-                    footer += '<a class="btn btn-info" id="bt_soumettreChange" onclick="soumettreChange(\'prenom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
+                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'prenom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
                     break;
                 case "bt_ch-mail":
                     label = "Mise &agrave; jour du eMail";
@@ -142,7 +126,7 @@
                     details += '<label for="input_mail">Nouveau eMail :</label>';
                     details += '<input class="form-control" type="email" name="input_mail" id="input_mail" value="" />';
                     details += '</div>';
-                    footer += '<a class="btn btn-info" id="bt_soumettreChange" onclick="soumettreChange(\'mail\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
+                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'mail\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
                     break;
                 case "bt_ch-langue":
                     label = "Mise &agrave; jour de la langue";
@@ -153,10 +137,30 @@
                     details += '<option value="en">English</option>';
                     details += '</select>';
                     details += '</div>';
-                    footer += '<a class="btn btn-info" id="bt_soumettreChange" onclick="soumettreChange(\'langue\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
+                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'langue\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
                     break;
             }
-            $.Oda.Display.Popup.open({"label" : label, "details" : details, "footer" : footer});
+            $.Oda.Display.Popup.open({
+                "name" : "popChangeProfile",
+                "label" : label,
+                "details" : details,
+                "footer" : footer,
+                "callback" : function(){
+                    $.Oda.Scope.Gardian.add({
+                        id : "gardianChangeProfile",
+                        listElt : ["input_old_password"],
+                        function : function(params){
+                            if( ($("#input_old_password").data("isOk")) ){
+                                $("#submit").removeClass("disabled");
+                                $("#submit").removeAttr("disabled");
+                            }else{
+                                $("#submit").addClass("disabled");
+                                $("#submit").attr("disabled", true);
+                            }
+                        }
+                    });
+                }
+            });
         } catch (er) {
             $.Oda.Log.error("updateChamps : " + er.message);
         }
@@ -171,38 +175,33 @@
             var mdp = $('#input_old_password').val();
             var value = $('#input_'+p_champs).val();
             var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/setChangeProfile.php", {}, tabInput);
-
-            if(retour["strErreur"] == ""){
-                $('#lab_'+p_champs).html(value);
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/setChangeProfile.php", {functionRetour : function(response){
                 $('#input_old_password').val("");
                 $('#input_'+p_champs).val("");
-                $('#oda-popup').modal("hide");
 
-                var tabInput = {
-                    code_user : $.Oda.Session.code_user
-                };
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAuthInfo.php", {}, tabInput);
-                if(retour.strErreur === ""){
-                    var userInfo = {
-                        "locale" : retour.data.resultat.langue
-                        , "firstName" : retour.data.resultat.nom
-                        , "lastName" : retour.data.resultat.prenom
-                        , "mail" : retour.data.resultat.mail
-                        , "profile" : retour.data.resultat.profile
-                        , "profileLabel" : retour.data.resultat.labelle
-                        , "showTooltip" : retour.data.resultat.montrer_aide_ihm
+                if(response.strErreur === ""){
+                    $.Oda.Display.Popup.close({"name":"popChangeProfile"});
+                    $('#lab_'+p_champs).html(value);
+                    var tabInput = {
+                        code_user : $.Oda.Session.code_user
                     };
-                    $.Oda.Session.userInfo = userInfo;
-                    $.Oda.Storage.set("ODA-SESSION",$.Oda.Session,43200);
-                }else{
-                    $.Oda.Display.Notification.error(retour["strErreur"]);
-                }
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAuthInfo.php", {functionRetour : function(response){
+                        var userInfo = {
+                            "locale" : response.data.resultat.langue
+                            , "firstName" : response.data.resultat.nom
+                            , "lastName" : response.data.resultat.prenom
+                            , "mail" : response.data.resultat.mail
+                            , "profile" : response.data.resultat.profile
+                            , "profileLabel" : response.data.resultat.labelle
+                            , "showTooltip" : response.data.resultat.montrer_aide_ihm
+                        };
+                        $.Oda.Session.userInfo = userInfo;
+                        $.Oda.Storage.set("ODA-SESSION",$.Oda.Session,43200);
 
-                $.Oda.Display.Notification.success("Mise &agrave; jour r&eacute;ussi");
-            }else{
-                $.Oda.Display.Notification.error(retour["strErreur"]);
-            }
+                        $.Oda.Display.Notification.success("Mise &agrave; jour r&eacute;ussi");
+                    }}, tabInput);
+                }
+            }}, tabInput);
         } catch (er) {
             $.Oda.Log.error("soumettreChange : " + er.message);
         }

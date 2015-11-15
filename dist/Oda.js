@@ -1775,9 +1775,10 @@
                         } else {
                             var strHtml = "";
                             strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">Your profile</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Security.logout();" oda-label="oda-main.logout">Logout</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">oda-main.profile</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">oda-main.contact</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Security.logout();" oda-label="oda-main.logout">oda-main.logout</a></li>';
+                            strHtml = $.Oda.Scope.transform({"str":strHtml});
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -1792,7 +1793,9 @@
                 remove : function(){
                     try {
                         $("#wrapper").removeClass("toggled");
-                        $('#menuSlide').html('<li class="sidebar-brand" id="profileDisplay"><span oda-label="oda-project.userLabel">Profile Name</span></li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">Contact</a></li>');
+                        var strHtml = '<li class="sidebar-brand" id="profileDisplay">' + $.Oda.I8n.get('oda-project','userLabel') + '</li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
+                        strHtml = $.Oda.Scope.transform({"str":strHtml});
+                        $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.MenuSlide.remove : " + er.message);
