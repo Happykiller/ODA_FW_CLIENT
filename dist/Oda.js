@@ -2701,6 +2701,8 @@
         Security : {
             /**
              * auth
+             * @param {String} p_params.login
+             * @param {String} p_params.mdp
              * @param {object} p_params
              * @returns {$.Oda}
              */
