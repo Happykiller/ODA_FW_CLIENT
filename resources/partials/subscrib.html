@@ -71,7 +71,7 @@
             var p_identifiant = $("#login").text();
 
             var tabInput = { nom : p_nom, prenom : p_prenom, email : p_email, motDePasse : p_motDePasse, codeUtilisateur : p_identifiant };
-            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/addUtilisateur.php", {functionRetour : function(results){
+            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/addUtilisateur.php", {functionRetour : function(results){
                 var infoUser = results["data"]["infosUser"];
 
                 var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");

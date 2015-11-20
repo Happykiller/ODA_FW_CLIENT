@@ -71,7 +71,7 @@
                 $.Oda.Display.Scene.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');}});
             } };
             var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getDetailsUser.php", tabSetting, tabInput);
+            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
 
             return retour;
         } catch (er) {
@@ -175,7 +175,7 @@
             var mdp = $('#input_old_password').val();
             var value = $('#input_'+p_champs).val();
             var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
-            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/setChangeProfile.php", {functionRetour : function(response){
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setChangeProfile.php", {functionRetour : function(response){
                 $('#input_old_password').val("");
                 $('#input_'+p_champs).val("");
 
@@ -190,7 +190,7 @@
                     var tabInput = {
                         code_user : $.Oda.Session.code_user
                     };
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/phpsql/getAuthInfo.php", {functionRetour : function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {functionRetour : function(response){
                         var userInfo = {
                             "locale" : response.data.resultat.langue
                             , "firstName" : response.data.resultat.nom
