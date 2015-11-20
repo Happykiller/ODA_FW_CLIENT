@@ -14,4 +14,6 @@ server/include/*
 server/include/config.php
 server/vendor/
 server/vendor/*
+server/resources/
+server/resources/*
 *.iml
