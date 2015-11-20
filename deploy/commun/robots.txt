@@ -1,0 +1,19 @@
+# Rember, lines starting with # are comments and will be ignored
+
+User-agent: *
+
+Disallow: /API/
+Disallow: /api_page_*.html$
+
+# Everything else may be searched/indexed
+
+
+# Google Image
+User-agent: Googlebot-Image
+Disallow:
+Allow: /*
+
+# Google AdSense
+User-agent: Mediapartners-Google*
+Disallow:
+Allow: /*

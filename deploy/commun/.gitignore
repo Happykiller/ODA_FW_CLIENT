@@ -1,0 +1,12 @@
+config/config.js
+config/
+config/*
+server/include/config.php
+server/include/
+server/include/*
+libs/
+libs/*
+bower_components/
+node_modules/
+.idea/
+.idea/*
