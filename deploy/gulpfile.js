@@ -26,7 +26,7 @@ gulp.task('params', function(vendorName) {
 
 //ex : gulp install-full --vendorName libs
 gulp.task('install-full', ['params'], function() {
-    gulp.src(['full/index.html','full/gulpfile.js','full/package.json','full/jsTestDriver.conf'])
+    gulp.src(['full/**','full/**/*','commun/**','commun/**/*'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
     gulp.src(['!full/index.html','!full/gulpfile.js','!full/package.json','!full/jsTestDriver.conf','full/**/*'])
@@ -34,9 +34,9 @@ gulp.task('install-full', ['params'], function() {
     return;
 });
 
-//ex : gulp install-full --vendorName libs
+//ex : gulp install-app --vendorName libs
 gulp.task('install-app', ['params'], function() {
-    gulp.src(['app/index.html','app/gulpfile.js','app/package.json','app/jsTestDriver.conf'])
+    gulp.src(['app/**','app/**/*','commun/**','commun/**/*'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
     gulp.src(['!app/index.html','!app/gulpfile.js','!app/package.json','!app/jsTestDriver.conf','app/**/*'])
@@ -44,9 +44,9 @@ gulp.task('install-app', ['params'], function() {
     return;
 });
 
-//ex : gulp install-full --vendorName libs
+//ex : gulp install-mini --vendorName libs
 gulp.task('install-mini', ['params'], function() {
-    gulp.src(['mini/index.html','mini/gulpfile.js','mini/package.json','mini/jsTestDriver.conf'])
+    gulp.src(['mini/**','mini/**/*','commun/**','commun/**/*'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
     gulp.src(['!mini/index.html','!mini/gulpfile.js','!mini/package.json','!mini/jsTestDriver.conf','mini/**/*'])
