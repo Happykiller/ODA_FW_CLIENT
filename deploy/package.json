@@ -16,5 +16,10 @@
     "gulp-rename": "*",
     "gulp-replace" : "*",
     "gulp-param" : "*"
+  },
+  "scripts": {
+    "deploy-mini" : "gulp install-mini",
+    "deploy-app" : "gulp install-app",
+    "deploy-full" : "gulp install-full"
   }
 }
