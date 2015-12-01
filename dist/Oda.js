@@ -3374,6 +3374,19 @@
                         }
                     });
 
+
+                    //oda-input-checkbox
+                    $(divTarget+'[oda-input-checkbox]').each(function(index, value){
+                        var id = $(value).attr("oda-input-checkbox");
+
+                        $(value).attr("id",id);
+                        $(value).attr("name",id);
+
+                        $(value).change(function(elt){
+                            $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
+                        });
+                    });
+
                     //oda-input-select
                     $(divTarget+'[oda-input-select]').each(function(index, value){
                         var id = $(value).attr("oda-input-select");
