@@ -1,6 +1,6 @@
 {
 	"name": "myApp",
-	"version": "x.y.z",
+	"version": "0.0.1",
 	"description": "An application client with Oda",
 	"main": "gulpfile.js",
 	"license": "MIT",

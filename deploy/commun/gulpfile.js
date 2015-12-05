@@ -1,69 +1,35 @@
-/* jshint node:true */
-
-'use strict';
-
 var gulp = require('gulp');
-var bower = require('gulp-bower');
-var connect = require('gulp-connect');
-var jshint = require('gulp-jshint');
-var open = require('gulp-open');
-var plumber = require('gulp-plumber');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var replace = require('gulp-replace');
+var plugins = require('gulp-load-plugins')();
+plugins.browserSync = require('browser-sync');
 
-var paths = {
-    sources : [
-        '!vendor/',
-        '!vendor/**/*',
-        '*',
-        '**/*'
-    ]
-};
-
-var opt = {
-    port: 3000,
-    livereload: 31357
-};
-
-/**
- * bower task
- * Fetch bower dependencies
- */
-gulp.task('bower', function() {
-    bower();
-});
-
-/**
- * Watch task
- * Launch a server with livereload
- */
-gulp.task('watch', function() {
-    gulp
-        .watch(paths.sources)
-        .on('change', function() {
-            gulp.src('').pipe(connect.reload());
-        })
-    ;
-});
-
-/**
- * Server task
- */
-gulp.task('server', function() {
-    return connect.server({
-        root: ['src', '.'],
-        port: opt.port,
-        livereload: true
+gulp.task('browser-sync', function() {
+    plugins.browserSync.init({
+        proxy: "localhost:80/NBA/"
+    });
+    gulp.watch(["js/**/*","partials/**/*","i8n/**/*","css/**/*.css"], function(){
+        plugins.browserSync.reload();
     });
 });
 
-/**
- * Open task
- * Launch default browser on local server url
- */
-gulp.task('open', function() {
-    return gulp.src('index.html').pipe(open({uri: 'http://localhost:'+opt.port}));
+gulp.task('scss', function () {
+    gulp.src('css/**/*.scss')
+        .pipe(plugins.sass().on('error', plugins.sass.logError))
+        .pipe(plugins.autoprefixer({
+            browsers: [
+                "ie >= 9",
+                "ie_mob >= 10",
+                "ff >= 30",
+                "chrome >= 34",
+                "safari >= 7",
+                "opera >= 23",
+                "ios >= 7",
+                "android >= 4.4",
+                "bb >= 10"
+            ]
+        }))
+        .pipe(gulp.dest('css/'));
 });
 
-gulp.task('run-dev', ['bower', 'watch', 'server', 'open']);
+gulp.task('watch',['scss'], function () {
+    gulp.watch('css/**/*.scss' , ['scss']);
+});
