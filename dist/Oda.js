@@ -1826,13 +1826,13 @@
                                                     strHTML += "</ul></li>";
                                                 }
 
-                                                strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">'+datas[indice].Description_cate+'<span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
+                                                strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">' + $.Oda.I8n.getByString(datas[indice].Description_cate) + '<span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
                                             }
                                             var route = datas[indice].Lien;
                                             route = route.replace("api_page_","");
                                             route = route.replace("page_","");
                                             route = route.replace(".html","");
-                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">"+datas[indice].Description_courte+"</a></li>";
+                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">" + $.Oda.I8n.getByString(datas[indice].Description_courte) + "</a></li>";
                                         }
                                     }
                                     $('#menu').html(strHTML);
@@ -3372,6 +3372,19 @@
                                 });
                             }
                         }
+                    });
+
+
+                    //oda-input-checkbox
+                    $(divTarget+'[oda-input-checkbox]').each(function(index, value){
+                        var id = $(value).attr("oda-input-checkbox");
+
+                        $(value).attr("id",id);
+                        $(value).attr("name",id);
+
+                        $(value).change(function(elt){
+                            $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
+                        });
                     });
 
                     //oda-input-select
