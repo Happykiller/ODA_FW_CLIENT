@@ -2874,11 +2874,9 @@
                     }
                 },
                 /**
-                 * @param {Object} p_params
-                 * @param p_params.id
                  * @returns {$.Oda.Controler.Auth}
                  */
-                goInWithGoogle : function (p_params) {
+                goInWithGoogle : function () {
                     try {
                         gapi.client.oauth2.userinfo.get().execute(function(resp) {
                             var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {}, { "email" : resp.email});
@@ -4040,6 +4038,7 @@
             methodeSessionAuthOk : null,
             sessionInfo : null,
             gaips : [],
+            urlTokenInfo : "https://www.googleapis.com/oauth2/v1/tokeninfo",
 
             init : function () {
                 try {
@@ -4170,7 +4169,27 @@
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Google.callServiceGoogleAuth :" + er.message);
                 }
-            }
+            },
+            /**
+             * @param {Object} p_params
+             * @param p_params.callback
+             * @example $.Oda.Google.sessionState({'callback':function(response){console.log(response);}});
+             * @returns {$.Oda.Google.session}
+             */
+            sessionState : function (p_params) {
+                try {
+                    var tabInput = {
+                        "access_token" : $.Oda.Google.sessionInfo.access_token
+                    };
+                    var call = $.Oda.Interface.callRest($.Oda.Google.urlTokenInfo, {"functionRetour": function(response){
+                        p_params.callback(response);
+                    }}, tabInput);
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Google.sessionState : " + er.message);
+                    return null;
+                }
+            },
         },
 
         /**
