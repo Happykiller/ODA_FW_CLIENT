@@ -2057,13 +2057,15 @@
                         var compiled = eval(source);
 
                         var result = [];
-                        for (var property in p_params.scope)
-                            if (p_params.scope.hasOwnProperty(property))
+                        for (var property in p_params.scope) {
+                            if (p_params.scope.hasOwnProperty(property)) {
                                 result.push(p_params.scope[property]);
+                            }
+                        }
 
-                        var result = compiled.apply(p_params.scope, result);
+                        var evaluate = compiled.apply(p_params.scope, result);
 
-                        return result;
+                        return evaluate;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.TemplateHtml.eval : " + er.message);
                         return null;
@@ -2284,10 +2286,13 @@
                     if(p_params.hasOwnProperty('ignoreCase') && p_params.ignoreCase){
                         opt = 'gi';
                     }
-                    var str = p_params.find.replace(/([.?*+^$[\]\\(){}|-])/, "\\$1");
-                    var re = new RegExp(str, opt);
+
+                    var strFind = p_params.find.replace(/([.?*+^$[\]\\(){}|-])/gi, "\\$1");
+
+                    var re = new RegExp(strFind, opt);
 
                     var strReturn = p_params.str.replace(re, p_params.by);
+
                     return strReturn;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.replaceAll : " + er.message);
