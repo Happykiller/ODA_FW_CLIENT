@@ -44,7 +44,8 @@
             , "bt-edit" : "Editer"
             , "bt-close" : "Fermer"
             , "bt-delete" : "Supprimer"
-            , "select-default" : "Choisir une option"
+            , "select-default" : "Choisir une option",
+            "new" : "Nouveau"
         }
         , "en" : {
             "authentification" : "Authentification" 
@@ -89,7 +90,8 @@
             , "bt-edit" : "Edit"
             , "bt-close" : "Close"
             , "bt-delete" : "Delete"
-            , "select-default" : "Choose option"
+            , "select-default" : "Choose option",
+            "new" : "New"
         }
     }
     , {
