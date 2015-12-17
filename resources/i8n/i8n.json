@@ -45,7 +45,8 @@
             , "bt-close" : "Fermer"
             , "bt-delete" : "Supprimer"
             , "select-default" : "Choisir une option",
-            "new" : "Nouveau"
+            "new" : "Nouveau",
+            "add" : "Ajouter"
         }
         , "en" : {
             "authentification" : "Authentification" 
@@ -91,7 +92,8 @@
             , "bt-close" : "Close"
             , "bt-delete" : "Delete"
             , "select-default" : "Choose option",
-            "new" : "New"
+            "new" : "New",
+            "add" : "Add"
         }
     }
     , {
