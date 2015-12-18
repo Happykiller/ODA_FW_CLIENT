@@ -46,7 +46,8 @@
             , "bt-delete" : "Supprimer"
             , "select-default" : "Choisir une option",
             "new" : "Nouveau",
-            "add" : "Ajouter"
+            "add" : "Ajouter",
+            "all": "Tous"
         }
         , "en" : {
             "authentification" : "Authentification" 
@@ -93,7 +94,8 @@
             , "bt-delete" : "Delete"
             , "select-default" : "Choose option",
             "new" : "New",
-            "add" : "Add"
+            "add" : "Add",
+            "all": "All"
         }
     }
     , {
