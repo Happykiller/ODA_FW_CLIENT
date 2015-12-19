@@ -27,7 +27,6 @@
                 var code_user = p_retour["data"]["detailsUser"]["code_user"];
                 var nom = p_retour["data"]["detailsUser"]["nom"];
                 var prenom = p_retour["data"]["detailsUser"]["prenom"];
-                var password = p_retour["data"]["detailsUser"]["password"];
                 var langue = p_retour["data"]["detailsUser"]["langue"];
 
                 var strhtml = '<table class="table table-hover">';
@@ -35,11 +34,6 @@
                 strhtml += '<td>Code utilisateur :</td>';
                 strhtml += '<td><label id="code_user">'+code_user+'</label></td>';
                 strhtml += '<td></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>Mot de passe :</td>';
-                strhtml += '<td></td>';
-                strhtml += '<td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-pass" title="Mise &agrave; jour du mot de passe" onclick="updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>';
                 strhtml += '</tr>';
                 strhtml += '<tr>';
                 strhtml += '<td>Nom :</td>';
@@ -96,14 +90,6 @@
             details += '</div>';
 
             switch (p_obj.id){
-                case "bt_ch-pass":
-                    label = "Mise &agrave; jour du mot de passe";
-                    details += '<div data-role="fieldcontain">';
-                    details += '<label for="input_password">Nouveau mot de passe :</label>';
-                    details += '<input class="form-control" type="text" oda-input-text="input_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />';
-                    details += '</div>';
-                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'password\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
-                    break;
                 case "bt_ch-nom":
                     label = "Mise &agrave; jour du nom";
                     details += '<div data-role="fieldcontain">';
