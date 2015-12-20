@@ -2905,57 +2905,60 @@
             },
             Contact : {
                 /**
-                 * saisirContact
-                 *
-                 * @param {type} p_reponse
-                 * @param {type} p_message
+                 * @returns {$.Oda.Controler.Contact}
                  */
-                contact: function (p_reponse, p_message) {
+                start: function () {
+                    try {
+                        if($.Oda.Session.id !== 0){
+                            $('#name').val($.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName);
+                            $('#mail').val($.Oda.Session.userInfo.mail);
+                        }
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Contact.start : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 */
+                contact: function () {
                     try {
                         var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
                         if (contact_mail_administrateur !== "") {
-                            var tabInput = {
-                                "reponse": p_reponse,
-                                "message": p_message,
-                                "code_user": $.Oda.Session.code_user
+                            var message_html = "";
+                            var sujet = "";
+
+                            message_html = "";
+                            message_html += "<html><head></head><body>";
+                            message_html += "Code user : " + $.Oda.Session.code_user + "";
+                            message_html += "</br>";
+                            message_html += "Nom : " + $('#name').val() + "";
+                            message_html += "</br>";
+                            message_html += "Mail : " + $('#mail').val()  + "";
+                            message_html += "</br>";
+                            message_html += "Message : <pre>" + $('#msg').val()  + "</pre>";
+                            message_html += "</body></html>";
+
+                            sujet = "[ODA-" + $.Oda.Interface.getParameter("nom_site") + "]Nouveau contact.";
+
+                            var paramsMail = {
+                                email_mail_ori: contact_mail_administrateur,
+                                email_labelle_ori: "Service Mail ODA",
+                                email_mail_reply: contact_mail_administrateur,
+                                email_labelle_reply: "Service Mail ODA",
+                                email_mails_dest: contact_mail_administrateur,
+                                message_html: message_html,
+                                sujet: sujet
                             };
-                            var result = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/insertContact.php", {}, tabInput);
-                            if (result.strErreur === "") {
-                                var message_html = "";
-                                var sujet = "";
 
-                                message_html = "";
-                                message_html += "<html><head></head><body>";
-                                message_html += "De : <pre>" + $.Oda.Session.code_user + "</pre>";
-                                message_html += "</br></br>";
-                                message_html += "Contact : <pre>" + p_reponse + "</pre>";
-                                message_html += "</br></br>";
-                                message_html += "Message : <pre>" + p_message + "</pre>";
-                                message_html += "</body></html>";
+                            var retour = $.Oda.Interface.sendMail(paramsMail);
 
-                                sujet = "[ODA-" + $.Oda.Interface.getParameter("nom_site") + "]Nouveau contact.";
+                            $("#mail").val("");
+                            $("#name").val("");
+                            $("#msg").val("");
 
-                                var paramsMail = {
-                                    email_mail_ori: contact_mail_administrateur,
-                                    email_labelle_ori: "Service Mail ODA",
-                                    email_mail_reply: contact_mail_administrateur,
-                                    email_labelle_reply: "Service Mail ODA",
-                                    email_mails_dest: contact_mail_administrateur,
-                                    message_html: message_html,
-                                    sujet: sujet
-                                };
-
-                                var retour = $.Oda.Interface.sendMail(paramsMail);
-
-                                $("#mail").val("");
-                                $("#name").val("");
-                                $("#msg").val("");
-
-                                if (retour) {
-                                    $.Oda.Display.Notification.success("Demande bien soummise sous l'identifiant n&ordm;" + result.data.resultat + ".");
-                                }
-                            } else {
-                                $.Oda.Display.Notification.error(result.strErreur);
+                            if (retour) {
+                                $.Oda.Display.Notification.success("Merci de votre contact");
                             }
                         } else {
                             $.Oda.Display.Notification.error("Mail du service non définie.");
