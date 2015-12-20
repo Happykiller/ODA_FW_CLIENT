@@ -97,8 +97,8 @@
             "add" : "Add",
             "all": "All"
         }
-    }
-    , {
+    },
+    {
         "groupName" : "oda-project"
         , "fr" : {
             "projectName" : "Mon Projet"
@@ -108,8 +108,8 @@
             "projectName" : "My Project"
             ,"userLabel" : "The user"
         }
-    }
-    , {
+    },
+    {
         "groupName" : "oda-stats"
         , "fr" : {
             "title" : "Les statistiques"
@@ -121,8 +121,8 @@
             , "activityByPage" : "Activity by page"
             , "activityByUser" : "Activity by user"
         }
-    }
-    , {
+    },
+    {
         "groupName" : "oda-admin"
         , "fr" : {
             "title" : "Administration",
@@ -145,8 +145,8 @@
             , "edit_actif" : "Active : "
             , "input_rang" : "Profile : "
         }
-    }
-    , {
+    },
+    {
         "groupName" : "oda-supervision"
         , "fr" : {
             "title" : "Supervision"
@@ -190,6 +190,14 @@
             "last":       "Last",
             "next":       "Next",
             "previous":   "Previous"
+        }
+    },
+    {
+        "groupName": "oda-resetPwd",
+        "fr": {
+            "title": "Réinitialiser son mot de passe",
+            "intro": "Veuillez saisir le nouveau mot de passe de ",
+            "Confirmpassword" : "Confirmer mot de passe :"
         }
     }
 ]

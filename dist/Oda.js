@@ -586,7 +586,7 @@
 
                 if($.Oda.Context.ModeExecution.scene){
 
-                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile"],
+                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile","resetPwd"],
                         $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
 
                     $.Oda.Router.addMiddleWare("support",function() {
@@ -721,6 +721,13 @@
                         "system" : true
                     });
 
+                    $.Oda.Router.addRoute("resetPwd", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/resetPwd.html",
+                        "title" : "resetPwd.title",
+                        "urls" : ["resetPwd"],
+                        "middleWares" : ["support"],
+                    });
+
                     $.Oda.Router.addRoute("contact", {
                         "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/contact.html",
                         "title" : "oda-main.contact",
@@ -779,7 +786,6 @@
                         "middleWares" : ["support", "auth"],
                         "dependencies" : ["dataTables"]
                     });
-
 
                     var listDependsScene = [
                         {"name" : "scene" , ordered : false, "list" : [
@@ -2879,8 +2885,7 @@
                 goInWithGoogle : function () {
                     try {
                         gapi.client.oauth2.userinfo.get().execute(function(resp) {
-                            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {}, { "email" : resp.email});
-                            if(retour.strErreur == ""){
+                            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {functionRetour:function(retour){
                                 if(retour.data.nombre == 0){
                                     $.Oda.Display.Notification.warning("Pas de compte rattach&eacute; à l'email : "+resp.email);
                                 }else if(retour.data.nombre == 1){
@@ -2894,7 +2899,7 @@
                                     strHtml += '</div>';
                                     $.Oda.Display.Popup.open({"label" : "Choisir le compte.", "details" : strHtml});
                                 }
-                            }
+                            }}, { "email" : resp.email});
                         });
                         return this;
                     } catch (er) {
@@ -2903,12 +2908,158 @@
                     }
                 },
             },
+            Forgot : {
+                /**
+                 * @returns {$.Oda.Controler.Contact}
+                 */
+                start: function () {
+                    try {
+                        $.Oda.Scope.Gardian.add({
+                            id : "gardianContact",
+                            listElt : ["login", "email"],
+                            function : function(params){
+                                if( ($("#login").data("isOk")) || ($("#email").data("isOk")) ){
+                                    $("#submit").removeClass("disabled");
+                                    $("#submit").removeAttr("disabled");
+                                }else{
+                                    $("#submit").addClass("disabled");
+                                    $("#submit").attr("disabled", true);
+                                }
+                            }
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Forgot.start : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @returns {$.Oda.Controler.Contact}
+                 */
+                recupCompte: function () {
+                    try {
+                        var p_identifiant = $("#login").val();
+                        var p_email = $("#email").val();
+
+                        var tabInput = { identifiant : p_identifiant, email : p_email};
+                        var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getRecupUtilisateur.php", {functionRetour : function(results){
+                            for(var indice in results["data"]["resultat"]["data"]){
+                                var compte = results["data"]["resultat"]["data"][indice];
+
+                                var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
+
+                                var valideDate = new Date(new Date() + 30*60000);
+                                valideDate = valideDate.getTime();
+
+                                var token = {
+                                    "userCode":   compte.code_user,
+                                    "valideDate": valideDate
+                                };
+
+                                var data = JSON.stringify(token);
+                                var compressToken = LZString.compress(data);
+
+                                var message_html = $.Oda.Display.TemplateHtml.create({
+                                    template : "mailForgot",
+                                    scope : {
+                                        "userName": compte.prenom + " " + compte.nom,
+                                        "siteUrl": $.Oda.Context.host,
+                                        "urlReset": $.Oda.Context.host+"#resetPwd?token="+encodeURI(compressToken)
+                                    }
+                                });
+
+                                var paramsMail = {
+                                    email_mails_dest : compte["mail"]+","
+                                    ,email_mail_ori : contact_mail_administrateur
+                                    , email_labelle_ori : "Service Mail ODA"
+                                    , email_mail_reply : contact_mail_administrateur
+                                    , email_labelle_reply : "Service Mail ODA"
+                                    , email_mails_cache : contact_mail_administrateur
+                                    , message_html : message_html
+                                    , sujet : "[ODA]Récupération de votre compte."
+                                };
+
+                                $.Oda.Interface.sendMail(paramsMail);
+
+                                var strHtml = "Un email pour r&eacute;initialiser votre mot de passe a &eacute;t&eacute; envoy&eacute;";
+                                $.Oda.Display.Notification.success(strHtml);
+                            }
+                        }}, tabInput);
+                        $.Oda.Router.navigateTo();
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Forgot.recupCompte : " + er.message);
+                        return null;
+                    }
+                },
+            },
+            "ResetPwd":{
+                "userCode":null,
+                /**
+                 * @returns {$.Oda.Controler.Contact}
+                 */
+                start: function () {
+                    try {
+                        var compressToken = $.Oda.Tooling.getParameterGet({url: decodeURI($.Oda.Context.window.location)});
+                        var data = LZString.decompress(compressToken.token);
+                        var token = JSON.parse(data);
+                        if(!token.hasOwnProperty("userCode") || !token.hasOwnProperty("valideDate")){
+                            $.Oda.Log.error("Token for reset password not valid");
+                            $.Oda.Router.routes["404"].go();
+                        }else if((token.userCode !== undefined) && (token.userCode !== "") && (token.valideDate !== undefined) && (token.valideDate < new Date())){
+                            $('#userCode').html(token.userCode);
+                            $.Oda.Controler.ResetPwd.userCode = token.userCode;
+                            $.Oda.Scope.Gardian.add({
+                                id : "resetPwd",
+                                listElt : ["email","pwd", "pwd2"],
+                                function : function(params){
+                                    if( ($("#email").data("isOk")) && ($("#pwd").data("isOk")) && ($("#pwd2").data("isOk")) && ($("#pwd").val() === $("#pwd2").val()) ){
+                                        $("#submit").removeClass("disabled");
+                                        $("#submit").removeAttr("disabled");
+                                    }else{
+                                        $("#submit").addClass("disabled");
+                                        $("#submit").attr("disabled", true);
+                                    }
+                                }
+                            });
+                        }else{
+                            $.Oda.Log.error("Token params for reset password not valid");
+                            $.Oda.Router.routes["404"].go();
+                        }
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.ResetPwd.start : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @returns {$.Oda.Controler.Contact}
+                 */
+                reset: function () {
+                    try {
+                        var tabInput = {
+                            "userCode": $.Oda.Controler.ResetPwd.userCode,
+                            "pwd" : $("#pwd").val(),
+                            "email": $("#email").val()
+                        };
+                        var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/pwd/", {"type": "put", functionRetour : function(response){
+                            $.Oda.Router.navigateTo({'route':'home','args':[]});
+                        }},tabInput);
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Controler.Contact.start : " + er.message);
+                        return null;
+                    }
+                },
+
+            },
             Contact : {
                 /**
                  * @returns {$.Oda.Controler.Contact}
                  */
                 start: function () {
                     try {
+                        $.Oda.Log.trace($.Oda.Session.id);
                         if($.Oda.Session.id !== 0){
                             $('#name').val($.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName);
                             $('#mail').val($.Oda.Session.userInfo.mail);
@@ -2925,21 +3076,18 @@
                     try {
                         var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
                         if (contact_mail_administrateur !== "") {
-                            var message_html = "";
-                            var sujet = "";
+                            var message_html  = $.Oda.Display.TemplateHtml.create({
+                                template : "mailContact",
+                                scope : {
+                                    "userCode" : $.Oda.Session.code_user,
+                                    "name" : $('#name').val(),
+                                    "mail" : $('#mail').val(),
+                                    "msg" : $('#msg').val(),
+                                    "siteUrl" : $.Oda.Context.host
+                                }
+                            });
 
-                            message_html = "";
-                            message_html += "<html><head></head><body>";
-                            message_html += "Code user : " + $.Oda.Session.code_user + "";
-                            message_html += "</br>";
-                            message_html += "Nom : " + $('#name').val() + "";
-                            message_html += "</br>";
-                            message_html += "Mail : " + $('#mail').val()  + "";
-                            message_html += "</br>";
-                            message_html += "Message : <pre>" + $('#msg').val()  + "</pre>";
-                            message_html += "</body></html>";
-
-                            sujet = "[ODA-" + $.Oda.Interface.getParameter("nom_site") + "]Nouveau contact.";
+                            var sujet = "[ODA-" + $.Oda.Interface.getParameter("nom_site") + "]Nouveau contact.";
 
                             var paramsMail = {
                                 email_mail_ori: contact_mail_administrateur,
@@ -2953,9 +3101,9 @@
 
                             var retour = $.Oda.Interface.sendMail(paramsMail);
 
-                            $("#mail").val("");
-                            $("#name").val("");
-                            $("#msg").val("");
+                            $("#mail").val("").change();
+                            $("#name").val("").change();
+                            $("#msg").val("").change();
 
                             if (retour) {
                                 $.Oda.Display.Notification.success("Merci de votre contact");
@@ -3352,7 +3500,7 @@
                         $.Oda.Scope.checkInputText({elt:value});
 
                         //TODO use debounce ?
-                        $(value).bind("keyup mouseup",function(elt){
+                        $(value).bind("keyup mouseup change",function(elt){
                             $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
                         });

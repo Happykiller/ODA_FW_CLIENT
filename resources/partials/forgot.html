@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="recupCompte();" class="btn btn-primary disabled" disabled>Submit</button >
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controler.Forgot.recupCompte();" class="btn btn-primary disabled" disabled>Submit</button >
                 <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
             </p>
         </div>
@@ -24,67 +24,38 @@
 </div>
 
 <script>
-    $.Oda.Scope.Gardian.add({
-        id : "gardianContact",
-        listElt : ["login", "email"],
-        function : function(params){
-            if( ($("#login").data("isOk")) || ($("#email").data("isOk")) ){
-                $("#submit").removeClass("disabled");
-                $("#submit").removeAttr("disabled");
-            }else{
-                $("#submit").addClass("disabled");
-                $("#submit").attr("disabled", true);
-            }
-        }
-    });
+    $.Oda.Controler.Forgot.start();
+</script>
 
-    function recupCompte() {
-        try {
-            var p_identifiant = $("#login").val();
-            var p_email = $("#email").val();
+<script id="mailForgot" type="text/template">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns:v="urn:schemas-microsoft-com:vml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+        <link href='https://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
+    </head>
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-            var tabInput = { identifiant : p_identifiant, email : p_email};
-            var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getRecupUtilisateur.php", {functionRetour : function(results){
-                for(var indice in results["data"]["resultat"]["data"]){
-                    var compte = results["data"]["resultat"]["data"][indice];
+        <table bgcolor="#343846" width="100%" border="0" cellpadding="10px" cellspacing="0">
+            <tbody>
+            <tr>
+                <td>
+                    <font face="verdana" color="#d3d3d3">
+                        Bonjour {{userName}}<br>
+                        <br>
+                        Pour réinitialisé votre compte veuillez vous rendre sur la page ci-desous.<br>
+                        - lien vers page de r&eacute;initialisation : <a href='{{urlReset}}'><font color="#add8e6">ici</font></a> (Valide 30min)
+                        <br/>
+                        <br/>
+                        Merci et rendez-vous <a href='{{siteUrl}}'><font color="#add8e6">ici</font></a><br>
+                        <br/>
+                        L'&eacute;quipe<br>
+                    </font>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-                    var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
-
-                    var message_html = "";
-                    message_html = "<html><head></head><body>";
-                    message_html += "Bonjour "+compte["prenom"]+",<br>";
-                    message_html += "<br>";
-                    message_html += "Voici les informations de votre compte.<br>";
-                    message_html += "<br>";
-                    message_html += "Pour rappel : <br>";
-                    message_html += "- votre identifiant : "+compte["code_user"]+"<br>";
-                    message_html += "- votre mot de passe : "+compte["password"]+"<br>";
-                    message_html += "<br>";
-                    message_html += "Merci et rendez-vous <a href='"+$.Oda.Context.host+"'>ici</a><br>";
-                    message_html += "<br>";
-                    message_html += "L'&eacute;quipe<br>";
-                    message_html += "</body></html>";
-
-                    var paramsMail = {
-                        email_mails_dest : compte["mail"]+","
-                        ,email_mail_ori : contact_mail_administrateur
-                        , email_labelle_ori : "Service Mail ODA"
-                        , email_mail_reply : contact_mail_administrateur
-                        , email_labelle_reply : "Service Mail ODA"
-                        , email_mails_cache : contact_mail_administrateur
-                        , message_html : message_html
-                        , sujet : "[ODA]Récupération de votre compte."
-                    };
-
-                    $.Oda.Interface.sendMail(paramsMail);
-
-                    var strHtml = "F&eacute;licitation un mail vous a &eacute;t&eacute; envoy&eacute; &agrave; l'adresse : "+compte["mail"];
-                    $.Oda.Display.Notification.success(strHtml);
-                }
-            }}, tabInput);
-            $.Oda.Router.navigateTo();
-        } catch (er) {
-            $.Oda.Log.error("recupCompte : " + er.message);
-        }
-    }
+    </html>
 </script>
