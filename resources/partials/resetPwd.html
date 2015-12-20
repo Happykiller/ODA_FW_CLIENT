@@ -1,0 +1,36 @@
+<div class="container">
+    <h2 oda-label="oda-resetPwd.title">oda-resetPwd.title</h2>
+    <p>
+        <span oda-label="oda-resetPwd.intro">oda-resetPwd.intro</span><span id="userCode" style="font-weight: bolder"></span>
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="email" oda-label="oda-main.contact-mail">email</label>
+                <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="pwd" oda-label="oda-main.password">Password :</label>
+                <input required type="password" class="form-control" oda-input-text="pwd" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="pwd" oda-label="oda-resetPwd.Confirmpassword">Confirm password :</label>
+                <input required type="password" class="form-control" oda-input-text="pwd2" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <p>
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controler.ResetPwd.reset();" class="btn btn-primary disabled" disabled>Submit</button >
+                <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.Oda.Controler.ResetPwd.start();
+</script>
