@@ -1270,6 +1270,12 @@
                         p_tabSetting.odaCacheOnDemande = false;
                     }
 
+                    if((p_tabInput === null) || (p_tabInput === undefined)){
+                        p_tabInput = {
+                            keyAuthODA: null
+                        };
+                    }
+
                     //création du jeton pour la secu
                     var session = $.Oda.Storage.get("ODA-SESSION");
                     var key = null;
@@ -1280,9 +1286,6 @@
                         delete p_tabInput.keyAuthODA;
                     }
 
-                    if(p_tabInput === undefined){
-                        p_tabInput = {};
-                    }
                     p_tabInput.milis = $.Oda.Tooling.getMilise();
                     p_tabInput.ctrl = "OK";
                     p_tabInput.keyAuthODA = key;
