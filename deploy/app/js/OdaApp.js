@@ -50,35 +50,21 @@
             }
         },
 
-        Controler : {
-            Home : {
+        "Controller" : {
+            "Home": {
                 /**
-                 * @param {Object} p_params
+                 * @param {object} p_params
                  * @param p_params.id
-                 * @returns {$.Oda.App.Controler.Home}
+                 * @returns {$.Oda.App.Controller.Home}
                  */
-                start : function (p_params) {
+                start: function (p_params) {
                     try {
                         return this;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.App.Controler.Home.start : " + er.message);
+                        $.Oda.Log.error("$.Oda.App.Controller.Home.start : " + er.message);
                         return null;
                     }
-                },
-            }
-        },
-
-        /**
-         * @param {object} p_params
-         * @param p_params.id
-         * @returns {$.Oda.App}
-         */
-        exemple: function (p_params) {
-            try {
-                return this;
-            } catch (er) {
-                $.Oda.Log.error("$.Oda.App.exemple : " + er.message);
-                return null;
+                }
             }
         }
 
