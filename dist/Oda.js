@@ -1735,9 +1735,10 @@
                         }
 
                         if(targetUser !== ""){
+                            var url = $.Oda.Context.rest + "vendor/happykiller/oda/resources/script/getResources.php?mili=" + $.Oda.Tooling.getMilise() + "&fic=avatars/" + $.Oda.Session.code_user + ".png";
                             $.ajax({
-                                url: $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png?mili=" + $.Oda.Tooling.getMilise(),
-                                type:'HEAD',
+                                url: url,
+                                type:'GET',
                                 error: function(){
                                     p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
                                 },
