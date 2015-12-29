@@ -7,13 +7,15 @@
   "dependencies": {
     "gulp": "*",
     "gulp-bower": "*",
-    "gulp-connect": "*",
     "gulp-jshint": "*",
-    "gulp-open": "*",
     "gulp-plumber": "*",
     "gulp-uglify": "*",
     "gulp-rename": "*",
     "gulp-replace" : "*",
     "gulp-param" : "*"
+  },
+  "devDependencies": {
+    "gulp-load-plugins": "*",
+    "browser-sync": "*"
   }
 }
