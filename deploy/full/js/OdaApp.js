@@ -31,8 +31,6 @@
         version: VERSION,
         
         /**
-         * @param {Object} p_params
-         * @param p_params.attr
          * @returns {$.Oda.App}
          */
         startApp: function (p_params) {
