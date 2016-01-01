@@ -1692,6 +1692,21 @@
                         $.Oda.Log.error("$.Oda.Display.Notification.remove :" + er.message);
                         return null;
                     }
+                },
+                /**
+                 *
+                 * @returns {$.Oda.Notification}
+                 */
+                removeAll : function(){
+                    try {
+                        $("[id^='oda-notification-']").fadeOut( 500, function(){
+                            $( this ).remove();
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Notification.removeAll :" + er.message);
+                        return null;
+                    }
                 }
             },
             Scene : {
