@@ -1596,6 +1596,21 @@
         Display : {
             /**
              * @param {Object} p_params
+             * @param p_params.json
+             * @returns {String}
+             */
+            jsonToStringSingleQuote: function (p_params) {
+                try {
+                    var str = JSON.stringify(p_params.json);
+                    str = $.Oda.Tooling.replaceAll({"str":str, "find":'"', "by":"'"});
+                    return str;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Display.jsonToStringSingleQuote : " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @param {Object} p_params
              * @param p_params.id
              * @param p_params.html
              * @returns {$.Oda.Display.render}
