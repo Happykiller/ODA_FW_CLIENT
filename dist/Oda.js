@@ -19,6 +19,41 @@
 (function() {
     jQuery.fn.exists = function(){return this.length>0;};
 
+    //BEGIN IE STUFF
+    if (typeof CustomEvent !== 'function') {
+        var CustomEvent;
+
+        CustomEvent = function(event, params) {
+            var evt;
+            params = params || {
+                    bubbles: false,
+                    cancelable: false,
+                    detail: undefined
+                };
+            evt = document.createEvent("CustomEvent");
+            evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+            return evt;
+        };
+
+        CustomEvent.prototype = window.Event.prototype;
+
+        window.CustomEvent = CustomEvent;
+    }
+
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function (searchString, position) {
+            position = position || 0;
+            return this.indexOf(searchString, position) === position;
+        };
+    }
+
+    if (!String.prototype.includes) {
+        String.prototype.includes = function (searchString, position) {
+            return this.indexOf(searchString, position) >= 0;
+        };
+    }
+    //END IE STUFF
+
     'use strict';
 
     var
@@ -2706,11 +2741,8 @@
 
                     for (var grpId in $.Oda.I8n.datas) {
                         var grp = $.Oda.I8n.datas[grpId];
-                        if(grp.groupName === p_group){
-                            var trad = grp[$.Oda.Session.userInfo.locale][p_tag];
-                            if(!$.Oda.Tooling.isUndefined(trad)){
-                                returnvalue = trad;
-                            }
+                        if((grp.groupName === p_group) && grp.hasOwnProperty($.Oda.Session.userInfo.locale) && grp[$.Oda.Session.userInfo.locale].hasOwnProperty(p_tag)){
+                            returnvalue = grp[$.Oda.Session.userInfo.locale][p_tag];
                             break;
                         }
                     }
@@ -3775,12 +3807,11 @@
              * @param {string} p_key
              * @param {json} p_value
              * @param {integer} p_ttl in seconde
+             * @ex $.Oda.Storage.set('key',{'key':'value'});
              * @returns {Boolean}
              */
             set: function(p_key, p_value, p_ttl) {
                 try {
-                    var boolRetour = true;
-
                     var d = new Date();
                     var date = d.getTime();
 
@@ -3795,13 +3826,13 @@
                         "ttl" : ttl
                     };
 
-                    if(boolRetour){
-                        var data = JSON.stringify(storage);
-                        var compressed = LZString.compress(data);
-                        localStorage.setItem(this.storageKey+p_key, compressed);
-                    }
+                    var data = JSON.stringify(storage);
 
-                    return boolRetour;
+                    var compressed = LZString.compress(data);
+
+                    localStorage.setItem(this.storageKey + p_key, compressed);
+
+                    return true;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Storage.set : " + er.message);
                     return null;
