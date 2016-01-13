@@ -2911,6 +2911,29 @@
                     $.Oda.Log.error("$.Oda.I8n.getByString : " + er.message);
                     return null;
                 }
+            },
+            /**
+             * @name getByGroupName
+             * @param {string} p_group
+             * @returns {String}
+             */
+            getByGroupName: function(groupName) {
+                try {
+                    var returnvalue = "Not define";
+
+                    for (var grpId in $.Oda.I8n.datas) {
+                        var grp = $.Oda.I8n.datas[grpId];
+                        if((grp.groupName === groupName) && grp.hasOwnProperty($.Oda.Session.userInfo.locale) ){
+                            returnvalue = grp[$.Oda.Session.userInfo.locale];
+                            break;
+                        }
+                    }
+
+                    return returnvalue;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.I8n.getByString : " + er.message);
+                    return null;
+                }
             }
         },
 
