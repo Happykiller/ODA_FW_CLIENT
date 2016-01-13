@@ -2725,6 +2725,145 @@
                     return null;
                 }
             },
+            /**
+             * @returns {$.Oda.Tooling}
+             */
+            detectBrower : function () {
+                try {
+                    var browser,
+                        version,
+                        mobile,
+                        os,
+                        osversion,
+                        bit,
+                        ua = window.navigator.userAgent,
+                        platform = window.navigator.platform;
+
+                    if ( /MSIE/.test(ua) ) {
+
+                        browser = 'Internet Explorer';
+
+                        if ( /IEMobile/.test(ua) ) {
+                            mobile = 1;
+                        }
+
+                        version = /MSIE \d+[.]\d+/.exec(ua)[0].split(' ')[1];
+
+                    } else if ( /Trident/.test(ua) ) {
+
+                        browser = 'Internet Explorer';
+
+                        var re  = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                        if (re.exec(ua) != null){
+                            version = RegExp.$1;
+                        }
+
+                    } else if ( /Chrome/.test(ua) ) {
+                        // Platform override for Chromebooks
+                        if ( /CrOS/.test(ua) ) {
+                            platform = 'CrOS';
+                        }
+
+                        browser = 'Chrome';
+                        version = /Chrome\/[\d\.]+/.exec(ua)[0].split('/')[1];
+
+                    } else if ( /Opera/.test(ua) ) {
+
+                        browser = 'Opera';
+
+                        if ( /mini/.test(ua) || /Mobile/.test(ua) ) {
+                            mobile = 1;
+                        }
+
+                    } else if ( /Android/.test(ua) ) {
+
+                        browser = 'Android Webkit Browser';
+                        mobile = 1;
+                        os = /Android\s[\.\d]+/.exec(ua)[0];
+
+                    } else if ( /Firefox/.test(ua) ) {
+
+                        browser = 'Firefox';
+
+                        if ( /Fennec/.test(ua) ) {
+                            mobile = 1;
+                        }
+                        version = /Firefox\/[\.\d]+/.exec(ua)[0].split('/')[1];
+
+                    } else if ( /Safari/.test(ua) ) {
+
+                        browser = 'Safari';
+
+                        if ( (/iPhone/.test(ua)) || (/iPad/.test(ua)) || (/iPod/.test(ua)) ) {
+                            os = 'iOS';
+                            mobile = 1;
+                        }
+
+                    }
+
+                    if ( !version ) {
+
+                        version = /Version\/[\.\d]+/.exec(ua);
+
+                        if (version) {
+                            version = version[0].split('/')[1];
+                        } else {
+                            version = /Opera\/[\.\d]+/.exec(ua)[0].split('/')[1];
+                        }
+
+                    }
+
+                    if ( platform === 'MacIntel' || platform === 'MacPPC' ) {
+                        os = 'Mac OS X';
+                        osversion = /10[\.\_\d]+/.exec(ua)[0];
+                        if ( /[\_]/.test(osversion) ) {
+                            osversion = osversion.split('_').join('.');
+                        }
+                    } else if ( platform === 'CrOS' ) {
+                        os = 'ChromeOS';
+                    } else if ( platform === 'Win32' || platform == 'Win64' ) {
+                        os = 'Windows';
+                        bit = platform.replace(/[^0-9]+/,'');
+                    } else if ( !os && /Android/.test(ua) ) {
+                        os = 'Android';
+                    } else if ( !os && /Linux/.test(platform) ) {
+                        os = 'Linux';
+                    } else if ( !os && /Windows/.test(ua) ) {
+                        os = 'Windows';
+                    }
+
+                    $.Oda.Context.window.ui = {
+                        browser : browser,
+                        version : version,
+                        mobile : mobile,
+                        os : os,
+                        osversion : osversion,
+                        bit: bit
+                    };
+
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.detectBrower : " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @returns {Boolean}
+             */
+            isOdaConpatible : function () {
+                try {
+                    var boolRetour = true;
+                    if(
+                        ($.Oda.Context.window.ui.browser === "Internet Explorer") && (parseFloat($.Oda.Context.window.ui.version) < 11)
+                    ){
+                        boolRetour = false;
+                    }
+                    return boolRetour;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.isOdaConpatible : " + er.message);
+                    return null;
+                }
+            },
         },
 
         I8n : {
@@ -3828,7 +3967,7 @@
 
                     var data = JSON.stringify(storage);
 
-                    var compressed = LZString.compress(data);
+                    var compressed = LZString.compressToUTF16(data);
 
                     localStorage.setItem(this.storageKey + p_key, compressed);
 
@@ -3845,7 +3984,7 @@
 
                     var compressed = localStorage.getItem($.Oda.Storage.storageKey+p_key);
                     if(compressed !== null){
-                        var data = LZString.decompress(compressed);
+                        var data = LZString.decompressFromUTF16(compressed);
                         var myStorage = JSON.parse(data);
 
                         myValue = myStorage.value;
@@ -4467,6 +4606,8 @@
 
     $.Oda.Context.startDate = new Date();
 
+    $.Oda.Tooling.detectBrower();
+
     //Apply the mode execution
     var params = $.Oda.Tooling.getParamsLibrary({library : "Oda"});
     if (params.hasOwnProperty("modeExecution")){
@@ -4502,6 +4643,10 @@
 
     // Initialize
     if($.Oda.Context.ModeExecution.init){
-        $.Oda.init();
+        if($.Oda.Tooling.isOdaConpatible()){
+            $.Oda.init();
+        }else{
+            $( "body" ).append('Brower not compatible with Oda.');
+        }
     }
 })();
