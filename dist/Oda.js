@@ -2255,7 +2255,6 @@
 
                         $('#table-'+p_params.target+' tfoot th').each(function (i) {
                             var valOdaAttri = $(this).attr("oda-attr");
-                            console.log($(this).html());
                             if (valOdaAttri == "select") {
                                 var select = $('<select data-mini="true"><option></option></select>')
                                     .appendTo($(this).empty())
