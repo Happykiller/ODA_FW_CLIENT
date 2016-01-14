@@ -2222,12 +2222,12 @@
                                 temp = $.Oda.Tooling.replaceAll({
                                     "str": temp,
                                     "find": tab[indice],
-                                    "by": 'row['+objDataTable.entete[tabElt[1]]+']'
+                                    "by": 'full['+objDataTable.entete[tabElt[1]]+']'
                                 });
                             }
 
                             // now replace the original function
-                            var newImple = new Function('data', 'type', 'row', 'meta', temp.substring(temp.indexOf('{')+1,temp.lastIndexOf('}')));
+                            var newImple = new Function('data', 'type', 'full', 'meta', temp.substring(temp.indexOf('{')+1,temp.lastIndexOf('}')));
 
                             var value = {
                                 "mRender": newImple,
