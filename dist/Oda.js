@@ -2146,6 +2146,152 @@
                         return null;
                     }
                 }
+            },
+            "Table" : {
+                /**
+                 * @param {String} p_params.target
+                 * @param {Array} p_params.data
+                 * @param {Object} p_params.attribute
+                 * @param {Object} p_params.option Optional
+                 * @param {Boolean} p_params.withFilter Optional
+                 * @param {Object} p_params
+                 * @returns {$.Oda.Display.Table}
+                 */
+                "createDataTable": function(p_params){
+                    try {
+                        var divTable = $('#'+p_params.target);
+
+                        var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table-'+p_params.target+'" style="width: 100%">';
+
+                        var footer = "";
+
+                        for(var indice in p_params.attribute){
+                            var eltA = p_params.attribute[indice];
+                            if(eltA.hasOwnProperty('withFilter')){
+                                footer += '<tfoot><tr>';
+                                for(var indiceElt in p_params.attribute){
+                                    var eltB = p_params.attribute[indiceElt];
+                                    if(eltB.hasOwnProperty('withFilter') && eltB.withFilter){
+                                        footer += '<th></th>';
+                                    }else{
+                                        footer += '<th>null</th>';
+                                    }
+                                }
+                                footer += '</tr></tfoot>';
+                                break;
+                            }
+                        }
+
+                        strhtml += footer + '</table>';
+                        divTable.html(strhtml);
+
+                        var eltTable = $('#table-'+p_params.target);
+
+                        var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(p_params.data);
+
+                        var dataTableParamsDefault = {
+                            "iDisplayLength": 20,
+                            "language" : $.Oda.I8n.getByGroupName('oda-datatables'),
+                            "aaData": objDataTable.data
+                        };
+
+                        var dataTableParams = $.Oda.Tooling.merge({
+                            "default": dataTableParamsDefault,
+                            "source": p_params.option
+                        });
+
+                        dataTableParams.aaData = objDataTable.data;
+
+                        var columns = [];
+                        var columnDefs = [];
+                        var i = 0;
+                        for(var key in p_params.attribute){
+                            var title = {
+                                "sTitle": p_params.attribute[key].header
+                            }
+                            columns.push(title);
+
+                            // do whatever you want to the function here
+                            var temp = p_params.attribute[key].value.toString();
+
+                            var reg = new RegExp("row.[a-zA-Z]+", "gi");
+                            var tab = temp.match(reg);
+
+                            for(var indice in tab){
+                                var tabElt = tab[indice].split('.');
+                                temp = $.Oda.Tooling.replaceAll({
+                                    "str": temp,
+                                    "find": tab[indice],
+                                    "by": 'row['+objDataTable.entete[tabElt[1]]+']'
+                                });
+                            }
+
+                            // now replace the original function
+                            var newImple = new Function('data', 'type', 'row', 'meta', temp.substring(temp.indexOf('{')+1,temp.lastIndexOf('}')));
+
+                            var value = {
+                                "mRender": newImple,
+                                "aTargets": [i]
+                            }
+                            columnDefs.push(value);
+                            i++;
+                        }
+
+                        dataTableParams.aoColumns = columns;
+
+                        dataTableParams.aoColumnDefs = columnDefs;
+
+                        var oTable = eltTable.DataTable(dataTableParams);
+
+                        $('#table-'+p_params.target+' tbody').on('click', 'tr', function () {
+                            if ($(this).hasClass('selected')) {
+                                $(this).removeClass('selected');
+                            }
+                            else {
+                                oTable.$('tr.selected').removeClass('selected');
+                                $(this).addClass('selected');
+                            }
+                        });
+
+                        $('#table-'+p_params.target+' tfoot th').each(function (i) {
+                            var valOdaAttri = $(this).attr("oda-attr");
+                            console.log($(this).html());
+                            if (valOdaAttri == "select") {
+                                var select = $('<select data-mini="true"><option></option></select>')
+                                    .appendTo($(this).empty())
+                                    .on('change', function () {
+                                        var val = $(this).val();
+
+                                        oTable.column(i)
+                                            .search(val ? '^' + $(this).val() + '$' : val, true, false)
+                                            .draw();
+                                    });
+
+                                oTable.column(i - 1).data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+                            } else {
+                                if($(this).html() !== 'null'){
+                                    $('<input type="text" placeholder="Search" size="4"/>')
+                                        .appendTo($(this).empty())
+                                        .on('keyup change', function () {
+                                            oTable
+                                                .column(i)
+                                                .search(this.value)
+                                                .draw();
+                                        });
+                                }else{
+                                    $(this).html('')
+                                }
+                            }
+                        });
+
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Table.createDataTable : " + er.message);
+                        return null;
+                    }
+                }
             }
         },
 
@@ -2861,6 +3007,26 @@
                     return boolRetour;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.isOdaConpatible : " + er.message);
+                    return null;
+                }
+            },
+            /***
+             * @param {Object} params.default
+             * @param {Object} params.source
+             * @param {Object} params
+             * @returns {Object}
+             */
+            merge: function(params) {
+                try {
+                    var objReturn = this.clone(params.default);
+
+                    for (var p in params.source) {
+                        objReturn[p] = params.source[p];
+                    }
+
+                    return objReturn;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.merge : " + er.message);
                     return null;
                 }
             },
