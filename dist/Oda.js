@@ -1849,7 +1849,7 @@
                         if (this.display) {
                         } else {
                             var strHtml = "";
-                            strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName + '</a></li>';
+                            strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName.substr(0,9) + " " + $.Oda.Session.userInfo.lastName.substr(0,9) + '</a></li>';
                             strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">oda-main.profile</a></li>';
                             strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">oda-main.contact</a></li>';
                             strHtml += '<li><a onclick="$.Oda.Security.logout();" oda-label="oda-main.logout">oda-main.logout</a></li>';
