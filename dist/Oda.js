@@ -2157,9 +2157,11 @@
                 /**
                  * @param {String} p_params.target
                  * @param {Array} p_params.data
-                 * @param {Object} p_params.attribute
+                 * @param {Array} p_params.attribute
+                 * @param {String} p_params.attribute[indice].header
+                 * @param {Function(data, type, full, meta, row)} p_params.attribute[indice].value
+                 * @param {Boolean} p_params.attribute[indice].withFilter Optional
                  * @param {Object} p_params.option Optional
-                 * @param {Boolean} p_params.withFilter Optional
                  * @param {Object} p_params
                  * @returns {$.Oda.Display.Table}
                  */
