@@ -831,7 +831,7 @@
 
                 $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
                     if($.Oda.Context.ModeExecution.footer){
-                        $('body').append('<div class="footer">Power by <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
+                        $('body').append('<div class="footer">Power with <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
                     }
 
                     // init from config
