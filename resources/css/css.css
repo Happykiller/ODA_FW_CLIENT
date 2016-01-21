@@ -41,3 +41,7 @@ a:hover {
 .navbar {
     margin-bottom: 5px;
 }
+
+#oda-content {
+    padding-bottom: 10px;
+}
