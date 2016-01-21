@@ -18,7 +18,9 @@
     "datatables" : "latest",
     "highcharts-release" : "latest",
     "ckeditor" : "latest",
-    "lz-string" : "latest"
+    "lz-string" : "latest",
+    "font-awesome" : "latest",
+    "awesome-bootstrap-checkbox" : "latest"
   },
   "keywords": [
     "oda",
