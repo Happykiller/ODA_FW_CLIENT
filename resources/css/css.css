@@ -15,8 +15,8 @@ a:hover {
 }
 
 .alert-warning {
-    color: #785b39;
-    background-color: rgba(250, 159, 38, 0.64);
+    color: #3a3a3a;
+    background-color: rgba(250, 159, 38, 1);
     border-color: rgba(117, 71, 22, 1);
 }
 
