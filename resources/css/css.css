@@ -13,3 +13,9 @@
 a:hover {
     cursor:pointer;
 }
+
+.alert-warning {
+    color: #785b39;
+    background-color: rgba(250, 159, 38, 0.64);
+    border-color: rgba(117, 71, 22, 1);
+}

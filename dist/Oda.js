@@ -1364,7 +1364,7 @@
                                 }
                             }
 
-                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "")) {
+                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "") && (data.statut === 5)) {
                                 $.Oda.Event.send({name : "oda-notification-flash", data : {type : "error", msg : "$.Oda.Interface.Methode.ajax : " + data.strErreur} });
                             } else if ($.Oda.Tooling.isInArray("cache", $.Oda.Context.modeInterface)){
                                 var attrs = $.Oda.Tooling.clone(this.odaAttrs);
@@ -1716,7 +1716,6 @@
                     try {
                         $.Oda.Display.Notification.id++;
                         var strHtml = "";
-                        strHtml += '';
                         strHtml += '<div class="alert alert-'+p_type+' alert-dismissible" style="text-align:center;" id="oda-notification-'+$.Oda.Display.Notification.id+'">';
                         strHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
                         strHtml += p_message;
@@ -3121,48 +3120,52 @@
             auth : function(p_params) {
                 try {
                     var tabInput = { "login" : p_params.login, "mdp" : p_params.mdp };
-                    var returns = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuth.php", {}, tabInput);
-                    if(returns.strErreur === ""){
-                        var code_user = returns.data.resultat.code_user.toUpperCase();
-                        var key = returns.data.resultat.keyAuthODA;
-
-                        var session = {
-                            "code_user" : code_user,
-                            "key" : key
-                        };
-
-                        var tabSetting = { };
-                        var tabInput = {
-                            code_user : code_user
-                        };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", tabSetting, tabInput);
-                        if(retour.strErreur === ""){
-                            var userInfo = {
-                                "locale" : retour.data.resultat.langue,
-                                "firstName" : retour.data.resultat.nom,
-                                "lastName" : retour.data.resultat.prenom,
-                                "mail" : retour.data.resultat.mail,
-                                "profile" : retour.data.resultat.profile,
-                                "profileLabel" : retour.data.resultat.labelle,
-                                "showTooltip" : retour.data.resultat.montrer_aide_ihm
-                            };
-                            session.userInfo = userInfo;
-                            session.id = retour.data.resultat.id_user;
-                            $.Oda.Storage.set("ODA-SESSION",session,43200);
-                            $.Oda.Session = session;
-
-                            $.Oda.Security.loadRight();
-                        }else{
+                    var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuth.php", {callback:function(response){
+                        if(response.strErreur !== ""){
                             $.Oda.Storage.remove("ODA-SESSION");
-                            $.Oda.Display.Notification.error(returns.strErreur);
+                            $.Oda.Display.Notification.warning(response.strErreur);
+                        }else{
+                            var code_user = response.data.resultat.code_user.toUpperCase();
+                            var key = response.data.resultat.keyAuthODA;
+
+                            var session = {
+                                "code_user" : code_user,
+                                "key" : key
+                            };
+
+                            var tabSetting = { };
+                            var tabInput = {
+                                code_user : code_user
+                            };
+                            var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {callback:function(response){
+                                if(response.strErreur === ""){
+                                    var userInfo = {
+                                        "locale" : response.data.resultat.langue,
+                                        "firstName" : response.data.resultat.nom,
+                                        "lastName" : response.data.resultat.prenom,
+                                        "mail" : response.data.resultat.mail,
+                                        "profile" : response.data.resultat.profile,
+                                        "profileLabel" : response.data.resultat.labelle,
+                                        "showTooltip" : response.data.resultat.montrer_aide_ihm
+                                    };
+                                    session.userInfo = userInfo;
+                                    session.id = response.data.resultat.id_user;
+                                    $.Oda.Storage.set("ODA-SESSION",session,43200);
+                                    $.Oda.Session = session;
+
+                                    $.Oda.Security.loadRight();
+                                }else{
+                                    $.Oda.Storage.remove("ODA-SESSION");
+                                    $.Oda.Display.Notification.warning(response.strErreur);
+                                }
+                                $.Oda.Router.routerExit = false;
+                                if(p_params.reload){
+                                    $.Oda.Router.navigateTo();
+                                }
+                            }}, tabInput);
                         }
-                        $.Oda.Router.routerExit = false;
-                        if(p_params.reload){
-                            $.Oda.Router.navigateTo();
-                        }
-                    }else {
-                        $.Oda.Display.Notification.error(returns.strErreur);
-                    }
+                    }}, tabInput);
+                    return this;
                 } catch (er) {
                     $.Oda.Log.Log.error("$.Oda.Security.auth : " + er.message);
                     return null;
@@ -3175,7 +3178,7 @@
                 try {
                     $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
                     var tabInput = { "rang" : $.Oda.Session.userInfo.profile, "id_page" : 0 };
-                    var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMenu.php", {callback : function(data){
+                    var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMenu.php", {callback : function(data){
                         var datas = data.data.resultat.data;
 
                         for (var indice in datas) {
