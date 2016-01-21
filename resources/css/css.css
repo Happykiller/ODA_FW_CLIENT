@@ -19,3 +19,25 @@ a:hover {
     background-color: rgba(250, 159, 38, 0.64);
     border-color: rgba(117, 71, 22, 1);
 }
+
+.footer{
+    z-index: 999999;
+    position: fixed;
+    bottom: 5px;
+    text-align: center;
+    width:80%;
+    margin: 0 0 0 -40%;
+    left:50%;
+    color: lightgray;
+
+}
+.footer a:link {
+    color: rgba(53, 141, 201, 0.44);
+}
+.footer a {
+    text-decoration: none;
+}
+
+.navbar {
+    margin-bottom: 5px;
+}

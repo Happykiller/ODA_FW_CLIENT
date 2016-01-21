@@ -1,5 +1,5 @@
 <script id="oda-scene-tpl" type="text/template">
-    <!-- #wrapper -->
+    <!-- wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -10,7 +10,7 @@
                 <li><a onclick="$.Oda.Router.navigateTo({'route':'contact','args':{}});" oda-label="oda-main.contact">Contact</a></li>
             </ul>
         </div>
-        <!-- /#sidebar-wrapper -->
+        <!-- /Sidebar -->
 
         <nav class="navbar navbar-default">
             <div class="container">
@@ -38,20 +38,9 @@
         </nav>
 
         <!-- content -->
-        <div id="oda-content" class="container"><oda-loading></oda-loading></div>
+        <div id="oda-content"><oda-loading></oda-loading></div>
+        <!-- /content -->
 
     </div>
-    <!-- /#wrapper -->
-</script>
-<script id="oda-tuto-tpl" type="text/template">
-    <!-- tuto -->
-    <div style="display: none">
-        <div oda-tuto-content="oda-avatar">
-            For display system menu click.
-        </div>
-        <div oda-tuto-content="oda-brand">
-            To go home click.
-        </div>
-    </div>
-    <!-- /tuto -->
+    <!-- /wrapper -->
 </script>

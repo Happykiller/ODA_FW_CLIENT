@@ -13,8 +13,6 @@
  * oda-notification-flash : the system want notify
  * oda-gapi-loaded : When Gapi is ready
  *
- * TODO : Ajouter une option de supression de cache Oda dans le profile
- *
  */
 (function() {
     jQuery.fn.exists = function(){return this.length>0;};
@@ -98,7 +96,8 @@
                 notification : false,
                 message : false,
                 rooter : false,
-                app : false
+                app : false,
+                footer: false
             },
             debug : false,
             vendorName : "bower_components",
@@ -621,8 +620,8 @@
 
                 if($.Oda.Context.ModeExecution.scene){
 
-                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile","resetPwd"],
-                        $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
+                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile","resetPwd"];
+                    $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
 
                     $.Oda.Router.addMiddleWare("support",function() {
                         $.Oda.Log.debug("MiddleWares : support");
@@ -641,7 +640,6 @@
                             }
                         }}, tabInput);
                     });
-
 
                     $.Oda.Router.addMiddleWare("auth", function() {
                         $.Oda.Log.debug("MiddleWares : auth");
@@ -832,6 +830,10 @@
                 }
 
                 $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
+                    if($.Oda.Context.ModeExecution.footer){
+                        $('body').append('<div class="footer">Power by <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
+                    }
+
                     // init from config
                     if ($.Oda.Context.host !== ""){
                         $.Oda.Storage.storageKey = "ODA__"+$.Oda.Context.host+"__";
@@ -4472,7 +4474,7 @@
                     }
 
                     if(!$("#"+ $.Oda.Context.mainDiv).exists()){
-                        $(" body ").append('<!-- content --><div id="'+ $.Oda.Context.mainDiv + '" class="container" style="padding-top:40px;"><oda-loading></oda-loading></div>');
+                        $(" body ").append('<!-- content --><div id="'+ $.Oda.Context.mainDiv + '"><oda-loading></oda-loading></div>');
                     }
 
                     var hash = decodeURI($.Oda.Context.window.location.hash.substring(1).replace(/\?(.*)$/, ''));
@@ -4817,17 +4819,20 @@
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
                 $.Oda.Context.ModeExecution.message = true;
+                $.Oda.Context.ModeExecution.footer = true;
                 break;
             case "app":
                 $.Oda.Context.ModeExecution.app = true;
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
                 $.Oda.Context.ModeExecution.message = true;
+                $.Oda.Context.ModeExecution.footer = true;
                 break;
             case "mini":
                 $.Oda.Context.ModeExecution.init = true;
                 $.Oda.Context.ModeExecution.notification = true;
                 $.Oda.Context.ModeExecution.message = true;
+                $.Oda.Context.ModeExecution.footer = true;
                 break;
             default:
                 break;
