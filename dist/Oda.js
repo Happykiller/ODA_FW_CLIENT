@@ -70,7 +70,9 @@
             SUCCESS : "#AEEE00"
         },
 
-        Session : {
+        Session : null,
+
+        SessionDefault : {
             "code_user" : "",
             "key" : "",
             "id" : 0,
@@ -831,7 +833,7 @@
 
                 $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
                     if($.Oda.Context.ModeExecution.footer){
-                        $('body').append('<div class="footer">Power with <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
+                        $('body').append('<div class="footer">Power by <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
                     }
 
                     // init from config
@@ -3203,31 +3205,17 @@
              */
             logout : function(){
                 try {
-                    var session = $.Oda.Storage.get("ODA-SESSION");
-                    if(session !== null){
-                        var tabInput = {
-                            "key" : session.key
-                        };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/deleteSession.php", {}, tabInput);
+                    var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/deleteSession.php", {callback:function(response){
+                        $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
+                        $.Oda.Session = $.Oda.SessionDefault;
                         $.Oda.Storage.remove("ODA-SESSION");
-                    }
-                    $.Oda.Session = {
-                        "code_user" : "",
-                        "key" : "",
-                        "userInfo" : {
-                            "locale" : "fr",
-                            "firstName" : "",
-                            "lastName" : "",
-                            "mail" : "",
-                            "profile" : 0,
-                            "profileLabel" : "",
-                            "showTooltip" : 0
-                        }
-                    };
-                    $.Oda.Display.MenuSlide.remove();
-                    $.Oda.Display.Menu.remove();
-                    $.Oda.Router.routes.auth.go();
-                    $.Oda.Display.Scene.avatar({callback : function(data){$("#avatar").attr('src',data.src);}});
+                        $.Oda.Display.MenuSlide.remove();
+                        $.Oda.Display.Menu.remove();
+                        $.Oda.Router.routes.auth.go();
+                        $.Oda.Display.Scene.avatar({callback : function(data){$("#avatar").attr('src',data.src);}});
+                    }}, {
+                        "key" : $.Oda.Session.key
+                    });
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Security.logout : " + er.message);
                 }
@@ -3905,7 +3893,6 @@
 
                         $.Oda.Scope.checkInputText({elt:value});
 
-                        //TODO use debounce ?
                         $(value).bind("keyup mouseup change",function(elt){
                             $.Oda.Scope.checkInputText({elt:elt.target});
                             $.Oda.Scope.Gardian.findByElt({id : elt.target.id});
@@ -4804,6 +4791,8 @@
             }
         }
     };
+
+    $.Oda.Session = $.Oda.SessionDefault;
 
     $.Oda.Context.startDate = new Date();
 
