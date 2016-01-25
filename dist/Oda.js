@@ -1368,7 +1368,7 @@
                                 }
                             }
 
-                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "") && (data.statut === 5)) {
+                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "") && (data.statut === 4)) {
                                 $.Oda.Event.send({name : "oda-notification-flash", data : {type : "error", msg : "$.Oda.Interface.Methode.ajax : " + data.strErreur} });
                             } else if ($.Oda.Tooling.isInArray("cache", $.Oda.Context.modeInterface)){
                                 var attrs = $.Oda.Tooling.clone(this.odaAttrs);
