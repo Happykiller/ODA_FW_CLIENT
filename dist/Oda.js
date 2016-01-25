@@ -1841,7 +1841,7 @@
              */
             loading: function (p_params) {
                 try {
-                    p_params.elt.html('<img SRC="'+$.Oda.Context.rootPath + $.Oda.Context.vendorName + '/Oda/resources/img/loading.gif" ALT="Chargement" TITLE="Chargement">');
+                    p_params.elt.html('<div class="oda-loader-container"><div class="oda-loader"><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-text"></div></div></div>');
                     return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Display.loading : " + er.message);
