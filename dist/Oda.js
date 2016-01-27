@@ -2164,6 +2164,8 @@
                  * @param {String} p_params.attribute[indice].header
                  * @param {Function(data, type, full, meta, row)} p_params.attribute[indice].value
                  * @param {Boolean} p_params.attribute[indice].withFilter Optional
+                 * @param {String} p_params.attribute[indice].align Optional
+                 * @param {String} p_params.attribute[indice].size Optional
                  * @param {Object} p_params.option Optional
                  * @param {Object} p_params
                  * @returns {$.Oda.Display.Table}
@@ -2219,6 +2221,17 @@
                         for(var key in p_params.attribute){
                             var title = {
                                 "sTitle": p_params.attribute[key].header
+                            }
+                            if(p_params.attribute[key].hasOwnProperty('align')){
+                                if(p_params.attribute[key].align === 'right'){
+                                    title.sClass = 'dataTableColRight';
+                                }else if(p_params.attribute[key].align === 'left'){
+                                    title.sClass = 'dataTableColLeft';
+                                }else if(p_params.attribute[key].align === 'center'){
+                                    title.sClass = 'dataTableColCenter';
+                                }else{
+                                    title.sClass = p_params.attribute[key].align;
+                                }
                             }
                             columns.push(title);
 

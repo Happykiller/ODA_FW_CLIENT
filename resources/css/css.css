@@ -1,6 +1,14 @@
+/* dataTable - begin */
 .dataTableColCenter {
     text-align: center;
 }
+.dataTableColLeft {
+    text-align: left;
+}
+.dataTableColRight {
+    text-align: right;
+}
+/* dataTable - end */
 
 .iconProfile {
     transition: all .2s ease-in-out;
@@ -20,6 +28,7 @@ a:hover {
     border-color: rgba(117, 71, 22, 1);
 }
 
+/* footer - begin */
 .footer{
     z-index: 999999;
     position: fixed;
@@ -37,6 +46,7 @@ a:hover {
 .footer a {
     text-decoration: none;
 }
+/* footer - end */
 
 .navbar {
     margin-bottom: 5px;
