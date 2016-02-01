@@ -63,13 +63,6 @@
         /* Version number */
         version: VERSION,
 
-        Color : {
-            INFO : "#5882FA",
-            WARNING : "#f7931e",
-            ERROR : "#B9121B",
-            SUCCESS : "#AEEE00"
-        },
-
         Session : null,
 
         SessionDefault : {
@@ -128,9 +121,9 @@
             cache : [],
             /**
              * @param {object} p_params
-             * @param p_params.key
-             * @param p_params.attrs
-             * @param p_params.datas
+             * @param {string} p_params.key
+             * @param {object} p_params.attrs
+             * @param {object} p_params.datas
              * @returns {$.Oda.Cache}
              */
             save: function (p_params) {
@@ -174,10 +167,11 @@
                 }
             },
             /**
+             * @desc interface cache
              * @param {object} p_params
-             * @param p_params.key
-             * @param p_params.attrs
-             * @param p_params.demande
+             * @param {string} p_params.key
+             * @param {object} p_params.attrs
+             * @param {boolean} p_params.demande opt
              * @returns {$.Oda.Cache}
              */
             load: function (p_params) {
@@ -232,8 +226,8 @@
             },
             /**
              * @param {object} p_params
-             * @param p_params.key
-             * @param p_params.attrs
+             * @param {string} p_params.key
+             * @param {object} p_params.attrs
              * @returns {$.Oda.Cache}
              */
             loadWithOutTtl: function (p_params) {
@@ -269,8 +263,8 @@
             },
             /**
              * @param {object} p_params
-             * @param p_params.key
-             * @param p_params.attrs
+             * @param {string} p_params.key
+             * @param {object} p_params.attrs
              * @returns {$.Oda.Cache}
              */
             remove: function (p_params) {
@@ -292,6 +286,7 @@
                 }
             },
             /**
+             * @desc remove the user cache
              * @returns {$.Oda.Cache}
              */
             clean: function () {
@@ -306,6 +301,7 @@
                 }
             },
             /**
+             * @desc remove all the ODA-CACHE%
              * @returns {$.Oda.Cache}
              */
             cleanAll: function () {
@@ -1133,8 +1129,8 @@
         Event : {
             /**
              * @param {Object} p_params
-             * @param p_params.name
-             * @param p_params.callback function (e) { e.detail ... }
+             * @param {string} p_params.name
+             * @param {function} p_params.callback function (e) { e.detail ... }
              * @returns {$.Oda.Event}
              */
             addListener: function (p_params) {
@@ -1149,8 +1145,8 @@
             },
             /**
              * @param {Object} p_params
-             * @param p_params.name
-             * @param p_params.data
+             * @param {string} p_params.name
+             * @param {object} p_params.data
              * @returns {$.Oda.Event}
              */
             send: function (p_params) {
@@ -1689,11 +1685,9 @@
                     $.Oda.Log.error(p_message);
                 },
                 /**
-                 * @param {Object} p_params
-                 * @param p_params.attr
                  * @returns {$.Oda.Notification}
                  */
-                load: function (p_params) {
+                load: function () {
                     try {
                         var html = $.Oda.Display.TemplateHtml.create({
                             template : "oda-notification-tpl"
@@ -1714,6 +1708,7 @@
                  * @Desc Show notification
                  * @param {string} p_message
                  * @param {string} p_type
+                 * @param {int} p_type
                  * @returns {boolean}
                  */
                 create : function(p_message, p_type, time) {
@@ -1737,8 +1732,8 @@
                     }
                 },
                 /**
-                 *
                  * @param {object} params
+                 * @param {int} params.id
                  * @returns {$.Oda.Notification}
                  */
                 remove : function(params){
@@ -1753,7 +1748,6 @@
                     }
                 },
                 /**
-                 *
                  * @returns {$.Oda.Notification}
                  */
                 removeAll : function(){
@@ -1770,10 +1764,9 @@
             },
             Scene : {
                 /**
-                 * @param {object} p_params
                  * @returns {$.Oda.Display.Scene}
                  */
-                load: function (p_params) {
+                load: function () {
                     try {
                         var htmlScene = $.Oda.Display.TemplateHtml.create({
                             template : "oda-scene-tpl"
@@ -1800,8 +1793,8 @@
                 },
                 /**
                  * @param {Object} p_params
-                 * @param p_params.code_user
-                 * @param p_params.callback
+                 * @param {string} p_params.code_user
+                 * @param {function} p_params.callback
                  * @returns {$.Oda.Display.Scene.avatar}
                  */
                 avatar : function (p_params) {
@@ -1944,10 +1937,9 @@
             },
             Message : {
                 /**
-                 * @param {object} p_params
                  * @returns {$.Oda}
                  */
-                show: function (p_params) {
+                show: function () {
                     try {
                         var tabInput = { code_user : $.Oda.Session.code_user };
                         var callback = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessagesToDisplay.php", { callback : function(datas) {
@@ -1977,6 +1969,7 @@
                 },
                 /**
                  * @param {object} p_params
+                 * @param {object} p_params.id
                  * @returns {$.Oda}
                  */
                 hide: function (p_params) {
@@ -2001,13 +1994,13 @@
                 /**
                  * affichePopUp
                  * @param {Object} p_params
-                 * @param p_params.name
-                 * @param p_params.size (sm, lg)
-                 * @param p_params.label
-                 * @param p_params.details
-                 * @param p_params.footer
-                 * @param p_params.callback
-                 * @param p_params.callbackParams
+                 * @param {string} p_params.name opt
+                 * @param {string} p_params.size opt (sm, lg)
+                 * @param {string} p_params.label
+                 * @param {string} p_params.details
+                 * @param {string} p_params.footer opt
+                 * @param {function} p_params.callback opt
+                 * @param {object} p_params.callbackParams opt
                  */
                 open : function(p_params){
                     try {
@@ -2065,7 +2058,7 @@
                 },
                 /**
                  * @param {object} p_params
-                 * @param p_params.name
+                 * @param {string} p_params.name
                  * @returns {$.Oda.Display.Popup}
                  */
                 close: function (p_params) {
@@ -2103,8 +2096,8 @@
             TemplateHtml : {
                 /**
                  * @param {Object} p_params
-                 * @param p_params.template
-                 * @param p_params.scope opt
+                 * @param {string} p_params.template
+                 * @param {Object} p_params.scope opt
                  * @returns {$.Oda.Display.TemplateHtml}
                  */
                 create: function (p_params) {
