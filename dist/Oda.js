@@ -715,7 +715,7 @@
                     });
 
                     $.Oda.Router.addDependencies("dataTables", {
-                        ordered : false,
+                        ordered : true,
                         "list" : [
                             { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
                             { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/dataTables.bootstrap.css", "type" : "css"},
