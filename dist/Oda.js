@@ -3450,7 +3450,6 @@
                  */
                 start: function () {
                     try {
-                        $.Oda.Log.trace($.Oda.Session.id);
                         if($.Oda.Session.id !== 0){
                             $('#name').val($.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName);
                             $('#mail').val($.Oda.Session.userInfo.mail);
