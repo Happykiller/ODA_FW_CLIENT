@@ -9,7 +9,7 @@
   "devDependencies": {
     "gulp": "*",
     "gulp-load-plugins": "*",
-    "browser-sync": "*"
+    "browser-sync": "*",
     "gulp-minify-css": "*",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-sass": "^2.1.0"
