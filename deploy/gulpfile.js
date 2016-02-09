@@ -1,55 +1,37 @@
-/* jshint node:true */
-
-'use strict';
-
 var gulp = require('gulp');
-var bower = require('gulp-bower');
-var connect = require('gulp-connect');
-var jshint = require('gulp-jshint');
-var launch = require('gulp-open');
-var plumber = require('gulp-plumber');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var replace = require('gulp-replace');
-var gulp = require('gulp-param')(require('gulp'), process.argv);
+var plugins = require('gulp-load-plugins')();
+plugins.browserSync = require('browser-sync');
+plugins.minCss = require('gulp-minify-css');
 
-var OdaGulpConfig = {
-    "vendorName" : "bower_components"
-};
-
-gulp.task('params', function(vendorName) {
-    if(vendorName !== null){
-        OdaGulpConfig.vendorName = vendorName;
-    }
-    return;
+gulp.task('browser-sync', function() {
+    plugins.browserSync.init({
+        proxy: "localhost:80/dev/"
+    });
+    gulp.watch(["js/**/*","partials/**/*","i8n/**/*","css/**/*.css"], function(){
+        plugins.browserSync.reload();
+    });
 });
 
-//ex : gulp install-full --vendorName libs
-gulp.task('install-full', ['params'], function() {
-    gulp.src(['full/**','full/**/*','commun/**','commun/**/*'])
-        .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
-        .pipe(gulp.dest('./../../../'));
-    gulp.src(['!full/index.html','!full/gulpfile.js','!full/package.json','!full/jsTestDriver.conf','full/**/*'])
-        .pipe(gulp.dest('./../../../'));
-    return;
+gulp.task('scss', function () {
+    gulp.src('css/**/*.scss')
+        .pipe(plugins.sass().on('error', plugins.sass.logError))
+        .pipe(plugins.autoprefixer({
+            browsers: [
+                "ie >= 9",
+                "ie_mob >= 10",
+                "ff >= 30",
+                "chrome >= 34",
+                "safari >= 7",
+                "opera >= 23",
+                "ios >= 7",
+                "android >= 4.4",
+                "bb >= 10"
+            ]
+        }))
+        .pipe(plugins.minCss())
+        .pipe(gulp.dest('css/'));
 });
 
-//ex : gulp install-app --vendorName libs
-gulp.task('install-app', ['params'], function() {
-    gulp.src(['app/**','app/**/*','commun/**','commun/**/*'])
-        .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
-        .pipe(gulp.dest('./../../../'));
-    gulp.src(['!app/index.html','!app/gulpfile.js','!app/package.json','!app/jsTestDriver.conf','app/**/*'])
-        .pipe(gulp.dest('./../../../'));
-    return;
-});
-
-//ex : gulp install-mini --vendorName libs
-gulp.task('install-mini', ['params'], function() {
-    gulp.src(['mini/**','mini/**/*','commun/**','commun/**/*'])
-        .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
-        .pipe(gulp.dest('./../../../'));
-    gulp.src(['!mini/index.html','!mini/gulpfile.js','!mini/package.json','!mini/jsTestDriver.conf','mini/**/*'])
-        .pipe(gulp.dest('./../../../'));
-    return;
+gulp.task('watch',['scss'], function () {
+    gulp.watch('css/**/*.scss' , ['scss']);
 });
