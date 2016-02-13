@@ -1,10 +1,11 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 plugins.browserSync = require('browser-sync');
+plugins.minCss = require('gulp-minify-css');
 
 gulp.task('browser-sync', function() {
     plugins.browserSync.init({
-        proxy: "localhost:80/NBA/"
+        proxy: "localhost:80/project/"
     });
     gulp.watch(["js/**/*","partials/**/*","i8n/**/*","css/**/*.css"], function(){
         plugins.browserSync.reload();
@@ -27,6 +28,7 @@ gulp.task('scss', function () {
                 "bb >= 10"
             ]
         }))
+        .pipe(plugins.minCss())
         .pipe(gulp.dest('css/'));
 });
 
