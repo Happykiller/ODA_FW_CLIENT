@@ -37,8 +37,9 @@
             try {
                 $.Oda.Router.addRoute("home", {
                     "path" : "partials/home.html",
-                    "title" : "oda-main.home-title",
-                    "urls" : ["","home"]
+                    "title" : "home.title",
+                    "urls" : ["","home"],
+                    "middleWares":["support","auth"]
                 });
 
                 $.Oda.Router.startRooter();
