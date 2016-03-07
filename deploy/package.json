@@ -1,17 +1,20 @@
 {
-  "name": "dev",
-  "version": "0.0.1",
-  "description": "An application client with Oda",
+  "name": "Oda",
+  "version": "0.9.150711",
+  "description": "Client for the full framework Oda",
   "main": "gulpfile.js",
+  "author": "Fabrice Rosito <fabrice.rosito@gmail.com>",
   "license": "MIT",
   "dependencies": {
-  },
-  "devDependencies": {
     "gulp": "*",
-    "gulp-load-plugins": "*",
-    "browser-sync": "*",
-    "gulp-minify-css": "*",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-sass": "^2.1.0"
+    "gulp-bower": "*",
+    "gulp-connect": "*",
+    "gulp-jshint": "*",
+    "gulp-open": "*",
+    "gulp-plumber": "*",
+    "gulp-uglify": "*",
+    "gulp-rename": "*",
+    "gulp-replace" : "*",
+    "gulp-param" : "*"
   }
 }
