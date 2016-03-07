@@ -33,7 +33,7 @@
         /**
          * @returns {$.Oda.App}
          */
-        startApp: function (p_params) {
+        startApp: function () {
             try {
                 $.Oda.Router.addRoute("home", {
                     "path" : "partials/home.html",
@@ -54,11 +54,9 @@
         "Controller" : {
             "Home": {
                 /**
-                 * @param {object} p_params
-                 * @param p_params.id
                  * @returns {$.Oda.App.Controller.Home}
                  */
-                start: function (p_params) {
+                start: function () {
                     try {
                         return this;
                     } catch (er) {
