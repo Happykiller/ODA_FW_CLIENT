@@ -2231,7 +2231,7 @@
                             // do whatever you want to the function here
                             var temp = p_params.attribute[key].value.toString();
 
-                            var reg = new RegExp("row.[a-zA-Z]+", "gi");
+                            var reg = new RegExp("row.[a-zA-Z\_\-]+", "gi");
                             var tab = temp.match(reg);
 
                             for(var indice in tab){
