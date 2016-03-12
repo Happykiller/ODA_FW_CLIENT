@@ -2843,6 +2843,9 @@
              */
             pad2 : function(number) {
                 try {
+                    if(typeof number !== "integer"){
+                        number = parseInt(number);
+                    }
                     return (number < 10 ? '0' : '') + number;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.pad2 : " + er.message);
