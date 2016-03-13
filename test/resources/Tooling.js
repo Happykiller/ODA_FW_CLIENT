@@ -14,3 +14,7 @@ test( "$.Oda.Tooling.clone", function() {
 test( "$.Oda.Tooling.deepEqual", function() {
     ok($.Oda.Tooling.deepEqual({attr1 : "value1", attr2 : "value2"},{attr1 : "value1", attr2 : "value2"}), "Test OK : Passed!" );
 });
+test( "$.Oda.Tooling.pad2", function(){
+    equal( $.Oda.Tooling.pad2("03"), "03", "Test OK : Passed!" );
+    equal( $.Oda.Tooling.pad2(3), "03", "Test OK : Passed!" );
+})
