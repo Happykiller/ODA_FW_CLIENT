@@ -1,0 +1,21 @@
+{
+  "name": "oda",
+  "version": "0.0.1",
+  "homepage": "http://oda.happykiller.net",
+  "authors": ["Fabrice Rosito <fabrice.rosito@gmail.com>"],
+  "description": "Frame work client pour Oda",
+  "keywords": ["abc"],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ],
+  "devDependencies": {
+    "qunit": "latest"
+  },
+  "dependencies": {
+    "Oda": "*",
+    "fullcalendar" : "*"
+  }
+}
