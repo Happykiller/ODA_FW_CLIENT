@@ -4041,7 +4041,9 @@
 
                         $(document).keypress(function(e) {
                             if(e.which === 13) {
-                                if(!$(value).hasClass("disabled")){
+                                var $focused = $(':focus');
+                                if( ($(value) !== $focused) && ($focused.attr("onclick") === undefined) ){
+                                    //Click on button submit of form only if we don't focus on it, and the current focus is not clickable
                                     $(value).click();
                                 }
                             }
