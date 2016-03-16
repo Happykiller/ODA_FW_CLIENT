@@ -2212,19 +2212,22 @@
                         var columnDefs = [];
                         var i = 0;
                         for(var key in p_params.attribute){
-                            var title = {
+                            var colomn = {
                                 "sTitle": p_params.attribute[key].header
                             }
                             if(p_params.attribute[key].hasOwnProperty('align')){
                                 if(p_params.attribute[key].align === 'right'){
-                                    title.sClass = 'dataTableColRight';
+                                    colomn.sClass = 'dataTableColRight';
                                 }else if(p_params.attribute[key].align === 'left'){
-                                    title.sClass = 'dataTableColLeft';
+                                    colomn.sClass = 'dataTableColLeft';
                                 }else if(p_params.attribute[key].align === 'center'){
-                                    title.sClass = 'dataTableColCenter';
+                                    colomn.sClass = 'dataTableColCenter';
                                 }else{
-                                    title.sClass = p_params.attribute[key].align;
+                                    colomn.sClass = p_params.attribute[key].align;
                                 }
+                            }
+                            if(p_params.attribute[key].hasOwnProperty('size')){
+                                colomn.width = p_params.attribute[key].size;
                             }
                             columns.push(title);
 
