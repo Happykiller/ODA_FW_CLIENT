@@ -2229,7 +2229,7 @@
                             if(p_params.attribute[key].hasOwnProperty('size')){
                                 colomn.width = p_params.attribute[key].size;
                             }
-                            columns.push(title);
+                            columns.push(colomn);
 
                             // do whatever you want to the function here
                             var temp = p_params.attribute[key].value.toString();
