@@ -708,9 +708,10 @@
                     });
 
                     $.Oda.Router.addDependencies("hightcharts", {
-                        ordered : false,
+                        ordered : true,
                         "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"}
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/modules/exporting.js", "type" : "script"}
                         ]
                     });
 
