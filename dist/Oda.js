@@ -903,7 +903,7 @@
                     $.Oda.Mobile.positionGps.statut = "OK";
                     $.Oda.Mobile.funcReturnGPSPosition($.Oda.Mobile.positionGps);
                 } catch (er) {
-                    log(0, "ERROR($.Oda.Mobile.onSuccessGPSPosition):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.onSuccessGPSPosition: " + er.message);
                 }
             },
 
@@ -916,7 +916,7 @@
                     $.Oda.Mobile.positionGps.statut = "KO : code=>"+ p_error.code+", message=>"+ p_error.message;
                     $.Oda.Mobile.funcReturnGPSPosition($.Oda.Mobile.positionGps);
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.onErrorGPSPosition):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.onErrorGPSPosition: " + er.message);
                 }
             },
 
@@ -926,7 +926,7 @@
 
                     $.Oda.Mobile.funcReturnCaptureImg(imgSrc);
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.onPhotoSuccess):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.onPhotoSuccess: " + er.message);
                 }
             },
 
@@ -936,7 +936,7 @@
 
                     $.Oda.Mobile.funcReturnCaptureImg(imgSrc);
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.onPhotoURISuccess):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.onPhotoURISuccess: " + er.message);
                 }
             },
 
@@ -944,7 +944,7 @@
                 try {
                     alert('Failed because: ' + p_message);
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.onPhotoFail):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.onPhotoFail: " + er.message);
                 }
             },
 
@@ -958,7 +958,7 @@
 
                     return boolRetour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.initModuleMobile):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.initModuleMobile: " + er.message);
                     return null;
                 }
             },
@@ -985,7 +985,7 @@
 
                     return retour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.getConnectionString):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.getConnectionString: " + er.message);
                     return null;
                 }
             },
@@ -1002,7 +1002,7 @@
 
                     return boolRetour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.testConnection):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.testConnection: " + er.message);
                     return null;
                 }
             },
@@ -1018,7 +1018,7 @@
 
                     return boolRetour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.getGpsPosition):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.getGpsPosition: " + er.message);
                     return null;
                 }
             },
@@ -1038,7 +1038,7 @@
 
                     return retour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.getGpsPositionString):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.getGpsPositionString: " + er.message);
                     return null;
                 }
             },
@@ -1054,7 +1054,7 @@
 
                     return boolRetour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.getPhotoFromCamera):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.getPhotoFromCamera: " + er.message);
                     return null;
                 }
             },
@@ -1068,7 +1068,7 @@
 
                     return boolRetour;
                 } catch (er) {
-                    $.Oda.Log.error(0, "ERROR($.Oda.Mobile.getPhotoFromLibrary):" + er.message);
+                    $.Oda.Log.error("$.Oda.Mobile.getPhotoFromLibrary: " + er.message);
                     return null;
                 }
             }
@@ -1629,10 +1629,28 @@
 
                     return returns;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Interface.sendMail) :" + er.message);
+                    $.Oda.Log.error("$.Oda.Interface.sendMail :" + er.message);
                     return null;
                 }
-            }
+            },
+            /**
+             * traceLog
+             * @param {Object} p_params
+             * @param {String} p_params.msg
+             * @returns {$.Oda.Interface}
+             */
+            traceLog : function(p_params) {
+                try {
+                    var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/insertLog.php", {"callback":function(response){}}, {
+                        "type":1,
+                        "msg":p_params.msg
+                    });
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Interface.traceLog) :" + er.message);
+                    return null;
+                }
+            },
         },
 
         Display : {
@@ -4856,6 +4874,7 @@
             "error" : function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
+                    $.Oda.Interface.traceLog({"msg":p_msg});
                     return this;
                 } catch (er) {
                     console.log("$.Oda.Log.error : " + er.message);
