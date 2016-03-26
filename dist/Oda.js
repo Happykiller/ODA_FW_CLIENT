@@ -15,7 +15,21 @@
  *
  */
 (function() {
-    jQuery.fn.exists = function(){return this.length>0;};
+    //EXTEND JQUERY
+    jQuery.fn.exists = function(){
+        return this.length>0;
+    };
+
+    jQuery.fn.btEnable = function(){
+        this.removeClass("disabled");
+        this.removeAttr("disabled");
+    };
+    jQuery.fn.btDisable = function(){
+        if(!this.hasClass('disabled')){
+            this.addClass("disabled");
+        }
+        this.attr("disabled", true);
+    }
 
     //BEGIN IE STUFF
     if (typeof CustomEvent !== 'function') {
