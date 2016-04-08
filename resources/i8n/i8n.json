@@ -161,7 +161,7 @@
         "zeroRecords": "Rien trouvé.",
         "info": "Affiche page _PAGE_ sur _PAGES_",
         "infoEmpty": "Pas d'enregristrement disponible",
-        "infoFiltered": "(Filtré depuis _MAX_ sur un total)"
+        "infoFiltered": "(Filtré depuis _MAX_ sur un total)",
         "lengthMenu": "Voir _MENU_ entrées",
         "search": "Rechercher :",
         "paginate": {
