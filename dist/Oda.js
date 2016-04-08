@@ -2551,6 +2551,21 @@
              */
             replaceAll: function (p_params) {
                 try {
+                    if(p_params.str === undefined){
+                        $.Oda.Log.warning('str is missing in params of $.Oda.Tooling.replaceAll');
+                        return null;
+                    }
+
+                    if(p_params.find === undefined){
+                        $.Oda.Log.warning('find is missing in params of $.Oda.Tooling.replaceAll');
+                        return null;
+                    }
+
+                    if(p_params.by === undefined){
+                        $.Oda.Log.warning('by is missing in params of $.Oda.Tooling.replaceAll');
+                        return null;
+                    }
+
                     if(p_params.find === ''){
                         return p_params.str;
                     }
@@ -3152,9 +3167,13 @@
              * @name get
              * @param {string} p_group
              * @param {string} p_tag
+             * @param {object} options
+             * @param {string} options.defaultLang
+             * @param {object} options.variables
+             * @exemple $.Oda.I8n.get("qcm-main","test", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"});
              * @returns {String}
              */
-            get : function(p_group, p_tag) {
+            get : function(p_group, p_tag, options) {
                 try {
                     var returnvalue = "Not define";
 
@@ -3162,7 +3181,35 @@
                         var grp = $.Oda.I8n.datas[grpId];
                         if((grp.groupName === p_group) && grp.hasOwnProperty($.Oda.Session.userInfo.locale) && grp[$.Oda.Session.userInfo.locale].hasOwnProperty(p_tag)){
                             returnvalue = grp[$.Oda.Session.userInfo.locale][p_tag];
+                            if((options !== undefined) && (options.variables !== undefined)){
+                                for(var key in options.variables){
+                                    returnvalue = $.Oda.Tooling.replaceAll({
+                                        str: returnvalue,
+                                        find: "{{"+key+"}}",
+                                        by: options.variables[key]
+                                    });
+                                }
+                            }
                             break;
+                        }
+                    }
+
+                    if((returnvalue === "Not define") && (options !== undefined) && (options.defaultLang !== undefined)){
+                        for (var grpId in $.Oda.I8n.datas) {
+                            var grp = $.Oda.I8n.datas[grpId];
+                            if((grp.groupName === p_group) && grp.hasOwnProperty(options.defaultLang) && grp[options.defaultLang].hasOwnProperty(p_tag)){
+                                returnvalue = grp[options.defaultLang][p_tag];
+                                if((options !== undefined) && (options.variables !== undefined)){
+                                    for(var key in options.variables){
+                                        returnvalue = $.Oda.Tooling.replaceAll({
+                                            str: returnvalue,
+                                            find: "{{"+key+"}}",
+                                            by: options.variables[key]
+                                        });
+                                    }
+                                }
+                                break;
+                            }
                         }
                     }
 
