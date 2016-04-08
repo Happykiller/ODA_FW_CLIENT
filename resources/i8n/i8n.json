@@ -191,5 +191,10 @@
         "title": "Réinitialiser son mot de passe",
         "intro": "Veuillez saisir le nouveau mot de passe de ",
         "Confirmpassword": "Confirmer mot de passe :"
+    },
+    "en": {
+        "title": "Reset your password",
+        "intro": "Please provide your new password ",
+        "Confirmpassword": "Confirme password :"
     }
 }]
