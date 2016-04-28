@@ -2905,71 +2905,56 @@
             },
 
             /**
-             * @name uploadFile
-             * @desc Hello
-             * @param {Object} p_params
-             * @param p_params.idInput
-             * @param p_params.folder
-             * @param p_params.name
-             * @param p_params.callback
+             * @name postResources
+             * @desc for send resources in the resources folder
+             * @param {Object} params
+             * @param params.idInput mandatory
+             * @param params.folder optional
+             * @param p_params.names optional
+             * @param params.callback mandatory
              * @returns {Object}
              */
-            uploadFile : function(p_params) {
+            postResources : function(params) {
                 try {
-                    if(p_params.idInput != ""){
-                        var retour = {};
-                        var inputElement = $("#"+p_params.idInput);
+                    var strUrl = $.Oda.Context.rest+'vendor/happykiller/oda/resources/script/postResources.php?path='+params.folder;
 
-                        if(inputElement[0].files.length > 0){
-                            var data = new FormData();
-                            $.each(inputElement[0].files, function(i, file) {
-                                data.append('file-'+i, file);
-                            });
+                    if(params.idInput !== ""){
+                        var inputElement = $("#"+params.idInput);
+                        var files = inputElement[0].files;
+                        var data = new FormData();
+                        $.each(files, function(i, file) {
+                            if(params.names !== undefined){
+                                if(params.names[i] !== undefined){
+                                    data.append(params.names[i], file);
+                                }
+                            }else{
+                                data.append(file.name, file);
+                            }
+                        });
 
-                            var call = $.Oda.Tooling.sendFile(data, p_params.folder, p_params.name, p_params.callback);
-                        }else{
-                            $.Oda.Log.error("Erreur pas de fichier sélectionné");
-                        }
+                        var ajax = $.ajax({
+                            url: strUrl,
+                            data: data,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType : "json",
+                            type: 'POST',
+                            success : function(p_resultat, p_statut){
+                                params.callback(p_resultat.data);
+                            },
+                            error : function(p_resultat, p_statut, p_erreur){
+                                params.callback({"error": p_erreur });
+                            }
+                        });
+
                     }else{
                         $.Oda.Log.error("Erreur pas d'élement selectionné.");
                     }
 
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tooling.uploadFile : " + er.message);
-                    return null;
-                }
-            },
-
-            /**
-             * @param {type} p_fichiers
-             * @param {type} p_dossier
-             * @param {type} p_nom
-             * @param {function} callback
-             */
-            sendFile : function(p_fichier, p_dossier, p_nom, callback) {
-                try {
-                    var strUrl = $.Oda.Context.rest+'vendor/happykiller/oda/resources/script/uploadFile.php?dossier='+p_dossier+'&nom='+p_nom;
-
-                    var ajax = $.ajax({
-                        url: strUrl,
-                        data: p_fichier,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType : "json",
-                        type: 'POST',
-                        success : function(p_resultat, p_statut){
-                            callback(p_resultat.data);
-                        },
-                        error : function(p_resultat, p_statut, p_erreur){
-                            callback({"resultat_file-0" : { code : "ko", message : p_erreur }});
-                        }
-                    });
-
-                    return this;
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tooling.sendFile : " + er.message);
+                    $.Oda.Log.error("$.Oda.Tooling.postResources : " + er.message);
                     return null;
                 }
             },
@@ -3668,19 +3653,18 @@
                  */
                 setAvatar : function (p_params) {
                     try {
-                        $.Oda.Tooling.uploadFile({idInput : p_params.elt.id, folder : "avatars/", name : $.Oda.Session.code_user + ".png", callback: function(response){
-                            $.each( response, function( key, value ) {
-                                if(value.code === "ok"){
-                                    $.Oda.Display.Notification.success("Upload réussi.");
-                                    $.Oda.Display.Scene.avatar({callback : function(data){
-                                        $("#avatar").attr('src',data.src);
-                                        $("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');
-                                    }});
-                                }else{
-                                    $.Oda.Display.Notification.error("Erreur upload : " + value.message);
-                                    $.Oda.Log.error("Erreur upload : " + value.message);
-                                }
-                            });
+                        $.Oda.Tooling.postResources({idInput : p_params.elt.id, folder : "avatars/", names : [$.Oda.Session.code_user], callback: function(response){
+                            var response = response[$.Oda.Session.code_user];
+                            if(response.status === "TRANS_STATUS_SUCCESS"){
+                                $.Oda.Display.Notification.success("Upload réussi.");
+                                $.Oda.Display.Scene.avatar({callback : function(data){
+                                    $("#avatar").attr('src',data.src);
+                                    $("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');
+                                }});
+                            }else{
+                                $.Oda.Display.Notification.error("Erreur upload : " + response.msg);
+                                $.Oda.Log.error("Erreur upload : " + response.msg);
+                            }
                         }});
                         return this;
                     } catch (er) {
