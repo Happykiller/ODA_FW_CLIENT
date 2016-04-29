@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controler.ResetPwd.reset();" class="btn btn-primary disabled" disabled>Submit</button >
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.ResetPwd.reset();" class="btn btn-primary disabled" disabled>Submit</button >
                 <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
             </p>
         </div>
@@ -32,5 +32,63 @@
 </div>
 
 <script>
-    $.Oda.Controler.ResetPwd.start();
+    $.Oda.Controller.ResetPwd = {
+        "userCode":null,
+        /**
+         * @returns {$.Oda.Controller.ResetPwd}
+         */
+        start: function () {
+            try {
+                var compressToken = $.Oda.Tooling.getParameterGet({url: decodeURI($.Oda.Context.window.location)});
+                var data = LZString.decompress(compressToken.token);
+                var token = JSON.parse(data);
+                if(!token.hasOwnProperty("userCode") || !token.hasOwnProperty("valideDate")){
+                    $.Oda.Log.error("Token for reset password not valid");
+                    $.Oda.Router.routes["404"].go();
+                }else if((token.userCode !== undefined) && (token.userCode !== "") && (token.valideDate !== undefined) && (token.valideDate < new Date())){
+                    $('#userCode').html(token.userCode);
+                    $.Oda.Controller.ResetPwd.userCode = token.userCode;
+                    $.Oda.Scope.Gardian.add({
+                        id : "resetPwd",
+                        listElt : ["email","pwd", "pwd2"],
+                        function : function(params){
+                            if( ($("#email").data("isOk")) && ($("#pwd").data("isOk")) && ($("#pwd2").data("isOk")) && ($("#pwd").val() === $("#pwd2").val()) ){
+                                $("#submit").btDisable();
+                            }else{
+                                $("#submit").btEnable();
+                            }
+                        }
+                    });
+                }else{
+                    $.Oda.Log.error("Token params for reset password not valid");
+                    $.Oda.Router.routes["404"].go();
+                }
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.ResetPwd.start : " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.ResetPwd}
+         */
+        reset: function () {
+            try {
+                var tabInput = {
+                    "userCode": $.Oda.Controller.ResetPwd.userCode,
+                    "pwd" : $("#pwd").val(),
+                    "email": $("#email").val()
+                };
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/pwd/", {"type": "put", callback : function(response){
+                    $.Oda.Router.navigateTo({'route':'home','args':[]});
+                }},tabInput);
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.ResetPwd.start : " + er.message);
+                return null;
+            }
+        }
+    };
+    
+    $.Oda.Controller.ResetPwd.start();
 </script>

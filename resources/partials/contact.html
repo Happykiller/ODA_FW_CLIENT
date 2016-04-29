@@ -18,25 +18,86 @@
       <label for="msg" oda-label="oda-main.contact-msg">Message :</label>
       <textarea class="form-control" rows="3" id="msg" oda-input-text="msg" oda-input-text-tips="oda-main.contact-msg-tips" oda-input-text-placeholder="oda-main.contact-msg-placeholder" oda-input-text-check=".{25,}"></textarea>
     </div>
-    <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controler.Contact.contact();" class="btn btn-primary disabled" disabled>Submit</button >
+    <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Contact.contact();" class="btn btn-primary disabled" disabled>Submit</button >
 </div>
 
 <script>
-    $.Oda.Controler.Contact.start();
+    $.Oda.Controller.Contact = {
+        /**
+         * @returns {$.Oda.Controller.Contact}
+         */
+        start: function () {
+            try {
+                if($.Oda.Session.id !== 0){
+                    $('#name').val($.Oda.Session.userInfo.firstName + " " + $.Oda.Session.userInfo.lastName);
+                    $('#mail').val($.Oda.Session.userInfo.mail);
+                }
 
-    $.Oda.Scope.Gardian.add({
-        id : "gardianContact",
-        listElt : ["name", "mail", "msg"],
-        function : function(params){
-            if( ($("#name").data("isOk")) && ($("#mail").data("isOk")) && ($("#msg").data("isOk")) ){
-                $("#submit").removeClass("disabled");
-                $("#submit").removeAttr("disabled");
-            }else{
-                $("#submit").addClass("disabled");
-                $("#submit").attr("disabled", true);
+                $.Oda.Scope.Gardian.add({
+                    id : "gardianContact",
+                    listElt : ["name", "mail", "msg"],
+                    function : function(params){
+                        if( ($("#name").data("isOk")) && ($("#mail").data("isOk")) && ($("#msg").data("isOk")) ){
+                            $("#submit").btEnable();
+                        }else{
+                            $("#submit").btDisable();
+                        }
+                    }
+                });
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Contact.start : " + er.message);
+                return null;
+            }
+        },
+        /**
+         */
+        contact: function () {
+            try {
+                var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
+                if (contact_mail_administrateur !== "") {
+                    var message_html  = $.Oda.Display.TemplateHtml.create({
+                        template : "mailContact",
+                        scope : {
+                            "userCode" : $.Oda.Session.code_user,
+                            "name" : $('#name').val(),
+                            "mail" : $('#mail').val(),
+                            "msg" : $('#msg').val(),
+                            "siteUrl" : $.Oda.Context.host
+                        }
+                    });
+
+                    var sujet = "[ODA-" + $.Oda.Interface.getParameter("nom_site") + "]Nouveau contact.";
+
+                    var paramsMail = {
+                        email_mail_ori: contact_mail_administrateur,
+                        email_labelle_ori: "Service Mail ODA",
+                        email_mail_reply: contact_mail_administrateur,
+                        email_labelle_reply: "Service Mail ODA",
+                        email_mails_dest: contact_mail_administrateur,
+                        message_html: message_html,
+                        sujet: sujet
+                    };
+
+                    var retour = $.Oda.Interface.sendMail(paramsMail);
+
+                    $("#mail").val("").change();
+                    $("#name").val("").change();
+                    $("#msg").val("").change();
+
+                    if (retour) {
+                        $.Oda.Display.Notification.success("Merci de votre contact");
+                    }
+                } else {
+                    $.Oda.Display.Notification.error("Mail du service non définie.");
+                }
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.contact() : " + er.message);
             }
         }
-    });
+    };
+    
+    $.Oda.Controller.Contact.start();
 </script>
 
 <script id="mailContact" type="text/template">

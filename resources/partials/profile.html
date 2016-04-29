@@ -13,6 +13,35 @@
 </div>
 
 <script>
+    $.Oda.Controller.Profile = {
+        /**
+         * @param {Object} p_params
+         * @param p_params.elt
+         * @returns {$.Oda.Controller.Profile.setAvatar}
+         */
+        setAvatar : function (p_params) {
+            try {
+                $.Oda.Tooling.postResources({idInput : p_params.elt.id, folder : "avatars/", names : [$.Oda.Session.code_user], callback: function(response){
+                    var response = response[$.Oda.Session.code_user];
+                    if(response.status === "TRANS_STATUS_SUCCESS"){
+                        $.Oda.Display.Notification.success("Upload réussi.");
+                        $.Oda.Display.Scene.Avatar.avatar({callback : function(data){
+                            $.Oda.Display.Scene.Avatar.getElt().attr('src',data.src);
+                            $("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');
+                        }});
+                    }else{
+                        $.Oda.Display.Notification.error("Erreur upload : " + response.msg);
+                        $.Oda.Log.error("Erreur upload : " + response.msg);
+                    }
+                }});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Profile.setAvatar : " + er.message);
+                return null;
+            }
+        }
+    };
+
     chargerInformations();
 
     /**
@@ -58,7 +87,7 @@
                 strhtml += '<tr>';
                 strhtml += '<td>Avatar :</td>';
                 strhtml += '<td><div id="img_avatar"></div></td>';
-                strhtml += '<td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controler.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>';
+                strhtml += '<td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controller.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>';
                 strhtml += '</tr>';
                 strhtml += "</table>";
                 $('#div_infos').html(strhtml);

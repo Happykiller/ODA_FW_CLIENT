@@ -1,22 +1,22 @@
 <div class="container">
-    <h2 oda-label="oda-main.forgot-title">Forgot</h2>
-    <p  oda-label="oda-main.forgot-intro">Veuiller remplir les champs possibles pour vous retrouver :</p>
+    <h2 oda-label="oda-main.forgot-title">oda-main.forgot-title</h2>
+    <p  oda-label="oda-main.forgot-intro">oda-main.forgot-intro</p>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="login" oda-label="oda-main.login">Login :</label>
+                <label for="login" oda-label="oda-main.login">oda-main.login</label>
                 <input type="text" class="form-control" oda-input-text="login" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="^[a-zA-Z0-9]{3,}$">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="email" oda-label="oda-main.contact-mail">Email :</label>
+                <label for="email" oda-label="oda-main.contact-mail">oda-main.contact-mail</label>
                 <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b">
             </div>
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controler.Forgot.recupCompte();" class="btn btn-primary disabled" disabled>Submit</button >
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Forgot.recupCompte();" class="btn btn-primary disabled" disabled>Submit</button >
                 <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
             </p>
         </div>
@@ -24,7 +24,91 @@
 </div>
 
 <script>
-    $.Oda.Controler.Forgot.start();
+    $.Oda.Controller.Forgot = {
+        /**
+         * @returns {$.Oda.Controler.Contact}
+         */
+        start: function () {
+            try {
+                $.Oda.Scope.Gardian.add({
+                    id : "gardianForgot",
+                    listElt : ["login", "email"],
+                    function : function(params){
+                        if( ($("#login").data("isOk")) || ($("#email").data("isOk")) ){
+                            $("#submit").btEnable();
+                        }else{
+                            $("#submit").btDisable();
+                        }
+                    }
+                });
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Forgot.start : " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controler.Contact}
+         */
+        recupCompte: function () {
+            try {
+                var p_identifiant = $("#login").val();
+                var p_email = $("#email").val();
+
+                var tabInput = { identifiant : p_identifiant, email : p_email};
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getRecupUtilisateur.php", {callback : function(results){
+                    for(var indice in results["data"]["resultat"]["data"]){
+                        var compte = results["data"]["resultat"]["data"][indice];
+
+                        var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
+
+                        var valideDate = new Date(new Date() + 30*60000);
+                        valideDate = valideDate.getTime();
+
+                        var token = {
+                            "userCode":   compte.code_user,
+                            "valideDate": valideDate
+                        };
+
+                        var data = JSON.stringify(token);
+                        var compressToken = LZString.compress(data);
+
+                        var message_html = $.Oda.Display.TemplateHtml.create({
+                            template : "mailForgot",
+                            scope : {
+                                "userName": compte.prenom + " " + compte.nom,
+                                "siteUrl": $.Oda.Context.host,
+                                "urlReset": $.Oda.Context.host+"#resetPwd?token="+encodeURI(compressToken)
+                            }
+                        });
+
+                        var paramsMail = {
+                            email_mails_dest : compte["mail"]+","
+                            ,email_mail_ori : contact_mail_administrateur
+                            , email_labelle_ori : "Service Mail ODA"
+                            , email_mail_reply : contact_mail_administrateur
+                            , email_labelle_reply : "Service Mail ODA"
+                            , email_mails_cache : contact_mail_administrateur
+                            , message_html : message_html
+                            , sujet : "[ODA]Récupération de votre compte."
+                        };
+
+                        $.Oda.Interface.sendMail(paramsMail);
+
+                        var strHtml = "Un email pour r&eacute;initialiser votre mot de passe a &eacute;t&eacute; envoy&eacute;";
+                        $.Oda.Display.Notification.success(strHtml);
+                    }
+                }}, tabInput);
+                $.Oda.Router.navigateTo();
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Forgot.recupCompte : " + er.message);
+                return null;
+            }
+        }
+    };
+
+    $.Oda.Controller.Forgot.start();
 </script>
 
 <script id="mailForgot" type="text/template">
