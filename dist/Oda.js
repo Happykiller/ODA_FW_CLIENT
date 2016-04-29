@@ -2417,14 +2417,19 @@
 
                     for (var key in p_def) {
                         if(p_def[key] === null){
-                            if(typeof params[key] === "undefined"){
-                                var myUserException = new UserException("Param : "+key+" missing");
-                                throw myUserException;
+                            if(params[key] === undefined){
+                                throw {
+                                    name:        "Parameter missing",
+                                    level:       "Show Stopper",
+                                    message:     "Param : "+key+" missing",
+                                    htmlMessage: "Param : "+key+" missing",
+                                    toString:    function(){return this.name + ": " + this.message;}
+                                };
                             }else{
                                 param_return[key] = params[key];
                             }
                         }else{
-                            if(typeof params[key] === "undefined"){
+                            if(params[key] === undefined){
                                 param_return[key] = p_def[key];
                             }else{
                                 param_return[key] = params[key];
