@@ -1,9 +1,9 @@
 [{
     "groupName": "oda-main",
     "fr": {
-        "authentification": "Authentification",
-        "login": "Indentifiant :",
-        "password": "Mot de passe :",
+        "authentication": "Authentification",
+        "login": "Indentifiant",
+        "password": "Mot de passe",
         "io-login": "Entrer votre identifiant",
         "io-pass": "Entrer votre mot de passe",
         "io-login-tips": "Au moins 3 lettres",
@@ -49,9 +49,57 @@
         "all": "Tous"
     },
     "en": {
-        "authentification": "Authentification",
-        "login": "Login:",
-        "password": "Password :",
+        "authentication": "Authentication",
+        "login": "Login",
+        "password": "Password",
+        "io-login": "Entrer your login",
+        "io-pass": "Entrer your password",
+        "io-login-tips": "More than 3 letters",
+        "io-pass-tips": "More than 4 letters",
+        "bt-submit": "Submit",
+        "logout": "Logout",
+        "profile": "Your profile",
+        "contact": "Contact us",
+        "contact-name": "Your name :",
+        "contact-name-tips": "More than 3 letters",
+        "contact-name-placeholder": "Your name here",
+        "contact-mail": "Your Email : ",
+        "contact-mail-tips": "Format mail monmail@dom.ext",
+        "contact-mail-placeholder": "Your email here",
+        "contact-msg": "Your message :",
+        "contact-msg-tips": "More than 25 letters",
+        "contact-msg-placeholder": "Your message here :",
+        "bt-forgot": "Forgoten ?",
+        "bt-subscrib": "Subscrib",
+        "bt-google": "Enter with Google",
+        "forgot-title": "Forgot ?",
+        "404-title": "Not found.",
+        "home-title": "Home",
+        "bt-back": "Back",
+        "forgot-intro": "Kindly fill the possible fields to find yourself :",
+        "subscrib-title": "Create an account",
+        "subscrib-intro": "Thank you to create an account to provide the useful information.",
+        "subscrib-fristName": "First name :",
+        "subscrib-fristName-tips": "More than 3 letters",
+        "subscrib-fristName-placeholder": "Your first name here",
+        "subscrib-lastName": "Last Name :",
+        "subscrib-lastName-tips": "More than 3 letters",
+        "subscrib-lastName-placeholder": "Your last name here",
+        "profile-title": "My Profile",
+        "profile-infos": "My informations",
+        "bt-cancel": "Cancel",
+        "bt-edit": "Edit",
+        "bt-close": "Close",
+        "bt-delete": "Delete",
+        "select-default": "Choose option",
+        "new": "New",
+        "add": "Add",
+        "all": "All"
+    },
+    "es": {
+        "authentication": "Autenticación",
+        "login": "Iniciar sesión",
+        "password": "Contraseña",
         "io-login": "Entrer your login",
         "io-pass": "Entrer your password",
         "io-login-tips": "More than 3 letters",
@@ -105,6 +153,10 @@
     "en": {
         "projectName": "My Project",
         "userLabel": "The user"
+    },
+    "es": {
+        "projectName": "My Project",
+        "userLabel": "The user"
     }
 }, {
     "groupName": "oda-stats",
@@ -114,6 +166,11 @@
         "activityByUser": "R&eacute;partition de l'activit&eacute; par utilisateur"
     },
     "en": {
+        "title": "Statistics",
+        "activityByPage": "Activity by page",
+        "activityByUser": "Activity by user"
+    },
+    "es": {
         "title": "Statistics",
         "activityByPage": "Activity by page",
         "activityByUser": "Activity by user"
@@ -140,6 +197,16 @@
         "edit_desc": "Description : ",
         "edit_actif": "Active : ",
         "input_rang": "Profile : "
+    },
+    "es": {
+        "title": "Administration",
+        "messages": "Users",
+        "users": "Utilisateurs",
+        "list": "List of mail",
+        "edit_mail": "Email : ",
+        "edit_desc": "Description : ",
+        "edit_actif": "Active : ",
+        "input_rang": "Profile : "
     }
 }, {
     "groupName": "oda-supervision",
@@ -150,6 +217,12 @@
         "purge": "Lancer la purge"
     },
     "en": {
+        "title": "Supervision",
+        "metrics-interface": "Metrics interfaces",
+        "maintenance": "Maintenance",
+        "purge": "Start purge"
+    },
+    "es": {
         "title": "Supervision",
         "metrics-interface": "Metrics interfaces",
         "maintenance": "Maintenance",
@@ -184,6 +257,20 @@
             "next": "Next",
             "previous": "Previous"
         }
+    },
+    "es": {
+        "zeroRecords": "Nothing found - sorry",
+        "info": "Showing page _PAGE_ of _PAGES_",
+        "infoEmpty": "No records available",
+        "infoFiltered": "(filtered from _MAX_ total records)",
+        "lengthMenu": "Show _MENU_ entries",
+        "search": "Search:",
+        "paginate": {
+            "first": "First",
+            "last": "Last",
+            "next": "Next",
+            "previous": "Previous"
+        }
     }
 }, {
     "groupName": "oda-resetPwd",
@@ -193,6 +280,11 @@
         "Confirmpassword": "Confirmer mot de passe :"
     },
     "en": {
+        "title": "Reset your password",
+        "intro": "Please provide your new password ",
+        "Confirmpassword": "Confirme password :"
+    },
+    "es": {
         "title": "Reset your password",
         "intro": "Please provide your new password ",
         "Confirmpassword": "Confirme password :"

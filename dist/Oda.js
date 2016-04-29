@@ -3573,7 +3573,7 @@
                     }
                 },
             },
-            "ResetPwd":{
+            ResetPwd:{
                 "userCode":null,
                 /**
                  * @returns {$.Oda.Controler.Contact}
