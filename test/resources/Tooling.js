@@ -21,7 +21,7 @@ test( "$.Oda.Tooling.deepEqual", function() {
 test( "$.Oda.Tooling.pad2", function(){
     equal( $.Oda.Tooling.pad2("03"), "03", "Test OK : Passed!" );
     equal( $.Oda.Tooling.pad2(3), "03", "Test OK : Passed!" );
-})
+});
 
 test( "$.Oda.Tooling.replaceAll", function(){
     var strOri = '';
@@ -39,4 +39,90 @@ test( "$.Oda.Tooling.replaceAll", function(){
         find: "un",
         by: "deux"
     }), strWait, "Test OK : Passed!" );
-})
+});
+
+test( "$.Oda.Tooling.TemplateHtml", function(){
+
+    var script = document.createElement("script");
+    script.type = "text/template";
+    script.id = "test";
+    script.text = '<b>{{hello}}</b>';
+    document.body.appendChild(script);
+
+    var recieve = $.Oda.Display.TemplateHtml.create({
+        template: "test",
+        scope: {
+            hello: 'bonjour'
+        }
+    });
+
+    var attempt = '<b>bonjour</b>';
+
+    equal( attempt, recieve, "Test OK : Passed!" );
+
+    //-------------------------------------------------------
+
+    var script = document.createElement("script");
+    script.type = "text/template";
+    script.id = "test1";
+    script.text = '<b>hello</b>';
+    document.body.appendChild(script);
+
+    var recieve = $.Oda.Display.TemplateHtml.create({
+        template: "test1"
+    });
+
+    var attempt = '<b>hello</b>';
+
+    equal( attempt, recieve, "Test OK : Passed!" );
+
+    //-------------------------------------------------------
+
+    var script = document.createElement("script");
+    script.type = "text/template";
+    script.id = "test2";
+    script.text = '<b>hello</b>';
+    document.body.appendChild(script);
+
+    var recieve = $.Oda.Display.TemplateHtml.create({
+        template: "test2",
+        scope: {}
+    });
+
+    var attempt = '<b>hello</b>';
+
+    equal( attempt, recieve, "Test OK : Passed!" );
+
+    //-------------------------------------------------------
+
+    var script = document.createElement("script");
+    script.type = "text/template";
+    script.id = "test3";
+    script.text = '<b>{{hello}}</b>';
+    document.body.appendChild(script);
+
+    var recieve = $.Oda.Display.TemplateHtml.create({
+        template: "test3"
+    });
+
+    var attempt = '<b>{{hello}}</b>';
+
+    equal( attempt, recieve, "Test OK : Passed!" );
+
+    //-------------------------------------------------------
+
+    var script = document.createElement("script");
+    script.type = "text/template";
+    script.id = "test4";
+    script.text = '<b>{{hello}}</b>';
+    document.body.appendChild(script);
+
+    var recieve = $.Oda.Display.TemplateHtml.create({
+        template: "test4",
+        scope: {}
+    });
+
+    var attempt = '<b>null</b>';
+
+    equal( attempt, recieve, "Test OK : Passed!" );
+});
