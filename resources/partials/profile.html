@@ -62,7 +62,7 @@
                 strhtml += '</tr>';
                 strhtml += "</table>";
                 $('#div_infos').html(strhtml);
-                $.Oda.Display.Scene.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');}});
+                $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');}});
             } };
             var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
             var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
