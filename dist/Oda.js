@@ -15,7 +15,7 @@
  *
  */
 (function() {
-    //EXTEND JQUERY
+    //BEGIN EXTEND JQUERY
     jQuery.fn.exists = function(){
         return this.length>0;
     };
@@ -29,7 +29,8 @@
             this.addClass("disabled");
         }
         this.attr("disabled", true);
-    }
+    };
+    //END EXTEND JQUERY
 
     //BEGIN IE STUFF
     if (typeof CustomEvent !== 'function') {
@@ -70,7 +71,7 @@
 
     var
     /* version */
-        VERSION = '0.150625'
+        VERSION = '0.160503.00'
         ;
 
     $.Oda = {
@@ -875,6 +876,7 @@
                 return null;
             }
         },
+        
         Mobile : {
             /* return elet*/
             funcReturnGPSPosition : null,
@@ -1087,6 +1089,7 @@
                 }
             }
         },
+        
         MokUp : {
             mokup : [],
             /**
@@ -1141,6 +1144,7 @@
                 }
             }
         },
+        
         Event : {
             /**
              * @param {Object} p_params
@@ -1178,9 +1182,7 @@
                 }
             }
         },
-        /**
-         *
-         */
+        
         Date : {
             getStrDateFR : function(){
                 try {
@@ -1358,7 +1360,7 @@
                     return $.Oda.Interface.call(jsonAjaxParam);
                 } catch (er) {
                     var msg = "$.Oda.Interface.callRest : " + er.message;
-                    $.Oda.Log.error(msg);
+                    $.Oda.Context.console.error(msg);
                     return null;
                 }
             },
@@ -1528,7 +1530,7 @@
                             }
                         }
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Interface.offline : " + er.message);
+                        $.Oda.Context.console.error("$.Oda.Interface.offline : " + er.message);
                         return null;
                     }
                 },
@@ -1661,7 +1663,7 @@
                     });
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Interface.traceLog) :" + er.message);
+                    $.Oda.Context.console.error("$.Oda.Interface.traceLog) :" + er.message);
                     return null;
                 }
             },
@@ -2396,8 +2398,7 @@
                 }
             }
         },
-
-        //for the application project
+        
         App : {},
 
         Tooling : {
@@ -2462,6 +2463,12 @@
                     return null;
                 }
             },
+            /**
+             * @param func
+             * @param time
+             * @param arg
+             * @returns {*}
+             */
             timeout : function(func, time, arg){
                 try {
                     setTimeout(func, time, arg);
@@ -2643,7 +2650,6 @@
                 }
             },
             /**
-             *
              * @param {type} path
              * @returns {unresolved}
              */
@@ -2764,7 +2770,6 @@
                     return null;
                 }
             },
-
             /**
              * @name getMilise
              * @returns {string}
@@ -2778,7 +2783,6 @@
                     return null;
                 }
             },
-
             /**
              * @param {Object} p_params
              * @param p_params.url
@@ -2802,7 +2806,6 @@
                     return null;
                 }
             },
-
             /**
              * @param {Object} p_params
              * @param p_params.library
@@ -2823,7 +2826,10 @@
                     return null;
                 }
             },
-
+            /**
+             * @param {Object} obj
+             * @returns {Int}
+             */
             objectSize : function(obj) {
                 try {
                     var size = 0, key;
@@ -2836,7 +2842,6 @@
                     return null;
                 }
             },
-
             /**
              * objDataTableFromJsonArray
              *
@@ -2873,7 +2878,6 @@
                     return objRetour;
                 }
             },
-
             /**
              * @param {Object} p_params
              * @param p_params.collection
@@ -2895,7 +2899,6 @@
                     return null;
                 }
             },
-
             /**
              * @param {Object} p_params
              * @param p_params.collectionOri
@@ -2941,7 +2944,6 @@
                     return null;
                 }
             },
-
             /**
              * pad2
              * @param {int} number
@@ -2958,7 +2960,6 @@
                     return null;
                 }
             },
-
             /**
              * @name postResources
              * @desc for send resources in the resources folder
@@ -3013,7 +3014,6 @@
                     return null;
                 }
             },
-
             /**
              * @param callback Function
              * @param delay Integer
@@ -3179,7 +3179,7 @@
                     return null;
                 }
             },
-            /***
+            /**
              * @param {Object} params.default
              * @param {Object} params.source
              * @param {Object} params
@@ -3199,6 +3199,62 @@
                     return null;
                 }
             },
+            /**
+             * @param {Array} params.src
+             * @param {Function|Object} params.condition
+             * @param {Object} params
+             * @returns {Object}
+             */
+            filter: function(params){
+                try {
+                    if(!(params.src instanceof Array)){
+                        throw {
+                            name:        "Wrong type of src",
+                            level:       "Show Stopper",
+                            message:     "src is not an array",
+                            htmlMessage: "src is not an array",
+                            toString:    function(){return this.name + ": " + this.message;}
+                        };
+                    }
+                    var tabReturn = [];
+
+                    if(params.condition instanceof Function){
+                        for(var index in params.src){
+                            var elt = params.src[index];
+                            if(params.condition(elt)){
+                                tabReturn.push(elt);
+                            }
+                        }
+                    }else if(params.condition instanceof Object){
+                        for(var index in params.src){
+                            var elt = params.src[index];
+                            var gardian = false;
+                            for(var keyCondition in params.condition){
+                                var conditionAttribute = params.condition[keyCondition];
+                                if(elt.hasOwnProperty(keyCondition) && elt[keyCondition] === conditionAttribute){
+                                    gardian = true;
+                                }
+                            }
+                            if(gardian){
+                                tabReturn.push(elt);
+                            }
+                        }
+                    }else{
+                        throw {
+                            name:        "Wrong type of condition",
+                            level:       "Show Stopper",
+                            message:     "condition is not an object or function",
+                            htmlMessage: "condition is not an object or function",
+                            toString:    function(){return this.name + ": " + this.message;}
+                        };
+                    }
+
+                    return tabReturn;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.filter : " + er.message);
+                    return null;
+                }
+            }
         },
 
         I8n : {
@@ -3412,7 +3468,9 @@
                 }
             }
         },
+        
         Controller: {},
+        
         Worker : {
             lib : function(){
                 this.$Oda = {
@@ -4617,13 +4675,7 @@
                 }
             },
         },
-
-        /**
-         * log
-         * @param {int} p_type
-         * @param {string} p_msg
-         * @returns {boolean}
-         */
+        
         Log : {
             "info" : function(p_msg) {
                 try {
@@ -4657,7 +4709,9 @@
             "error" : function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
-                    $.Oda.Interface.traceLog({"msg":p_msg});
+                    if($.Oda.Context.rest !== ""){
+                        $.Oda.Interface.traceLog({"msg":p_msg});
+                    }
                     return this;
                 } catch (er) {
                     console.log("$.Oda.Log.error : " + er.message);

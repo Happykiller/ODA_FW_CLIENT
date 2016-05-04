@@ -126,3 +126,20 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     equal( attempt, recieve, "Test OK : Passed!" );
 });
+
+test( "$.Oda.Tooling.filter", function(assert ) {
+    var inputs = [1, 2, 3];
+
+    deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt > 1;}}), [2, 3], "$.Oda.Tooling.filter with array of value" );
+
+    var inputs = [{age: 11}, {age: 12}, {age: 13}];
+
+    deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt.age > 11;}}), [{age: 12}, {age: 13}], "$.Oda.Tooling.filter with array of object" );
+
+    equal($.Oda.Tooling.filter({src: "truc", condition: function(elt){return true;}}), null, "$.Oda.Tooling.filter with no array" );
+
+    var inputs = [{age: 11, filter: true}, {age: 12, filter: false}, {age: 13, filter: false}];
+    equal($.Oda.Tooling.filter({src: inputs, condition: "truc"}), null, "$.Oda.Tooling.filter with attribute in condition but not an object" );
+
+    deepEqual($.Oda.Tooling.filter({src: inputs, condition: {filter: true}}), [{age: 11, filter: true}], "$.Oda.Tooling.filter with attribute in condition" );
+});
