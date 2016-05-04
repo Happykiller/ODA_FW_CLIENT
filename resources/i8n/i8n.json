@@ -186,7 +186,17 @@
         "edit_desc": "Description : ",
         "edit_actif": "Actif : ",
         "input_rang": "Rang : ",
-        "bt-create-new-message": "Cr&eacute;er un message"
+        "bt-create-new-message": "Cr&eacute;er un message",
+        "userUpdateOk": "Modification ok.",
+        "messageCreateOk": "Message bien enregistr&eacute;.",
+        "messageCreateMessage": "Message",
+        "messageCreateAlertLevel": "Niveau d'alerte",
+        "messageCreateAlertLevelInfo": "Information",
+        "messageCreateAlertLevelDanger": "Critique",
+        "messageCreateAlertLevelWarning": "Avertissement",
+        "messageCreateAlertLevelSuccess": "Positif",
+        "messageCreateProfileLevel": "Profile minimum",
+        "messageCreateDelay": "Date d'expiration (7J par defaut)"
     },
     "en": {
         "title": "Administration",
@@ -196,7 +206,18 @@
         "edit_mail": "Email : ",
         "edit_desc": "Description : ",
         "edit_actif": "Active : ",
-        "input_rang": "Profile : "
+        "input_rang": "Profile : ",
+        "bt-create-new-message": "Create new message",
+        "userUpdateOk": "Update success.",
+        "messageCreateOk": "Message creation success.",
+        "messageCreateMessage": "Message",
+        "messageCreateAlertLevel": "Alert level",
+        "messageCreateAlertLevelInfo": "Information",
+        "messageCreateAlertLevelDanger": "Critical",
+        "messageCreateAlertLevelWarning": "Warning",
+        "messageCreateAlertLevelSuccess": "Positive",
+        "messageCreateProfileLevel": "Profile",
+        "messageCreateDelay": "Expiration date (7D by default)"
     },
     "es": {
         "title": "Administration",
@@ -206,7 +227,18 @@
         "edit_mail": "Email : ",
         "edit_desc": "Description : ",
         "edit_actif": "Active : ",
-        "input_rang": "Profile : "
+        "input_rang": "Profile : ",
+        "bt-create-new-message": "Create new message",
+        "userUpdateOk": "Update success.",
+        "messageCreateOk": "Message creation success.",
+        "messageCreateMessage": "Message",
+        "messageCreateAlertLevel": "Alert level",
+        "messageCreateAlertLevelInfo": "Information",
+        "messageCreateAlertLevelDanger": "Critical",
+        "messageCreateAlertLevelWarning": "Warning",
+        "messageCreateAlertLevelSuccess": "Positive",
+        "messageCreateProfileLevel": "Profile",
+        "messageCreateDelay": "Expiration date (7D by default)"
     }
 }, {
     "groupName": "oda-supervision",
