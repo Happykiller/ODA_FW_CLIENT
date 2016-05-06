@@ -143,3 +143,59 @@ test( "$.Oda.Tooling.filter", function(assert ) {
 
     deepEqual($.Oda.Tooling.filter({src: inputs, condition: {filter: true}}), [{age: 11, filter: true}], "$.Oda.Tooling.filter with attribute in condition" );
 });
+
+test( "$.Oda.Tooling.order", function(assert ) {
+    var inputs = [1, 2, 3];
+
+    deepEqual(
+        $.Oda.Tooling.order({
+            collection: inputs, compare: function(elt1, elt2){
+                if(elt1 < elt2){
+                    return 1;
+                }else if(elt1 > elt2){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+        }),
+        [3,2,1],
+        "$.Oda.Tooling.order with value"
+    );
+
+    var inputs = ["aa", "ba", "ca"];
+
+    deepEqual(
+        $.Oda.Tooling.order({
+            collection: inputs, compare: function(elt1, elt2){
+                if(elt1 < elt2){
+                    return 1;
+                }else if(elt1 > elt2){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+        }),
+        ["ca","ba","aa"],
+        "$.Oda.Tooling.order with string"
+    );
+
+    var inputs = [{label:"a"},{label:"b"},{label:"b"},{label:"c"}];
+
+    deepEqual(
+        $.Oda.Tooling.order({
+            collection: inputs, compare: function(elt1, elt2){
+                if(elt1.label < elt2.label){
+                    return 1;
+                }else if(elt1.label > elt2.label){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+        }),
+        [{label:"c"},{label:"b"},{label:"b"},{label:"a"}],
+        "$.Oda.Tooling.order with object"
+    );
+});

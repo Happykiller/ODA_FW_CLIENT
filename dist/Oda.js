@@ -2881,7 +2881,8 @@
             /**
              * @param {Object} p_params
              * @param p_params.collection
-             * @param p_params.compare
+             * @param p_params.compare with a, b
+             * @desc compare must be return 1 si a before b, -1 if b before a, 0 if equal
              * @returns {$.Oda.Tooling}
              */
             order : function (p_params) {
