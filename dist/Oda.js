@@ -3,7 +3,7 @@
 
 /**
  * @author FRO
- * @date 2015-07-12
+ * @date 2016-05-05
  *
  * If you want to define the modeExecute
  * ?modeExecution = full, app, or mini
@@ -14,17 +14,20 @@
  * oda-gapi-loaded : When Gapi is ready
  *
  */
-(function() {
+
+var $;
+
+(function($) {
     //BEGIN EXTEND JQUERY
-    jQuery.fn.exists = function(){
+    $.fn.exists = function(){
         return this.length>0;
     };
 
-    jQuery.fn.btEnable = function(){
+    $.fn.btEnable = function(){
         this.removeClass("disabled");
         this.removeAttr("disabled");
     };
-    jQuery.fn.btDisable = function(){
+    $.fn.btDisable = function(){
         if(!this.hasClass('disabled')){
             this.addClass("disabled");
         }
@@ -131,6 +134,314 @@
             noInjection : "^(?!.*?function())",
         },
 
+        init : function(){
+            try {
+                $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
+
+                var listDepends = [
+                    {"name" : "library" , ordered : false, "list" : [
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/css.css", "type" : "css" },
+                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+
+                    ]}
+                ];
+
+                if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
+                    var listDependsMokup = [
+                        {"name" : "mokup" , ordered : false, "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
+                        ]}
+                    ];
+                    listDepends = listDepends.concat(listDependsMokup);
+                }
+
+                if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
+                    var listDependsCache = [
+                        {"name" : "cache" , ordered : false, "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
+                        ]}
+                    ];
+                    listDepends = listDepends.concat(listDependsCache);
+                }
+
+                if($.Oda.Context.ModeExecution.app){
+                    var listDependsApp = [
+                        {"name": "app", ordered: false, "list": [
+                            { "elt" : $.Oda.Context.rootPath + "config/config.js", "type" : "script" },
+                            { "elt" : $.Oda.Context.rootPath + "css/css.css", "type" : "css" },
+                            { "elt" : $.Oda.Context.rootPath + "i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                            { "elt" : $.Oda.Context.rootPath + "js/OdaApp.js", "type": "script"}
+                        ]}
+                    ];
+
+                    if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
+                        var listDependsMokupApp = [
+                            {"name" : "mokupApp" , ordered : false, "list" : [
+                                { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
+                            ]}
+                        ];
+                        listDepends = listDepends.concat(listDependsMokupApp);
+                    }
+
+                    if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
+                        var listDependsCacheApp = [
+                            {"name" : "cacheApp" , ordered : false, "list" : [
+                                { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
+                            ]}
+                        ];
+                        listDepends = listDepends.concat(listDependsCacheApp);
+                    }
+
+                    listDepends = listDepends.concat(listDependsApp);
+                }
+
+                if($.Oda.Context.ModeExecution.scene){
+
+                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile","resetPwd"];
+                    $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
+
+                    $.Oda.Router.addMiddleWare("support",function() {
+                        $.Oda.Log.debug("MiddleWares : support");
+                        var tabInput = { param_name : "maintenance" };
+                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getParam.php", {callback : function(data){
+                            try{
+                                var maintenance = data.data.leParametre.param_value;
+
+                                if (maintenance === "1") {
+                                    $.Oda.Router.routerExit = true;
+                                    $.Oda.Router.routes.support.go();
+                                }
+                            }catch (e){
+                                $.Oda.Router.routerExit = true;
+                                $.Oda.Router.routes.support.go();
+                            }
+                        }}, tabInput);
+                    });
+
+                    $.Oda.Router.addMiddleWare("auth", function() {
+                        $.Oda.Log.debug("MiddleWares : auth");
+
+                        if (($.Oda.Session.hasOwnProperty("code_user")) && ($.Oda.Session.code_user !== "")) {
+                            if ($.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
+                                var tabInput = {
+                                    "code_user": $.Oda.Session.code_user,
+                                    "key": $.Oda.Session.key
+                                };
+                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
+                                    if (data.data) {
+                                    } else {
+                                        $.Oda.Router.routerExit = true;
+                                        $.Oda.Security.logout();
+                                    }
+                                }}, tabInput);
+                            } else {
+                                $.Oda.Log.error("MiddleWares auth : route not allowed "+$.Oda.Router.current.route);
+                                $.Oda.Router.routerExit = true;
+                                $.Oda.Security.logout();
+                            }
+                        } else {
+                            var session = $.Oda.Storage.get("ODA-SESSION");
+
+                            if (session !== null) {
+                                $.Oda.Session = session;
+
+                                var tabInput = {
+                                    "code_user": session.code_user,
+                                    "key": session.key
+                                };
+                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
+                                    if (data.data) {
+                                        $.Oda.Security.loadRight();
+                                        if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
+                                            $.Oda.Router.routerExit = true;
+                                            $.Oda.Security.logout();
+                                        }
+                                    } else {
+                                        $.Oda.Router.routerExit = true;
+                                        $.Oda.Security.logout();
+                                    }
+                                }}, tabInput);
+                            } else {
+                                var params = $.Oda.Router.current.args;
+                                if ((params.hasOwnProperty("getUser")) && (params.hasOwnProperty("getPass"))) {
+                                    var auth = $.Oda.Security.auth({
+                                        "login": params.getUser,
+                                        "mdp": params.getPass,
+                                        "reload": false
+                                    });
+                                    if (auth) {
+                                        if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
+                                            $.Oda.Router.routerExit = true;
+                                            $.Oda.Security.logout();
+                                        }
+                                    } else {
+                                        $.Oda.Router.routerExit = true;
+                                        $.Oda.Security.logout();
+                                    }
+                                } else {
+                                    $.Oda.Router.routerExit = true;
+                                    $.Oda.Security.logout();
+                                }
+                            }
+                        }
+                    });
+
+                    $.Oda.Router.addDependencies("hightcharts", {
+                        ordered : true,
+                        "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/modules/exporting.js", "type" : "script"}
+                        ]
+                    });
+
+                    $.Oda.Router.addDependencies("dataTables", {
+                        ordered : true,
+                        "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/dataTables.bootstrap.css", "type" : "css"},
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
+                        ]
+                    });
+
+                    $.Oda.Router.addDependencies("ckeditor", {
+                        ordered : false,
+                        "list" : [
+                            { "elt" : "//cdn.ckeditor.com/4.4.7/standard/ckeditor.js", "type" : "script"}
+                        ]
+                    });
+
+                    $.Oda.Router.addRoute("auth", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/auth.html",
+                        "title" : "oda-main.authentification",
+                        "urls" : ["auth"],
+                        "middleWares" : ["support"],
+                        "system" : true
+                    });
+
+                    $.Oda.Router.addRoute("support", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/support.html",
+                        "title" : "oda-main.support-title",
+                        "urls" : ["support"],
+                        "system" : true
+                    });
+
+                    $.Oda.Router.addRoute("404", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/404.html",
+                        "title" : "oda-main.404-title",
+                        "urls" : ["404"],
+                        "system" : true
+                    });
+
+                    $.Oda.Router.addRoute("resetPwd", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/resetPwd.html",
+                        "title" : "resetPwd.title",
+                        "urls" : ["resetPwd"],
+                        "middleWares" : ["support"],
+                    });
+
+                    $.Oda.Router.addRoute("contact", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/contact.html",
+                        "title" : "oda-main.contact",
+                        "urls" : ["contact"],
+                        "middleWares" : ["support"]
+                    });
+
+                    $.Oda.Router.addRoute("forgot", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/forgot.html",
+                        "title" : "oda-main.forgot-title",
+                        "urls" : ["forgot"],
+                        "middleWares" : ["support"]
+                    });
+
+                    $.Oda.Router.addRoute("subscrib", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/subscrib.html",
+                        "title" : "oda-main.subscrib-title",
+                        "urls" : ["subscrib"],
+                        "middleWares" : ["support"]
+                    });
+
+                    $.Oda.Router.addRoute("home", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/home.html",
+                        "title" : "oda-main.home-title",
+                        "urls" : ["","home"],
+                        "middleWares" : ["support", "auth"]
+                    });
+
+                    $.Oda.Router.addRoute("profile", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/profile.html",
+                        "title" : "oda-main.profile-title",
+                        "urls" : ["profile"],
+                        "middleWares" : ["support", "auth"]
+                    });
+
+                    $.Oda.Router.addRoute("stats", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/stats.html",
+                        "title" : "oda-stats.title",
+                        "urls" : ["stats"],
+                        "middleWares" : ["support", "auth"],
+                        "dependencies" : ["hightcharts"]
+                    });
+
+                    $.Oda.Router.addRoute("admin", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/admin.html",
+                        "title" : "oda-admin.title",
+                        "urls" : ["admin"],
+                        "middleWares" : ["support", "auth"],
+                        "dependencies" : ["dataTables", "ckeditor"]
+                    });
+
+                    $.Oda.Router.addRoute("supervision", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/supervision.html",
+                        "title" : "oda-supervision.title",
+                        "urls" : ["supervision"],
+                        "middleWares" : ["support", "auth"],
+                        "dependencies" : ["dataTables"]
+                    });
+
+                    var listDependsScene = [
+                        {"name" : "scene" , ordered : false, "list" : [
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/simple-sidebar.css", "type" : "css" },
+                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
+                        ]}
+                    ];
+                    listDepends = listDepends.concat(listDependsScene);
+                }
+
+                $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
+                    if($.Oda.Context.ModeExecution.footer){
+                        $('body').append('<div class="footer">Power with <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
+                    }
+
+                    // init from config
+                    if ($.Oda.Context.host !== ""){
+                        $.Oda.Storage.storageKey = "ODA__"+$.Oda.Context.host+"__";
+                    }
+                    if($.Oda.Context.ModeExecution.notification){
+                        $.Oda.Display.Notification.load();
+                    }
+                    if($.Oda.Context.ModeExecution.scene) {
+                        if($("#"+ $.Oda.Context.mainDiv).exists()){
+                            $("#"+ $.Oda.Context.mainDiv).remove();
+                        }
+                        $.Oda.Display.Scene.load();
+                    }
+                    if($.Oda.Context.ModeExecution.rooter){
+                        $.Oda.Router.startRooter();
+                    }
+                    var d = new Date();
+                    var n = d.getTime();
+                    var mili = (d - $.Oda.Context.startDate.getTime());
+                    $.Oda.Log.info("Oda fully loaded. (in "+mili+" miliseconds)");
+                    $.Oda.Event.send({name:"oda-fully-loaded", data : { truc : data.msg }});
+                }, functionFeedbackParams : {msg : "Welcome with Oda"}});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.init : " + er.message);
+                return null;
+            }
+        },
+        
         Cache : {
             config : [],
             cache : [],
@@ -567,314 +878,6 @@
                     return null;
                 }
             },
-        },
-
-        init : function(){
-            try {
-                $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
-
-                var listDepends = [
-                    {"name" : "library" , ordered : false, "list" : [
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/css.css", "type" : "css" },
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
-
-                    ]}
-                ];
-
-                if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
-                    var listDependsMokup = [
-                        {"name" : "mokup" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
-                        ]}
-                    ];
-                    listDepends = listDepends.concat(listDependsMokup);
-                }
-
-                if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
-                    var listDependsCache = [
-                        {"name" : "cache" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
-                        ]}
-                    ];
-                    listDepends = listDepends.concat(listDependsCache);
-                }
-
-                if($.Oda.Context.ModeExecution.app){
-                    var listDependsApp = [
-                        {"name": "app", ordered: false, "list": [
-                            { "elt" : $.Oda.Context.rootPath + "config/config.js", "type" : "script" },
-                            { "elt" : $.Oda.Context.rootPath + "css/css.css", "type" : "css" },
-                            { "elt" : $.Oda.Context.rootPath + "i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath + "js/OdaApp.js", "type": "script"}
-                        ]}
-                    ];
-
-                    if($.Oda.Tooling.isInArray("mokup",$.Oda.Context.modeInterface)){
-                        var listDependsMokupApp = [
-                            {"name" : "mokupApp" , ordered : false, "list" : [
-                                { "elt" : $.Oda.Context.rootPath + "mokup/mokup.json", "type" : "json", "target" : function(p_json){$.Oda.MokUp.mokup = $.Oda.MokUp.mokup.concat(p_json);}}
-                            ]}
-                        ];
-                        listDepends = listDepends.concat(listDependsMokupApp);
-                    }
-
-                    if($.Oda.Tooling.isInArray("cache",$.Oda.Context.modeInterface)){
-                        var listDependsCacheApp = [
-                            {"name" : "cacheApp" , ordered : false, "list" : [
-                                { "elt" : $.Oda.Context.rootPath + "cache/cache.json", "type" : "json", "target" : function(p_json){$.Oda.Cache.config = $.Oda.Cache.config.concat(p_json);}}
-                            ]}
-                        ];
-                        listDepends = listDepends.concat(listDependsCacheApp);
-                    }
-
-                    listDepends = listDepends.concat(listDependsApp);
-                }
-
-                if($.Oda.Context.ModeExecution.scene){
-
-                    $.Oda.Router.routesAllowedDefault = ["","home","contact","forgot","subscrib","profile","resetPwd"];
-                    $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
-
-                    $.Oda.Router.addMiddleWare("support",function() {
-                        $.Oda.Log.debug("MiddleWares : support");
-                        var tabInput = { param_name : "maintenance" };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getParam.php", {callback : function(data){
-                            try{
-                                var maintenance = data.data.leParametre.param_value;
-
-                                if (maintenance === "1") {
-                                    $.Oda.Router.routerExit = true;
-                                    $.Oda.Router.routes.support.go();
-                                }
-                            }catch (e){
-                                $.Oda.Router.routerExit = true;
-                                $.Oda.Router.routes.support.go();
-                            }
-                        }}, tabInput);
-                    });
-
-                    $.Oda.Router.addMiddleWare("auth", function() {
-                        $.Oda.Log.debug("MiddleWares : auth");
-
-                        if (($.Oda.Session.hasOwnProperty("code_user")) && ($.Oda.Session.code_user !== "")) {
-                            if ($.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
-                                var tabInput = {
-                                    "code_user": $.Oda.Session.code_user,
-                                    "key": $.Oda.Session.key
-                                };
-                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
-                                    if (data.data) {
-                                    } else {
-                                        $.Oda.Router.routerExit = true;
-                                        $.Oda.Security.logout();
-                                    }
-                                }}, tabInput);
-                            } else {
-                                $.Oda.Log.error("MiddleWares auth : route not allowed "+$.Oda.Router.current.route);
-                                $.Oda.Router.routerExit = true;
-                                $.Oda.Security.logout();
-                            }
-                        } else {
-                            var session = $.Oda.Storage.get("ODA-SESSION");
-
-                            if (session !== null) {
-                                $.Oda.Session = session;
-
-                                var tabInput = {
-                                    "code_user": session.code_user,
-                                    "key": session.key
-                                };
-                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
-                                    if (data.data) {
-                                        $.Oda.Security.loadRight();
-                                        if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
-                                            $.Oda.Router.routerExit = true;
-                                            $.Oda.Security.logout();
-                                        }
-                                    } else {
-                                        $.Oda.Router.routerExit = true;
-                                        $.Oda.Security.logout();
-                                    }
-                                }}, tabInput);
-                            } else {
-                                var params = $.Oda.Router.current.args;
-                                if ((params.hasOwnProperty("getUser")) && (params.hasOwnProperty("getPass"))) {
-                                    var auth = $.Oda.Security.auth({
-                                        "login": params.getUser,
-                                        "mdp": params.getPass,
-                                        "reload": false
-                                    });
-                                    if (auth) {
-                                        if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
-                                            $.Oda.Router.routerExit = true;
-                                            $.Oda.Security.logout();
-                                        }
-                                    } else {
-                                        $.Oda.Router.routerExit = true;
-                                        $.Oda.Security.logout();
-                                    }
-                                } else {
-                                    $.Oda.Router.routerExit = true;
-                                    $.Oda.Security.logout();
-                                }
-                            }
-                        }
-                    });
-
-                    $.Oda.Router.addDependencies("hightcharts", {
-                        ordered : true,
-                        "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/highcharts.js", "type" : "script"},
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/highcharts-release/modules/exporting.js", "type" : "script"}
-                        ]
-                    });
-
-                    $.Oda.Router.addDependencies("dataTables", {
-                        ordered : true,
-                        "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/datatables/media/js/jquery.dataTables.min.js", "type" : "script"},
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/dataTables.bootstrap.css", "type" : "css"},
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/js/dataTables/dataTables.bootstrap.js", "type" : "script"}
-                        ]
-                    });
-
-                    $.Oda.Router.addDependencies("ckeditor", {
-                        ordered : false,
-                        "list" : [
-                            { "elt" : "//cdn.ckeditor.com/4.4.7/standard/ckeditor.js", "type" : "script"}
-                        ]
-                    });
-
-                    $.Oda.Router.addRoute("auth", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/auth.html",
-                        "title" : "oda-main.authentification",
-                        "urls" : ["auth"],
-                        "middleWares" : ["support"],
-                        "system" : true
-                    });
-
-                    $.Oda.Router.addRoute("support", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/support.html",
-                        "title" : "oda-main.support-title",
-                        "urls" : ["support"],
-                        "system" : true
-                    });
-
-                    $.Oda.Router.addRoute("404", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/404.html",
-                        "title" : "oda-main.404-title",
-                        "urls" : ["404"],
-                        "system" : true
-                    });
-
-                    $.Oda.Router.addRoute("resetPwd", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/resetPwd.html",
-                        "title" : "resetPwd.title",
-                        "urls" : ["resetPwd"],
-                        "middleWares" : ["support"],
-                    });
-
-                    $.Oda.Router.addRoute("contact", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/contact.html",
-                        "title" : "oda-main.contact",
-                        "urls" : ["contact"],
-                        "middleWares" : ["support"]
-                    });
-
-                    $.Oda.Router.addRoute("forgot", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/forgot.html",
-                        "title" : "oda-main.forgot-title",
-                        "urls" : ["forgot"],
-                        "middleWares" : ["support"]
-                    });
-
-                    $.Oda.Router.addRoute("subscrib", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/subscrib.html",
-                        "title" : "oda-main.subscrib-title",
-                        "urls" : ["subscrib"],
-                        "middleWares" : ["support"]
-                    });
-
-                    $.Oda.Router.addRoute("home", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/home.html",
-                        "title" : "oda-main.home-title",
-                        "urls" : ["","home"],
-                        "middleWares" : ["support", "auth"]
-                    });
-
-                    $.Oda.Router.addRoute("profile", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/profile.html",
-                        "title" : "oda-main.profile-title",
-                        "urls" : ["profile"],
-                        "middleWares" : ["support", "auth"]
-                    });
-
-                    $.Oda.Router.addRoute("stats", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/stats.html",
-                        "title" : "oda-stats.title",
-                        "urls" : ["stats"],
-                        "middleWares" : ["support", "auth"],
-                        "dependencies" : ["hightcharts"]
-                    });
-
-                    $.Oda.Router.addRoute("admin", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/admin.html",
-                        "title" : "oda-admin.title",
-                        "urls" : ["admin"],
-                        "middleWares" : ["support", "auth"],
-                        "dependencies" : ["dataTables", "ckeditor"]
-                    });
-
-                    $.Oda.Router.addRoute("supervision", {
-                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/supervision.html",
-                        "title" : "oda-supervision.title",
-                        "urls" : ["supervision"],
-                        "middleWares" : ["support", "auth"],
-                        "dependencies" : ["dataTables"]
-                    });
-
-                    var listDependsScene = [
-                        {"name" : "scene" , ordered : false, "list" : [
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/simple-sidebar.css", "type" : "css" },
-                            { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Scene.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
-                        ]}
-                    ];
-                    listDepends = listDepends.concat(listDependsScene);
-                }
-
-                $.Oda.Loader.load({ depends : listDepends, functionFeedback : function(data){
-                    if($.Oda.Context.ModeExecution.footer){
-                        $('body').append('<div class="footer">Power with <a href="http://oda.happykiller.net" target="_blank">Oda</a></div>')
-                    }
-
-                    // init from config
-                    if ($.Oda.Context.host !== ""){
-                        $.Oda.Storage.storageKey = "ODA__"+$.Oda.Context.host+"__";
-                    }
-                    if($.Oda.Context.ModeExecution.notification){
-                        $.Oda.Display.Notification.load();
-                    }
-                    if($.Oda.Context.ModeExecution.scene) {
-                        if($("#"+ $.Oda.Context.mainDiv).exists()){
-                            $("#"+ $.Oda.Context.mainDiv).remove();
-                        }
-                        $.Oda.Display.Scene.load();
-                    }
-                    if($.Oda.Context.ModeExecution.rooter){
-                        $.Oda.Router.startRooter();
-                    }
-                    var d = new Date();
-                    var n = d.getTime();
-                    var mili = (d - $.Oda.Context.startDate.getTime());
-                    $.Oda.Log.info("Oda fully loaded. (in "+mili+" miliseconds)");
-                    $.Oda.Event.send({name:"oda-fully-loaded", data : { truc : data.msg }});
-                }, functionFeedbackParams : {msg : "Welcome with Oda"}});
-                return this;
-            } catch (er) {
-                $.Oda.Log.error("$.Oda.init : " + er.message);
-                return null;
-            }
         },
         
         Mobile : {
@@ -2815,10 +2818,12 @@
                 try {
                     var listParams = {};
 
-                    $("script[src*='"+p_params.library+"']").each(function(index, value){
-                        var src = $(value).attr("src");
-                        listParams = $.Oda.Tooling.getParameterGet({url : src});
-                    });
+                    if($.each){
+                        $("script[src*='"+p_params.library+"']").each(function(index, value){
+                            var src = $(value).attr("src");
+                            listParams = $.Oda.Tooling.getParameterGet({url : src});
+                        });
+                    }
 
                     return listParams;
                 } catch (er) {
@@ -4781,4 +4786,6 @@
             $( "body" ).append('Brower not compatible with Oda.');
         }
     }
-})();
+})($ || ($ = {
+ fn: {}
+}));
