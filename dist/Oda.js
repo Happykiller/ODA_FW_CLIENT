@@ -441,6 +441,10 @@ var $;
                 return null;
             }
         },
+
+        Controller: {},
+
+        App : {},
         
         Cache : {
             config : [],
@@ -2401,8 +2405,6 @@ var $;
                 }
             }
         },
-        
-        App : {},
 
         Tooling : {
             timerDebounce : null,
@@ -3474,8 +3476,6 @@ var $;
                 }
             }
         },
-        
-        Controller: {},
         
         Worker : {
             lib : function(){
