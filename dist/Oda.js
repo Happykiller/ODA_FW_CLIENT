@@ -3196,12 +3196,35 @@ var $;
             merge: function(params) {
                 try {
                     var objReturn = this.clone(params.default);
+    
+                    //if array
+                    if(Array.isArray(objReturn)){
+                        //for each elt of target we apply the partn array
+                        var defaultEltArray = objReturn[0];
+                        objReturn = [];
+                        for(var index in params.source){
+                            objReturn.push(this.merge({default: defaultEltArray, source: params.source[index]}));
+                        }
+                    //if object    
+                    }else if((objReturn !== null) && (objReturn !== undefined) && (objReturn.constructor === Object)){
+                        for(var key in objReturn){
+                            if(params.source[key] !== undefined){
+                                objReturn[key] =  this.merge({default: objReturn[key], source: params.source[key]});
+                            }
+                        }
 
-                    for (var p in params.source) {
-                        objReturn[p] = params.source[p];
+                        //check if sources attrib in more
+                        for (var key in params.source) {
+                            if(!objReturn.hasOwnProperty(key)){
+                                objReturn[key] = params.source[key];
+                            }
+                        }
+                    }else if(params.source !== null){
+                        objReturn = params.source;
                     }
 
                     return objReturn;
+
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.merge : " + er.message);
                     return null;

@@ -199,3 +199,384 @@ test( "$.Oda.Tooling.order", function(assert ) {
         "$.Oda.Tooling.order with object"
     );
 });
+
+test( "$.Oda.Tooling.merge", function() {
+    deepEqual(
+        $.Oda.Tooling.merge({default: "4", source: "5"}),
+        "5",
+        "$.Oda.Tooling.merge 1"
+    );
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: 4, source: null}),
+        4,
+        "$.Oda.Tooling.merge 2"
+    );
+
+    var objDefault = [];
+
+    var objInput = [];
+
+    var expected = [];
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 3"
+    );
+
+    var objDefault = [];
+
+    var objInput = [1,2];
+
+    var expected = [1,2];
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 4"
+    );
+
+    var objDefault = [0];
+
+    var objInput = [1,2];
+
+    var expected = [1,2];
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 5"
+    );
+
+    var objDefault = {
+        a: 2,
+        b: 3
+    };
+
+    var objInput = {
+        a: 1
+    };
+
+    var expected = {
+        a: 1,
+        b: 3
+    }
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 6"
+    );
+
+    var objDefault = {
+        a : 1,
+        b : 2,
+        c : {
+            ca : 1,
+            cb : null,
+            cc : {
+                cca : 100,
+                ccb : 200
+            }
+        },
+        d : null
+    };
+
+    var objInput = {
+        a : 10,
+        c : {
+            ca : 10,
+            cc : {
+                cca : 101,
+                ccb : 202
+            }
+        },
+        d : 42,
+        e : "e"
+    };
+
+    var expected = {
+        a : 10,
+        b : 2,
+        c : {
+            ca : 10,
+            cb : null,
+            cc : {
+                cca : 101,
+                ccb : 202
+            }
+        },
+        d : 42,
+        e : "e"
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 7"
+    );
+
+    var objDefault = {
+        a : [
+            {
+                a : "",
+                b : ""
+            }
+        ],
+        b : [],
+        c : [
+            {
+                a : "",
+                b : [
+                    {
+                        a : "",
+                        b : "",
+                    }
+                ]
+            }
+        ]
+    };
+
+    var objInput = {
+        a : [
+            {
+                a : "",
+                b : ""
+            },
+            {
+                a : "fba"
+            }
+        ],
+        c : [
+            {
+                a : "",
+                b : [
+                    {
+                        b : "hbb"
+                    }
+                ]
+            }
+        ]
+    };
+
+    var expected = {
+        a : [
+            {
+                a : "",
+                b : ""
+            },
+            {
+                a : "fba",
+                b : ""
+            }
+        ],
+        b : [],
+        c : [
+            {
+                a : "",
+                b : [
+                    {
+                        a : "",
+                        b : "hbb"
+                    }
+                ]
+            }
+        ]
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 8"
+    );
+
+    var objDefault = {
+        a : [],
+    };
+
+    var objInput = {
+        a : [
+            {
+                a : "aa",
+                b : "ab"
+            }
+        ]
+    };
+
+    var expected = {
+        a : [
+            {
+                a : "aa",
+                b : "ab"
+            }
+        ]
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 9"
+    );
+
+    var objDefault = {
+        a : [
+            {
+                a : "",
+                b : ""
+            }
+        ],
+    };
+
+    var objInput = {
+        a : [
+            {
+                a : "a0a",
+                c : "a0c"
+            }
+        ]
+    };
+
+    var expected = {
+        a : [
+            {
+                a : "a0a",
+                b : "",
+                c : "a0c"
+            }
+        ]
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 10"
+    );
+
+    var objDefault = {
+        a : [
+            {
+                a : "",
+                b : ""
+            }
+        ],
+    };
+
+    var objDefault = {
+        "pocContract": {
+            "inputString": "",
+            "listObject": [
+                {
+                    "input2": ""
+                }
+            ],
+            "inputInt": []
+        }
+    };
+
+    var objInput =  {
+        "pocContract": {
+            "inputString": "dsfdf",
+            "listObject": [
+                {
+                    "input1": false,
+                    "input2": "dfdf"
+                }, {
+                    "input1": true
+                }
+            ], "inputInt": []
+        }
+    };
+
+    var expected =  {
+        "pocContract": {
+            "inputString": "dsfdf",
+            "listObject": [
+                {
+                    "input1": false,
+                    "input2": "dfdf"
+                }, {
+                    "input1": true,
+                    "input2": ""
+                }
+            ],
+            "inputInt": []
+        }
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 11"
+    );
+
+    var objDefault = {
+        "listObject": [
+            {
+                "input2": ""
+            }
+        ]
+    };
+
+    var objInput =  {
+        "listObject": [
+            {
+                "input1": false,
+                "input2": "dfdf"
+            },
+            {
+                "input1": true
+            }
+        ]
+    };
+
+    var expected =  {
+        "listObject": [
+            {
+                "input1": false,
+                "input2": "dfdf"
+            }, {
+                "input1": true,
+                "input2": ""
+            }
+        ]
+    };
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 12"
+    );
+
+    var objDefault = [
+        {
+            "input2": ""
+        }
+    ];
+
+    var objInput =  [
+        {
+            "input1": false,
+            "input2": "dfdf"
+        },
+        {
+            "input1": true
+        }
+    ];
+
+    var expected =  [
+        {
+            "input1": false,
+            "input2": "dfdf"
+        }, {
+            "input1": true,
+            "input2": ""
+        }
+    ];
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: objDefault, source: objInput}),
+        expected,
+        "$.Oda.Tooling.merge 13"
+    );
+});
