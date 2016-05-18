@@ -580,3 +580,47 @@ test( "$.Oda.Tooling.merge", function() {
         "$.Oda.Tooling.merge 13"
     );
 });
+
+test( "$.Oda.Tooling.checkParams", function() {
+    var inputs = {attr1 : null, attr2 : "truc"};
+    var def = {attr1 : null, attr2 : "defaultValue"};
+    var attemps = {attr1 : null, attr2 : "truc"};
+    var receive = $.Oda.Tooling.checkParams(inputs, def);
+
+    deepEqual(receive, attemps, "Test 1" );
+
+    var inputs = {attr1 : null};
+    var def = {attr1 : null, attr2 : "defaultValue"};
+    var attemps = {attr1 : null, attr2 : "defaultValue"};
+    var receive = $.Oda.Tooling.checkParams(inputs, def);
+
+    deepEqual(receive, attemps, "Test 2" );
+
+    var inputs = {attr2 : "truc"};
+    var def = {attr1 : null, attr2 : "defaultValue"};
+    var attemps = null;
+    var receive = $.Oda.Tooling.checkParams(inputs, def);
+
+    deepEqual(receive, attemps, "Test 3" );
+
+    var inputs = {attr1 : 1, attr2 : "truc"};
+    var def = {attr1 : 1, attr2 : "defaultValue"};
+    var attemps = {attr1 : 1, attr2 : "truc"};
+    var receive = $.Oda.Tooling.checkParams(inputs, def);
+
+    deepEqual(receive, attemps, "Test 4" );
+
+    var inputs = {attr1 : 1, attr2 : "truc"};
+    var def = {attr1 : 1};
+    var attemps = {attr1 : 1, attr2 : "truc"};
+    var receive = $.Oda.Tooling.checkParams(inputs, def);
+
+    deepEqual(receive, attemps, "Test 5" );
+});
+
+test( "$.Oda.Tooling.decodeHtml", function() {
+    var attemps = 'Hello';
+    var receive = $.Oda.Tooling.decodeHtml('<b>Hello</b>')
+
+    equal(receive, attemps, "Test 1" );
+});

@@ -81,9 +81,9 @@ var $;
         /* Version number */
         version: VERSION,
 
-        Session : null,
+        Session: null,
 
-        SessionDefault : {
+        SessionDefault: {
             "code_user" : "",
             "key" : "",
             "id" : 0,
@@ -98,43 +98,43 @@ var $;
             }
         },
 
-        Context : {
+        Context: {
             /*
              ["cache","ajax","mokup","offline"]
              */
-            modeInterface : ["cache","ajax","mokup","offline"],
-            ModeExecution : {
-                init : false,
-                scene : false,
-                notification : false,
-                message : false,
-                rooter : false,
-                app : false,
+            modeInterface: ["cache","ajax","mokup","offline"],
+            ModeExecution: {
+                init: false,
+                scene: false,
+                notification: false,
+                message: false,
+                rooter: false,
+                app: false,
                 footer: false
             },
-            debug : false,
-            vendorName : "bower_components",
-            rootPath : "",
-            projectLabel : "Project",
-            mainDiv : "oda-content",
-            host : "",
-            rest : "",
-            resources : "resources/",
-            window : window,
-            console : console,
-            startDate : false
+            debug: false,
+            vendorName: "bower_components",
+            rootPath: "",
+            projectLabel: "Project",
+            mainDiv: "oda-content",
+            host: "",
+            rest: "",
+            resources: "resources/",
+            window: window,
+            console: console,
+            startDate: false
         },
 
-        Regexs : {
-            mail : "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum|fr)\\b",
-            login : "^[a-zA-Z0-9]{3,}$",
-            pass : "^[a-zA-Z0-9]{4,}$",
-            fristName : "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{3,}$",
-            lastName : "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{3,}$",
-            noInjection : "^(?!.*?function())",
+        Regexs: {
+            mail: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum|fr)\\b",
+            login: "^[a-zA-Z0-9]{3,}$",
+            pass: "^[a-zA-Z0-9]{4,}$",
+            fristName: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{3,}$",
+            lastName: "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{3,}$",
+            noInjection: "^(?!.*?function())",
         },
 
-        init : function(){
+        init: function(){
             try {
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
 
@@ -444,9 +444,9 @@ var $;
 
         Controller: {},
 
-        App : {},
+        App: {},
         
-        Cache : {
+        Cache: {
             config : [],
             cache : [],
             /**
@@ -649,7 +649,7 @@ var $;
             }
         },
 
-        Loader : {
+        Loader: {
             Status : {
                 init : 0,
                 loading : 1,
@@ -884,7 +884,7 @@ var $;
             },
         },
         
-        Mobile : {
+        Mobile: {
             /* return elet*/
             funcReturnGPSPosition : null,
 
@@ -1097,7 +1097,7 @@ var $;
             }
         },
         
-        MokUp : {
+        MokUp: {
             mokup : [],
             /**
              * @param params
@@ -1152,7 +1152,7 @@ var $;
             }
         },
         
-        Event : {
+        Event: {
             /**
              * @param {Object} p_params
              * @param {string} p_params.name
@@ -1190,7 +1190,7 @@ var $;
             }
         },
         
-        Date : {
+        Date: {
             getStrDateFR : function(){
                 try {
                     var currentTime = new Date();
@@ -1287,7 +1287,7 @@ var $;
             }
         },
 
-        Interface : {
+        Interface: {
             /**
              * @desc factorisation pour choisir le type de call à faire
              * @param params
@@ -1676,7 +1676,7 @@ var $;
             },
         },
 
-        Display : {
+        Display: {
             /**
              * @param {Object} p_params
              * @param p_params.json
@@ -2406,16 +2406,17 @@ var $;
             }
         },
 
-        Tooling : {
-            timerDebounce : null,
-            timerThrottle : null,
-            lastThrottle : null,
+        Tooling: {
+            timerDebounce: null,
+            timerThrottle: null,
+            lastThrottle: null,
             /**
              * checkParams
              * @param {Object} p_params
              * @param {json} p_def ex : {attr1 : null, attr2 : "truc"}
+             * @desc null for mandatory params, present with default value or not for optional
              */
-            checkParams : function (p_params, p_def) {
+            checkParams: function(p_params, p_def) {
                 try {
                     var params = $.Oda.Tooling.clone(p_params);
 
@@ -2459,7 +2460,7 @@ var $;
              * @param p_params.strPath relative from resources/
              * @returns {String}
              */
-            urlDownloadFromServerResources : function (p_params) {
+            urlDownloadFromServerResources: function(p_params) {
                 try {
                     var url = $.Oda.Context.rest+'vendor/happykiller/oda/resources/script/download.php&fic=../../../../../../../resources/'+p_params.strPath;
                     return url;
@@ -2474,7 +2475,7 @@ var $;
              * @param arg
              * @returns {*}
              */
-            timeout : function(func, time, arg){
+            timeout: function(func, time, arg){
                 try {
                     setTimeout(func, time, arg);
                     return this;
@@ -2489,7 +2490,7 @@ var $;
              * @param {int} p_precision
              * @returns {float|int}
              */
-            arrondir : function(p_value, p_precision){
+            arrondir: function(p_value, p_precision){
                 try {
                     var retour = 0;
                     var coef = Math.pow(10, p_precision);
@@ -2512,7 +2513,7 @@ var $;
              * @param{object} p_params
              * @returns {object}
              */
-            clone : function(p_params) {
+            clone: function(p_params) {
                 try {
                     if (null === p_params || "object" !== typeof p_params) return p_params;
                     var copy = p_params.constructor();
@@ -2530,7 +2531,7 @@ var $;
              * @param {object} elt2
              * @returns {$.Oda.Tooling}
              */
-            deepEqual: function (elt1, elt2) {
+            deepEqual: function(elt1, elt2) {
                 try {
                     if ((typeof elt1 === "object" && elt1 !== null) && (typeof elt2 === "object" && elt2 !== null)) {
                         if (Object.keys(elt1).length !== Object.keys(elt2).length)
@@ -2562,7 +2563,7 @@ var $;
              * @param delay Integer
              * @returns {$.Oda.Tooling}
              */
-            debounce : function (callback, delay) {
+            debounce: function(callback, delay) {
                 try {
                     var args = arguments;
                     var context = this;
@@ -2581,7 +2582,7 @@ var $;
              * @param {string} html
              * @returns {string}
              */
-            decodeHtml : function (html) {
+            decodeHtml: function(html) {
                 try {
                     var decoded = $('<div/>').html(html).text();
                     return decoded;
@@ -2592,9 +2593,12 @@ var $;
             },
             /**
              * @param {object} p_params
+             * @param p_params.str
+             * @param p_params.first
+             * @param p_params.last
              * @returns {$.Oda.Tooling}
              */
-            findBetweenWords: function (p_params) {
+            findBetweenWords: function(p_params) {
                 try {
                     var r = new RegExp(p_params.first + '(.*?)' + p_params.last, 'gm');
                     var list =  p_params.str.match(r);
@@ -2616,7 +2620,7 @@ var $;
              * @param p_params.ignoreCase by default false
              * @returns {String}
              */
-            replaceAll: function (p_params) {
+            replaceAll: function(p_params) {
                 try {
                     if(p_params.str === undefined){
                         $.Oda.Log.warning('str is missing in params of $.Oda.Tooling.replaceAll');
@@ -2658,7 +2662,7 @@ var $;
              * @param {type} path
              * @returns {unresolved}
              */
-            clearSlashes : function(string) {
+            clearSlashes: function(string) {
                 try {
                     return string.toString().replace(/\/$/, '').replace(/^\//, '');
                 } catch (er) {
@@ -2669,7 +2673,7 @@ var $;
             /**
              * @returns {String}
              */
-            getLangBrowser : function (p_params) {
+            getLangBrowser: function(p_params) {
                 try {
                     var lang = "";
                     if(!$.Oda.Tooling.isUndefined(navigator.language)){
@@ -2702,7 +2706,7 @@ var $;
              * @param {string} p_attribut
              * @returns {Array}
              */
-            getListValeurPourAttribut : function(p_obj, p_attribut, p_type) {
+            getListValeurPourAttribut: function(p_obj, p_attribut, p_type) {
                 try {
                     var retour = [];
 
@@ -2738,7 +2742,7 @@ var $;
              * @param {array} p_array
              * @returns {Boolean}
              */
-            isInArray :  function(p_value, p_array) {
+            isInArray: function(p_value, p_array) {
                 try {
                     var boolRetour = false;
 
@@ -2761,7 +2765,7 @@ var $;
              * @param {object} p_object
              * @returns {Boolean}
              */
-            isUndefined : function(p_object) {
+            isUndefined: function(p_object) {
                 try {
                     var boolReturn = true;
 
@@ -2779,7 +2783,7 @@ var $;
              * @name getMilise
              * @returns {string}
              */
-            getMilise : function() {
+            getMilise: function() {
                 try {
                     var d = new Date();
                     return d.getTime();
@@ -2793,7 +2797,7 @@ var $;
              * @param p_params.url
              * @returns {Object}
              */
-            getParameterGet : function(p_params) {
+            getParameterGet: function(p_params) {
                 try {
                     var result = {};
                     var tableau = decodeURI(p_params.url).split("?");
@@ -2816,7 +2820,7 @@ var $;
              * @param p_params.library
              * @returns {Object}
              */
-            getParamsLibrary: function (p_params) {
+            getParamsLibrary: function(p_params) {
                 try {
                     var listParams = {};
 
@@ -2837,7 +2841,7 @@ var $;
              * @param {Object} obj
              * @returns {Int}
              */
-            objectSize : function(obj) {
+            objectSize: function(obj) {
                 try {
                     var size = 0, key;
                     for (key in obj) {
@@ -2855,7 +2859,7 @@ var $;
              * @param {object} p_JsonArray
              * @returns {object}
              */
-            objDataTableFromJsonArray : function(p_JsonArray){
+            objDataTableFromJsonArray: function(p_JsonArray){
                 try {
                     var objRetour = { statut : "ok"};
 
@@ -2892,7 +2896,7 @@ var $;
              * @desc compare must be return 1 si a before b, -1 if b before a, 0 if equal
              * @returns {$.Oda.Tooling}
              */
-            order : function (p_params) {
+            order: function(p_params) {
                 try {
                     var clone = this.clone(p_params.collection);
 
@@ -2914,7 +2918,7 @@ var $;
              * @param p_params.compare
              * @returns {$.Oda.Tooling}
              */
-            orderInter : function (p_params) {
+            orderInter: function(p_params) {
                 try {
                     if(p_params.collectionOri.length > 0){
                         var min = {
@@ -2957,7 +2961,7 @@ var $;
              * @param {int} number
              * @returns {String}
              */
-            pad2 : function(number) {
+            pad2: function(number) {
                 try {
                     if(typeof number !== "integer"){
                         number = parseInt(number);
@@ -2978,7 +2982,7 @@ var $;
              * @param params.callback mandatory
              * @returns {Object}
              */
-            postResources : function(params) {
+            postResources: function(params) {
                 try {
                     var strUrl = $.Oda.Context.rest+'vendor/happykiller/oda/resources/script/postResources.php?path='+params.folder;
 
@@ -3027,7 +3031,7 @@ var $;
              * @param delay Integer
              * @returns {$.Oda.Tooling}
              */
-            throttle : function (callback, delay) {
+            throttle: function(callback, delay) {
                 try {
                     var now = +new Date();
                     var context = this;
@@ -3051,7 +3055,7 @@ var $;
             /**
              * @returns {$.Oda.Tooling}
              */
-            detectBrower : function () {
+            detectBrower: function() {
                 try {
                     var browser,
                         version,
@@ -3173,7 +3177,7 @@ var $;
             /**
              * @returns {Boolean}
              */
-            isOdaConpatible : function () {
+            isOdaConpatible: function() {
                 try {
                     var boolRetour = true;
                     if(
@@ -3288,7 +3292,7 @@ var $;
             }
         },
 
-        I8n : {
+        I8n: {
             datas : [],
             /**
              * @name get
@@ -3391,7 +3395,7 @@ var $;
             }
         },
 
-        Security : {
+        Security: {
             /**
              * auth
              * @param {String} p_params.login
@@ -3500,7 +3504,7 @@ var $;
             }
         },
         
-        Worker : {
+        Worker: {
             lib : function(){
                 this.$Oda = {
                     Context : {
@@ -3714,7 +3718,7 @@ var $;
             }
         },
 
-        Tuto : {
+        Tuto: {
             enable : true,
 
             currentElt : "",
@@ -3809,7 +3813,7 @@ var $;
             }
         },
 
-        Scope : {
+        Scope: {
             /**
              * @param {Object} p_params
              * @param p_params.str
@@ -4074,7 +4078,7 @@ var $;
             }
         },
 
-        Storage : {
+        Storage: {
             /* Version number */
             version : VERSION,
             ttl_default : 86400, //24H
@@ -4275,7 +4279,7 @@ var $;
             }
         },
 
-        Router : {
+        Router: {
             current : {
                 route : "",
                 args : []
@@ -4533,7 +4537,7 @@ var $;
             }
         },
 
-        Google : {
+        Google: {
             gapiStatuts : {
                 "zero" : 0,
                 "init" : 1,
@@ -4705,7 +4709,7 @@ var $;
             },
         },
         
-        Log : {
+        Log: {
             "info" : function(p_msg) {
                 try {
                     $.Oda.Context.console.info(p_msg);
