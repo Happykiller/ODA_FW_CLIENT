@@ -15,6 +15,8 @@ test( "$.Oda.Tooling.clone", function() {
 });
 
 test( "$.Oda.Tooling.deepEqual", function() {
+    ok($.Oda.Tooling.deepEqual([1,2],[1,2]), "Test OK : Passed!" );
+
     ok($.Oda.Tooling.deepEqual({attr1 : "value1", attr2 : "value2"},{attr1 : "value1", attr2 : "value2"}), "Test OK : Passed!" );
 });
 
@@ -643,4 +645,47 @@ test( "$.Oda.Tooling.findBetweenWords", function() {
     })
 
     deepEqual(receive, attemps, "Test 2" );
+});
+
+test( "$.Oda.Tooling.getListValeurPourAttribut", function() {
+    var attemps = ['here', 'ici'];
+    var inputs = [
+        {
+            attr1: 'Hello',
+            attr2: 'here',
+            attr3: 'you'
+        },
+        {
+            attr1: 'bonjour',
+            attr2: 'ici',
+            attr3: 'vous'
+        }
+    ];
+    var receive = $.Oda.Tooling.getListValeurPourAttribut(inputs,"attr2");
+
+    deepEqual(receive, attemps, "Test 1" );
+});
+
+test( "$.Oda.Tooling.isInArray", function() {
+    equal($.Oda.Tooling.isInArray(1,[1,2]), true, "Test 1 " );
+
+    equal($.Oda.Tooling.isInArray(3,[1,2]), false, "Test 2 " );
+
+    equal($.Oda.Tooling.isInArray("1",[1,2]), false, "Test 3 " );
+
+    equal($.Oda.Tooling.isInArray("1",["1",2]), true, "Test 4 " );
+
+    equal($.Oda.Tooling.isInArray({attr:"hello"},[{attr:"hello"},2]), true, "Test 5 " );
+});
+
+test( "$.Oda.Tooling.isUndefined", function() {
+    var notExist;
+    equal($.Oda.Tooling.isUndefined(notExist), true, "Test 1 " );
+
+    var notExist = true;
+    equal($.Oda.Tooling.isUndefined(notExist), false, "Test 2 " );
+});
+
+test( "$.Oda.Tooling.objectSize", function() {
+    equal($.Oda.Tooling.objectSize({attr1:1, attr2:2}), 2, "Test 1 " );
 });

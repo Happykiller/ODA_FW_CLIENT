@@ -2739,7 +2739,7 @@ var $;
             },
             /**
              * isInArray
-             * @param {string} p_value
+             * @param {object} p_value
              * @param {array} p_array
              * @returns {Boolean}
              */
@@ -2748,7 +2748,7 @@ var $;
                     var boolRetour = false;
 
                     for(var indice in p_array){
-                        if(p_value === p_array[indice]){
+                        if($.Oda.Tooling.deepEqual(p_value,p_array[indice])){
                             boolRetour = true;
                             break;
                         }
