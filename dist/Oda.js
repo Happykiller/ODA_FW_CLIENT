@@ -2596,17 +2596,18 @@ var $;
              * @param p_params.str
              * @param p_params.first
              * @param p_params.last
-             * @returns {$.Oda.Tooling}
+             * @returns {Array}
              */
             findBetweenWords: function(p_params) {
                 try {
+                    var listReturn = [];
                     var r = new RegExp(p_params.first + '(.*?)' + p_params.last, 'gm');
-                    var list =  p_params.str.match(r);
+                    var list = p_params.str.match(r);
 
                     for (var indice in list){
-                        list[indice] = list[indice].replace(p_params.first,'').replace(p_params.last,'');
+                        listReturn[indice] = list[indice].replace(p_params.first,'').replace(p_params.last,'');
                     }
-                    return list;
+                    return listReturn;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.findBetweenWords : " + er.message);
                     return null;

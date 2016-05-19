@@ -624,3 +624,23 @@ test( "$.Oda.Tooling.decodeHtml", function() {
 
     equal(receive, attemps, "Test 1" );
 });
+
+test( "$.Oda.Tooling.findBetweenWords", function() {
+    var attemps = [' here '];
+    var receive = $.Oda.Tooling.findBetweenWords({
+        str: 'Hello here you',
+        first: 'Hello',
+        last: 'you'
+    })
+
+    deepEqual(receive, attemps, "Test 1" );
+
+    var attemps = [];
+    var receive = $.Oda.Tooling.findBetweenWords({
+        str: 'Hello here you',
+        first: 'Truc',
+        last: 'you'
+    })
+
+    deepEqual(receive, attemps, "Test 2" );
+});
