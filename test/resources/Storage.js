@@ -1,0 +1,57 @@
+module( "Storage" );
+
+test( "$.Oda.Storage.set", function() {
+    var recieve = $.Oda.Storage.set('keyTtl_1',{'key':'value'},1);
+    ok( recieve, "Test 1" );
+
+    var recieve = $.Oda.Storage.set('keyTtl_4242',{'key':'value'},4242);
+    ok( recieve, "Test 2" );
+
+    var recieve = $.Oda.Storage.set('key',{'key':'value'});
+    ok( recieve, "Test 3" );
+});
+
+test( "$.Oda.Storage.get", function( assert ) {
+    var done = assert.async();
+    setTimeout(function() {
+        var recieve = $.Oda.Storage.get('keyTtl_1');
+        assert.equal( recieve, null, "Test 1" );
+        done();
+    }, 1500 );
+
+    var recieve = $.Oda.Storage.get('keyTtl_4242');
+    assert.deepEqual( recieve, {'key':'value'}, "Test 2" );
+
+    var recieve = $.Oda.Storage.get('key');
+    assert.deepEqual( recieve, {'key':'value'}, "Test 3" );
+
+    var recieve = $.Oda.Storage.get('keyDefault',{'key':'value'});
+    assert.deepEqual( recieve, {'key':'value'}, "Test 4" );
+});
+
+test( "$.Oda.Storage.getTtl", function( assert ) {
+    var recieve = $.Oda.Storage.getTtl('keyTtl_4242');
+    assert.ok( recieve > 0, "Test 1" );
+
+    $.Oda.Storage.set('keyTtl_15',{'key':'value'},1);
+    var done = assert.async();
+    setTimeout(function() {
+        var recieve = $.Oda.Storage.getTtl('keyTtl_15');
+        assert.ok( recieve < 0, "Test 2" );
+        done();
+    }, 1500 );
+
+    var recieve = $.Oda.Storage.getTtl('key');
+    assert.ok( recieve < 0, "Test 3" );
+});
+
+test( "$.Oda.Storage.setTtl", function( assert ) {
+    $.Oda.Storage.set('keyTtl_12',{'key':'value'},1);
+    var done = assert.async();
+    setTimeout(function() {
+        $.Oda.Storage.setTtl('keyTtl_12',42);
+        var recieve = $.Oda.Storage.getTtl('keyTtl_12');
+        assert.ok( recieve > 0, "Test 1" );
+        done();
+    }, 1500 );
+});

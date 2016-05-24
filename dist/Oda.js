@@ -4130,7 +4130,12 @@ var $;
 
                     var data = JSON.stringify(storage);
 
-                    var compressed = LZString.compressToUTF16(data);
+                    var compressed;
+                    if(typeof(LZString) !== 'undefined'){
+                        compressed = LZString.compressToUTF16(data);
+                    }else{
+                        compressed = data;
+                    }
 
                     localStorage.setItem(this.storageKey + p_key, compressed);
 
@@ -4141,13 +4146,25 @@ var $;
                 }
             },
 
+            /**
+             *
+             * @param {string} p_key
+             * @param {json} p_default
+             * @ex $.Oda.Storage.get('key',{'key':'value'});
+             * @returns {json}
+             */
             get: function(p_key, p_default) {
                 try {
                     var myValue = null;
 
                     var compressed = localStorage.getItem($.Oda.Storage.storageKey+p_key);
                     if(compressed !== null){
-                        var data = LZString.decompressFromUTF16(compressed);
+                        var data;
+                        if(typeof(LZString) !== 'undefined'){
+                            data = LZString.decompressFromUTF16(compressed);
+                        }else{
+                            data = compressed;
+                        }
                         var myStorage = JSON.parse(data);
 
                         myValue = myStorage.value;
@@ -4182,20 +4199,30 @@ var $;
                 }
             },
 
+            /**
+             * @desc reset ttl with new
+             * @param {string} p_key
+             * @param {int} p_ttl
+             * @returns {boolean}
+             */
             setTtl: function(p_key, p_ttl) {
                 try {
-                    var myValue = $.Oda.Storage.get(p_key);
+                    var myReturn = false;
 
-                    var d = new Date();
-                    var date = d.getTime();
+                    var myStorage = localStorage.getItem($.Oda.Storage.storageKey+p_key);
 
-                    var storage = {
-                        "value" : myValue,
-                        recordDate : date,
-                        ttl : p_ttl
-                    };
+                    if(myStorage !== null) {
 
-                    var myReturn = $.Oda.Storage.set($.Oda.Storage.storageKey+p_key, storage);
+                        var data;
+                        if (typeof(LZString) !== 'undefined') {
+                            data = LZString.decompressFromUTF16(myStorage);
+                        } else {
+                            data = myStorage;
+                        }
+                        var value = JSON.parse(data);
+
+                        var myReturn = $.Oda.Storage.set(p_key, value.value, p_ttl);
+                    }
 
                     return myReturn;
                 } catch (er) {
@@ -4204,24 +4231,33 @@ var $;
                 }
             },
 
+            /**
+             *
+             * @param {string} p_key
+             * @returns {int}
+             */
             getTtl: function(p_key) {
                 try {
                     var myReturn = 0;
 
-                    var myStorage = $.Oda.Storage.get($.Oda.Storage.storageKey+p_key);
+                    var myStorage = localStorage.getItem($.Oda.Storage.storageKey+p_key);
 
                     if(myStorage !== null){
+
+                        var data;
+                        if(typeof(LZString) !== 'undefined'){
+                            data = LZString.decompressFromUTF16(myStorage);
+                        }else{
+                            data = myStorage;
+                        }
+                        var value = JSON.parse(data);
 
                         var d = new Date();
                         var date = d.getTime();
 
-                        var dateTimeOut = myValue.recordDate + (myValue.ttl*1000);
+                        var dateTimeOut = value.recordDate + (value.ttl*1000);
 
                         myReturn = dateTimeOut - date;
-
-                        if(myReturn < 0){
-                            myReturn = 0;
-                        }
                     }
 
                     return myReturn;

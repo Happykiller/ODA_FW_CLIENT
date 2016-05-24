@@ -689,3 +689,67 @@ test( "$.Oda.Tooling.isUndefined", function() {
 test( "$.Oda.Tooling.objectSize", function() {
     equal($.Oda.Tooling.objectSize({attr1:1, attr2:2}), 2, "Test 1 " );
 });
+
+test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
+    var inputs = [
+        {
+            attr1: "attr1",
+            attr2: 'attr2'
+        },
+        {
+            attr1: "attr1",
+            attr2: 'attr2'
+        }
+    ];
+    var receive = $.Oda.Tooling.objDataTableFromJsonArray(inputs);
+    var attemps = {
+        statut: "ok",
+        entete: {
+            attr1: 0,
+            attr2: 1
+        },
+        data: [
+            [
+                "attr1",
+                "attr2"
+            ],
+            [
+                "attr1",
+                "attr2"
+            ]
+        ]
+    };
+    deepEqual(receive, attemps, "Test 1" );
+});
+
+test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
+    var inputs = [
+        {
+            attr1: "attr1",
+            attr2: 'attr2'
+        },
+        {
+            attr1: "attr1",
+            attr2: 'attr2'
+        }
+    ];
+    var receive = $.Oda.Tooling.objDataTableFromJsonArray(inputs);
+    var attemps = {
+        statut: "ok",
+        entete: {
+            attr1: 0,
+            attr2: 1
+        },
+        data: [
+            [
+                "attr1",
+                "attr2"
+            ],
+            [
+                "attr1",
+                "attr2"
+            ]
+        ]
+    };
+    deepEqual(receive, attemps, "Test 1" );
+});
