@@ -4267,6 +4267,11 @@ var $;
                 }
             },
 
+            /**
+             *
+             * @param {string} p_key
+             * @returns {int}
+             */
             remove: function(p_key) {
                 try {
                     var myReturn = true;
@@ -4280,6 +4285,10 @@ var $;
                 }
             },
 
+            /**
+             *
+             * @returns {int}
+             */
             reset: function() {
                 try {
                     var myReturn = true;
@@ -4295,13 +4304,17 @@ var $;
                 }
             },
 
+            /**
+             *
+             * @param {string} p_key
+             * @returns {array}
+             */
             getIndex: function(p_filtre) {
                 try {
                     var myReturn = [];
 
-                    var patt = new RegExp($.Oda.Storage.storageKey+p_filtre, 'gi');
-
                     for (var indice in localStorage) {
+                        var patt = new RegExp($.Oda.Storage.storageKey+p_filtre, 'gi');
                         var res = patt.test(indice);
                         if(res){
                             myReturn.push(indice);
