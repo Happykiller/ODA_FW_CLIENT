@@ -1,37 +1,90 @@
 <div class="container">
-    <h2 oda-label="oda-main.profile-title">profile</h2>
+    <h2 oda-label="oda-profile.title">oda-profile.title</h2>
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading" oda-label="oda-main.profile-infos">infos</div>
+                <div class="panel-heading" oda-label="oda-profile.infos">oda-profile.infos</div>
                 <div id="div_infos" class="panel-body">
-                    <oda-loading></oda-loading>
+                    <table class="table table-hover">
+                        <tr>
+                            <td oda-label="oda-profile.codeUser">oda-profile.codeUser</td>
+                            <td><label id="code_user"></label></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td oda-label="oda-profile.lastName">oda-profile.lastName</td>
+                            <td><label id="lab_nom"></label></td>
+                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-nom" title="Mise &agrave; jour du nom" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td oda-label="oda-profile.firstName">oda-profile.firstName</td>
+                            <td><label id="lab_prenom"></label></td>
+                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-prenom" title="Mise &agrave; jour du pr&eacute;nom" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td oda-label="oda-profile.email">oda-profile.email</td>
+                            <td><label id="lab_mail"></label></td>
+                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-mail" title="Mise &agrave; jour de l\'eMail" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td oda-label="oda-profile.language">oda-profile.language</td>
+                            <td><label id="lab_langue"></label></td>
+                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-langue" title="Mise &agrave; jour de la langue" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                        </tr>
+                        <tr>
+                            <td oda-label="oda-profile.avatar">oda-profile.avatar</td>
+                            <td><div id="img_avatar"></div></td>
+                            <td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controller.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script id="tplUpdateField" type="text/template">
+    <div data-role="fieldcontain">
+        <label for="input_old_password" oda-label="oda-profile.passwordActual">oda-profile.passwordActual</label>
+        <input class="form-control" type="password" oda-input-text="input_old_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />
+    </div>
+    <div data-role="fieldcontain">
+        {{content}}
+    </div>
+</script>
+
 <script>
     $.Oda.Controller.Profile = {
+        /**
+         * @returns {$.Oda.Controller.Profile}
+         */
+        start: function () {
+            try {
+                $.Oda.Controller.Profile.loadingInfos();
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Profile.start : " + er.message);
+                return null;
+            }
+        },
+
         /**
          * @param {Object} p_params
          * @param p_params.elt
          * @returns {$.Oda.Controller.Profile.setAvatar}
          */
-        setAvatar : function (p_params) {
+        setAvatar: function (p_params) {
             try {
                 $.Oda.Tooling.postResources({idInput : p_params.elt.id, folder : "avatars/", names : [$.Oda.Session.code_user], callback: function(response){
                     var response = response[$.Oda.Session.code_user];
                     if(response.status === "TRANS_STATUS_SUCCESS"){
-                        $.Oda.Display.Notification.success("Upload réussi.");
+                        $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'uploadSuccess'));
                         $.Oda.Display.Scene.Avatar.avatar({callback : function(data){
                             $.Oda.Display.Scene.Avatar.getElt().attr('src',data.src);
-                            $("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');
+                            $("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');
                         }});
                     }else{
-                        $.Oda.Display.Notification.error("Erreur upload : " + response.msg);
-                        $.Oda.Log.error("Erreur upload : " + response.msg);
+                        $.Oda.Display.Notification.error($.Oda.I8n.get('oda-profile', 'uploadError', {variables: {msg : response.msg}}));
                     }
                 }});
                 return this;
@@ -39,173 +92,135 @@
                 $.Oda.Log.error("$.Oda.Controller.Profile.setAvatar : " + er.message);
                 return null;
             }
-        }
-    };
+        },
 
-    chargerInformations();
+        /**
+         * loadingInfos
+         * @returns {$.Oda.Controller.Profile.setAvatar}
+         */
+        loadingInfos: function(){
+            try {
+                var tabSetting = { callback : function(p_retour){
+                    var mail = p_retour["data"]["detailsUser"]["mail"];
+                    var code_user = p_retour["data"]["detailsUser"]["code_user"];
+                    var nom = p_retour["data"]["detailsUser"]["nom"];
+                    var prenom = p_retour["data"]["detailsUser"]["prenom"];
+                    var langue = p_retour["data"]["detailsUser"]["langue"];
 
-    /**
-     * chargerInformations
-     */
-    function chargerInformations(){
-        try {
-            var retour = true;
+                    $('#code_user').html(code_user);
+                    $('#lab_nom').html(nom);
+                    $('#lab_prenom').html(prenom);
+                    $('#lab_mail').html(mail);
+                    $('#lab_langue').html(langue);
+                    $('#lab_nom').html(nom);
 
-            var tabSetting = { "functionRetour" : function(p_retour){
-                var mail = p_retour["data"]["detailsUser"]["mail"];
-                var code_user = p_retour["data"]["detailsUser"]["code_user"];
-                var nom = p_retour["data"]["detailsUser"]["nom"];
-                var prenom = p_retour["data"]["detailsUser"]["prenom"];
-                var langue = p_retour["data"]["detailsUser"]["langue"];
+                    $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');}});
+                } };
+                var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
 
-                var strhtml = '<table class="table table-hover">';
-                strhtml += '<tr>';
-                strhtml += '<td>Code utilisateur :</td>';
-                strhtml += '<td><label id="code_user">'+code_user+'</label></td>';
-                strhtml += '<td></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>Nom :</td>';
-                strhtml += '<td><label id="lab_nom">'+nom+'</label></td>';
-                strhtml += '<td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-nom" title="Mise &agrave; jour du nome" onclick="updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>Pr&eacute;nom :</td>';
-                strhtml += '<td><label id="lab_prenom">'+prenom+'</label></td>';
-                strhtml += '<td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-prenom" title="Mise &agrave; jour du pr&eacute;nom" onclick="updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>E-mail :</td>';
-                strhtml += '<td><label id="lab_mail">'+mail+'</label></td>';
-                strhtml += '<td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-mail" title="Mise &agrave; jour de l\'eMail" onclick="updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>Langue :</td>';
-                strhtml += '<td><label id="lab_langue">'+langue+'</label></td>';
-                strhtml += '<td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-langue" title="Mise &agrave; jour de la langue" onclick="updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>';
-                strhtml += '</tr>';
-                strhtml += '<tr>';
-                strhtml += '<td>Avatar :</td>';
-                strhtml += '<td><div id="img_avatar"></div></td>';
-                strhtml += '<td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controller.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>';
-                strhtml += '</tr>';
-                strhtml += "</table>";
-                $('#div_infos').html(strhtml);
-                $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" alt="Savatar" height="42" width="42">');}});
-            } };
-            var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
-
-            return retour;
-        } catch (er) {
-            $.Oda.Log.error("chargerInformations : " + er.message);
-            return null;
-        }
-    }
-
-    /**
-     * updateChamps
-     * @param {type} p_obj
-     */
-    function updateChamps(p_obj){
-        try {
-            var label = "";
-            var details = "";
-            var footer = "";
-
-            details += '<div data-role="fieldcontain">';
-            details += '<label for="input_old_password">Mot de passe actuel :</label>';
-            details += '<input class="form-control" type="password" oda-input-text="input_old_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />';
-            details += '</div>';
-
-            switch (p_obj.id){
-                case "bt_ch-nom":
-                    label = "Mise &agrave; jour du nom";
-                    details += '<div data-role="fieldcontain">';
-                    details += '<label for="input_nom">Nouveau nom :</label>';
-                    details += '<input class="form-control" type="text" oda-input-text="input_nom" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="Oda.Regexs:login" />';
-                    details += '</div>';
-                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'nom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
-                    break;
-                case "bt_ch-prenom":
-                    label = "Mise &agrave; jour du prenom";
-                    details += '<div data-role="fieldcontain">';
-                    details += '<label for="input_prenom">Nouveau pr&eacute;nom :</label>';
-                    details += '<input class="form-control" type="text" name="input_prenom" id="input_prenom" value="" />';
-                    details += '</div>';
-                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'prenom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
-                    break;
-                case "bt_ch-mail":
-                    label = "Mise &agrave; jour du eMail";
-                    details += '<div data-role="fieldcontain">';
-                    details += '<label for="input_mail">Nouveau eMail :</label>';
-                    details += '<input class="form-control" type="email" name="input_mail" id="input_mail" value="" />';
-                    details += '</div>';
-                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'mail\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
-                    break;
-                case "bt_ch-langue":
-                    label = "Mise &agrave; jour de la langue";
-                    details += '<div data-role="fieldcontain">';
-                    details += '<label for="input_langue">Choix langue :</label>';
-                    details += '<select id="input_langue" class="form-control">';
-                    details += '<option value="fr">Fran&ccedil;ais</option>';
-                    details += '<option value="en">English</option>';
-                    details += '</select>';
-                    details += '</div>';
-                    footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="soumettreChange(\'langue\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">Soumettre</a>';
-                    break;
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Profile.loadingInfos: " + er.message);
+                return null;
             }
-            $.Oda.Display.Popup.open({
-                "name" : "popChangeProfile",
-                "label" : label,
-                "details" : details,
-                "footer" : footer,
-                "callback" : function(){
-                    $.Oda.Scope.Gardian.add({
-                        id : "gardianChangeProfile",
-                        listElt : ["input_old_password"],
-                        function : function(params){
-                            if( ($("#input_old_password").data("isOk")) ){
-                                $("#submit").removeClass("disabled");
-                                $("#submit").removeAttr("disabled");
-                            }else{
-                                $("#submit").addClass("disabled");
-                                $("#submit").attr("disabled", true);
-                            }
-                        }
-                    });
+        },
+
+        /**
+         * updateChamps
+         * @param {type} p_obj
+         */
+         updateChamps: function(p_obj){
+            try {
+                var label = "";
+                var details = "";
+                var footer = "";
+
+                switch (p_obj.id){
+                    case "bt_ch-nom":
+                        label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'lastName');
+                        details += '<label for="input_nom" oda-label="oda-profile.lastName">oda-profile.lastName</label>';
+                        details += '<input class="form-control" type="text" oda-input-text="input_nom" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName" />';
+                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'nom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        break;
+                    case "bt_ch-prenom":
+                        label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'firstName');
+                        details += '<label for="input_prenom" oda-label="oda-profile.firstName">oda-profile.firstName</label>';
+                        details += '<input class="form-control" type="text" oda-input-text="input_prenom" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName" />';
+                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'prenom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        break;
+                    case "bt_ch-mail":
+                        label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'email');
+                        details += '<label for="input_mail" oda-label="oda-profile.email">oda-profile.email</label>';
+                        details += '<input class="form-control" type="email" oda-input-text="input_mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail" />';
+                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'mail\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        break;oda-main.bt-submit
+                    case "bt_ch-langue":
+                        label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'language');
+                        details += '<label for="input_langue" oda-label="oda-profile.language">oda-profile.language</label>';
+                        details += '<select oda-input-select="input_langue" class="form-control">';
+                        details += '<option value="fr" '+(($.Oda.Session.userInfo.locale === 'fr')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'fr')+' ('+$.Oda.I8n.get('oda-profile', 'fr', {forced: 'fr'})+')</option>';
+                        details += '<option value="en" '+(($.Oda.Session.userInfo.locale === 'en')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'en')+' ('+$.Oda.I8n.get('oda-profile', 'en', {forced: 'en'})+')</option>';
+                        details += '<option value="es" '+(($.Oda.Session.userInfo.locale === 'es')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'es')+' ('+$.Oda.I8n.get('oda-profile', 'es', {forced: 'es'})+')</option>';
+                        details += '</select>';
+                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'langue\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        break;
                 }
-            });
-        } catch (er) {
-            $.Oda.Log.error("updateChamps : " + er.message);
-        }
-    }
 
-    /**
-     * soumettreChange
-     * @param {string} p_champs
-     */
-    function soumettreChange(p_champs){
-        try {
-            var mdp = $('#input_old_password').val();
-            var value = $('#input_'+p_champs).val();
-            var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
-            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setChangeProfile.php", {functionRetour : function(response){
-                $('#input_old_password').val("");
-                $('#input_'+p_champs).val("");
 
-                if(response.strErreur === ""){
-                    $.Oda.Display.Popup.close({"name":"popChangeProfile"});
-
-                    if(p_champs === "langue"){
-                        $.Oda.Context.window.location.reload();
+                var content = $.Oda.Display.TemplateHtml.create({
+                    template : "tplUpdateField",
+                    scope : {
+                        "content": details
                     }
+                });
 
-                    $('#lab_'+p_champs).html(value);
+                $.Oda.Display.Popup.open({
+                    "name" : "popChangeProfile",
+                    "label" : label,
+                    "details" : content,
+                    "footer" : footer,
+                    "callback" : function(){
+                        $.Oda.Scope.Gardian.add({
+                            id : "gardianChangeProfile",
+                            listElt : ["input_old_password","input_nom","input_prenom","input_mail"],
+                            function : function(params){
+                                if( ($("#input_old_password").data("isOk"))
+                                    && ( !$("#input_nom").exists() || $("#input_nom").data("isOk"))
+                                    && ( !$("#input_prenom").exists() || $("#input_prenom").data("isOk"))
+                                    && ( !$("#input_mail").exists() || $("#input_mail").data("isOk"))
+                                ){
+                                    $("#submit").btEnable();
+                                }else{
+                                    $("#submit").btDisable();
+                                }
+                            }
+                        });
+                    }
+                });
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Profile.updateChamps : " + er.message);
+            }
+        },
+
+        /**
+         * submitChange
+         * @param {string} p_champs
+         */
+         submitChange: function(p_champs){
+            try {
+                var mdp = $('#input_old_password').val();
+                var value = $('#input_'+p_champs).val();
+                var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setChangeProfile.php", {callback : function(response){
+                    $('#input_old_password').val("");
+                    $('#input_'+p_champs).val("");
+
                     var tabInput = {
                         code_user : $.Oda.Session.code_user
                     };
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {functionRetour : function(response){
+
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {callback : function(response){
                         var userInfo = {
                             "locale" : response.data.resultat.langue
                             , "firstName" : response.data.resultat.nom
@@ -218,14 +233,25 @@
                         $.Oda.Session.userInfo = userInfo;
                         $.Oda.Storage.set("ODA-SESSION",$.Oda.Session,43200);
 
-                        $.Oda.Display.Notification.success("Mise &agrave; jour r&eacute;ussi");
+                        $.Oda.Display.Popup.close({"name":"popChangeProfile"});
+
+                        $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'updateSuccess'));
+
+                        if(p_champs === "langue"){
+                            $.Oda.Context.window.location.reload();
+                        }else{
+                            $('#lab_'+p_champs).html(value);
+                        }
                     }}, tabInput);
-                }
-            }}, tabInput);
-        } catch (er) {
-            $.Oda.Log.error("soumettreChange : " + er.message);
+                }}, tabInput);
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Profile.submitChange : " + er.message);
+            }
         }
-    }
+    };
+
+    $.Oda.Controller.Profile.start();
+
 </script>
 
 <style>

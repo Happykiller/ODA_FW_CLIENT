@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="fristName" oda-label="oda-main.subscrib-fristName">frist</label>
-                <input required="" type="text" class="form-control" oda-input-text="fristName" oda-input-text-tips="oda-main.subscrib-fristName-tips" oda-input-text-placeholder="oda-main.subscrib-fristName-placeholder" oda-input-text-check="Oda.Regexs:firstName">
+                <label for="firstName" oda-label="oda-main.subscrib-firstName">frist</label>
+                <input required="" type="text" class="form-control" oda-input-text="firstName" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName">
             </div>
         </div>
         <div class="col-md-6">
@@ -43,11 +43,11 @@
 <script>
     $.Oda.Scope.Gardian.add({
         id : "gardianSubscrib",
-        listElt : ["fristName", "lastName", "email", "mdp"],
+        listElt : ["firstName", "lastName", "email", "mdp"],
         function : function(params){
-            if(($("#fristName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
+            if(($("#firstName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
 
-                var first = $("#fristName").val().replace(/[^\w\s]/gi, '');
+                var first = $("#firstName").val().replace(/[^\w\s]/gi, '');
                 var last = $("#lastName").val().replace(/[^\w\s]/gi, '');
 
                 var login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
@@ -64,7 +64,7 @@
 
     function creercompte() {
         try {
-            var p_nom = $("#fristName").val();
+            var p_nom = $("#firstName").val();
             var p_prenom = $("#lastName").val();
             var p_email = $("#email").val();
             var p_motDePasse = $("#mdp").val();
