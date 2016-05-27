@@ -1698,7 +1698,7 @@ var $;
              * @param p_params.html
              * @returns {$.Oda.Display.render}
              */
-            render : function (p_params) {
+            render: function (p_params) {
                 try {
                     $('#'+p_params.id).html(p_params.html);
                     $.Oda.Scope.init({id:p_params.id});
@@ -1708,7 +1708,21 @@ var $;
                     return null;
                 }
             },
-            Notification : {
+            /**
+             * @param {Object} p_params
+             * @param p_params.elt
+             * @returns {$.Oda.Display}
+             */
+            loading: function (p_params) {
+                try {
+                    p_params.elt.html('<div class="oda-loader-container"><div class="oda-loader"><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-text"></div></div></div>');
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Display.loading : " + er.message);
+                    return null;
+                }
+            },
+            Notification: {
                 id : 0,
                 success : function(p_message){
                     this.create(p_message,"success", 2000);
@@ -1804,7 +1818,7 @@ var $;
                     }
                 }
             },
-            Scene : {
+            Scene: {
                 /**
                  * @returns {$.Oda.Display.Scene}
                  */
@@ -1919,21 +1933,7 @@ var $;
                     }
                 },
             },
-            /**
-             * @param {Object} p_params
-             * @param p_params.elt
-             * @returns {$.Oda.Display}
-             */
-            loading: function (p_params) {
-                try {
-                    p_params.elt.html('<div class="oda-loader-container"><div class="oda-loader"><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-text"></div></div></div>');
-                    return this;
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Display.loading : " + er.message);
-                    return null;
-                }
-            },
-            MenuSlide : {
+            MenuSlide: {
                 display : false,
                 /**
                  * @name : show
@@ -1971,7 +1971,7 @@ var $;
                     }
                 }
             },
-            Menu : {
+            Menu: {
                 display : false,
                 /**
                  * @name : show
@@ -2027,7 +2027,7 @@ var $;
                     }
                 }
             },
-            Message : {
+            Message: {
                 /**
                  * @returns {$.Oda}
                  */
@@ -2081,7 +2081,7 @@ var $;
                     }
                 }
             },
-            Popup : {
+            Popup: {
                 iterator : 0,
                 /**
                  * affichePopUp
@@ -2185,7 +2185,7 @@ var $;
                     }
                 }
             },
-            TemplateHtml : {
+            TemplateHtml: {
                 /**
                  * @param {Object} p_params
                  * @param {string} p_params.template
@@ -2241,7 +2241,7 @@ var $;
                     }
                 }
             },
-            "Table" : {
+            Table: {
                 /**
                  * @param {String} p_params.target
                  * @param {Array} p_params.data
@@ -2400,6 +2400,83 @@ var $;
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Table.createDataTable : " + er.message);
+                        return null;
+                    }
+                }
+            },
+            Push: {
+                /**
+                 * @returns {boolean}
+                 */
+                init: function() {
+                    try {
+                        // Voyons si le navigateur supporte les notifications
+                        if (!("Notification" in $.Oda.Context.window)) {
+                            $.Oda.Log.warning("Ce navigateur ne supporte pas les notifications desktop");
+                            return false;
+                        }
+                        // Voyons si l'utilisateur est OK pour recevoir des notifications
+                        else if ($.Oda.Context.window.Notification.permission === "granted") {
+                            return true;
+                        }
+                        // Sinon, nous avons besoin de la permission de l'utilisateur
+                        // Note : Chrome n'implémente pas la propriété statique permission
+                        // Donc, nous devons vérifier s'il n'y a pas 'denied' à la place de 'default'
+                        else if ($.Oda.Context.window.Notification.permission !== 'denied') {
+                            $.Oda.Context.window.Notification.requestPermission(function (permission) {
+                                // Quelque soit la réponse de l'utilisateur, nous nous assurons de stocker cette information
+                                if(!('permission' in $.Oda.Context.window.Notification)) {
+                                    $.Oda.Context.window.Notification.permission = permission;
+                                }
+                                // Si l'utilisateur est OK, on crée une notification
+                                if (permission === "granted") {
+                                    return true;
+                                }
+                            });
+                        }
+                        // Comme ça, si l'utlisateur a refusé toute notification, et que vous respectez ce choix,
+                        // il n'y a pas besoin de l'ennuyer à nouveau.
+                        return null;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Push.init : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} params
+                 * @param params.message
+                 * @param params.options opt
+                 * @ex $.Oda.Display.Push.create({message:'Hello', options:{body: "notification body", icon: $.Oda.Context.host+"/img/favicon.png"}});
+                 * @returns {$.Oda.Display.Push}
+                 */
+                create: function(params) {
+                    try {
+                        if(this.init()){
+                            if((params.options !== undefined) && (params.options !== null)){
+                                return new $.Oda.Context.window.Notification(params.message, params.options);
+                            }else{
+                                return new $.Oda.Context.window.Notification(params.message);
+                            }
+                        }
+
+                        return null;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Push.create : " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @param {Object} params
+                 * @param params.message
+                 * @returns {$.Oda.Display.Push}
+                 */
+                createI8n: function(params) {
+                    try {
+                        params.message = $.Oda.I8n.getByString(params.message);
+
+                        return this.create(params);
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Push.createI8n : " + er.message);
                         return null;
                     }
                 }
