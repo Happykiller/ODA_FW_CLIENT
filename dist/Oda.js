@@ -2406,18 +2406,26 @@ var $;
             },
             Push: {
                 /**
-                 * @returns {boolean}
+                 * @param {Object} params
+                 * @param params.message
+                 * @param params.options opt
+                 * @ex $.Oda.Display.Push.create({message:'Hello', options:{body: "notification body", icon: $.Oda.Context.host+"/img/favicon.png"}});
+                 * @returns {$.Oda.Display.Push}
                  */
-                init: function() {
+                create: function(params) {
                     try {
                         // Voyons si le navigateur supporte les notifications
                         if (!("Notification" in $.Oda.Context.window)) {
                             $.Oda.Log.warning("Ce navigateur ne supporte pas les notifications desktop");
-                            return false;
+                            return null;
                         }
                         // Voyons si l'utilisateur est OK pour recevoir des notifications
                         else if ($.Oda.Context.window.Notification.permission === "granted") {
-                            return true;
+                            if((params.options !== undefined) && (params.options !== null)){
+                                return new $.Oda.Context.window.Notification(params.message, params.options);
+                            }else{
+                                return new $.Oda.Context.window.Notification(params.message);
+                            }
                         }
                         // Sinon, nous avons besoin de la permission de l'utilisateur
                         // Note : Chrome n'implémente pas la propriété statique permission
@@ -2430,35 +2438,16 @@ var $;
                                 }
                                 // Si l'utilisateur est OK, on crée une notification
                                 if (permission === "granted") {
-                                    return true;
+                                    if((params.options !== undefined) && (params.options !== null)){
+                                        return new $.Oda.Context.window.Notification(params.message, params.options);
+                                    }else{
+                                        return new $.Oda.Context.window.Notification(params.message);
+                                    }
                                 }
                             });
                         }
                         // Comme ça, si l'utlisateur a refusé toute notification, et que vous respectez ce choix,
                         // il n'y a pas besoin de l'ennuyer à nouveau.
-                        return null;
-                    } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.Push.init : " + er.message);
-                        return null;
-                    }
-                },
-                /**
-                 * @param {Object} params
-                 * @param params.message
-                 * @param params.options opt
-                 * @ex $.Oda.Display.Push.create({message:'Hello', options:{body: "notification body", icon: $.Oda.Context.host+"/img/favicon.png"}});
-                 * @returns {$.Oda.Display.Push}
-                 */
-                create: function(params) {
-                    try {
-                        if(this.init()){
-                            if((params.options !== undefined) && (params.options !== null)){
-                                return new $.Oda.Context.window.Notification(params.message, params.options);
-                            }else{
-                                return new $.Oda.Context.window.Notification(params.message);
-                            }
-                        }
-
                         return null;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Push.create : " + er.message);
