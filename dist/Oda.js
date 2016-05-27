@@ -1727,18 +1727,35 @@ var $;
                 success : function(p_message){
                     this.create(p_message,"success", 2000);
                 },
+                successI8n : function(p_message){
+                    this.create($.Oda.I8n.getByString(p_message),"success", 2000);
+                },
                 info : function(p_message){
                     this.create(p_message,"info", 3000);
+                },
+                infoI8n : function(p_message){
+                    this.create($.Oda.I8n.getByString(p_message),"info", 3000);
                 },
                 warning : function(p_message){
                     this.create(p_message,"warning", 5000);
                 },
+                warningI8n : function(p_message){
+                    this.create($.Oda.I8n.getByString(p_message),"warning", 5000);
+                },
                 danger : function(p_message){
                     this.create(p_message,"danger");
+                },
+                dangerI8n : function(p_message){
+                    this.create($.Oda.I8n.getByString(p_message),"danger");
                 },
                 error : function(p_message){
                     this.create(p_message,"danger");
                     $.Oda.Log.error(p_message);
+                },
+                errorI8n : function(p_message){
+                    var message = $.Oda.I8n.getByString(p_message);
+                    this.create(message,"danger");
+                    $.Oda.Log.error(message);
                 },
                 /**
                  * @returns {$.Oda.Notification}
