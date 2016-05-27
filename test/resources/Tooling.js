@@ -581,6 +581,12 @@ test( "$.Oda.Tooling.merge", function() {
         expected,
         "$.Oda.Tooling.merge 13"
     );
+
+    deepEqual(
+        $.Oda.Tooling.merge({default: 4, source: undefined}),
+        4,
+        "$.Oda.Tooling.merge 14"
+    );
 });
 
 test( "$.Oda.Tooling.checkParams", function() {

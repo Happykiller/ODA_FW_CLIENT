@@ -3200,6 +3200,9 @@ var $;
              */
             merge: function(params) {
                 try {
+                    if(params.source === undefined){
+                        params.source = null;
+                    }
                     var objReturn = this.clone(params.default);
     
                     //if array
