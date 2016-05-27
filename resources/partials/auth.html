@@ -15,9 +15,9 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Auth.goIn();" class="btn btn-primary disabled" disabled>Submit</button >
-                <button type="button" oda-label="oda-main.bt-forgot" onclick="$.Oda.Router.navigateTo({'route':'forgot','args':[]});" class="btn btn-info">Forgot</button >
-                <button type="button" oda-label="oda-main.bt-subscrib" onclick="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});" class="btn btn-info">Subscrib</button >
+                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Auth.goIn();" class="btn btn-primary disabled" disabled>oda-main.bt-submit</button >
+                <button type="button" oda-label="oda-main.bt-forgot" onclick="$.Oda.Router.navigateTo({'route':'forgot','args':[]});" class="btn btn-info">oda-main.bt-forgot</button >
+                <button type="button" oda-label="oda-main.bt-subscrib" onclick="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});" class="btn btn-info">oda-main.bt-subscrib</button >
             </p>
         </div>
         <div class="col-md-12">
@@ -85,7 +85,7 @@
                 gapi.client.oauth2.userinfo.get().execute(function(resp) {
                     var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {callback:function(retour){
                         if(retour.data.nombre == 0){
-                            $.Oda.Display.Notification.warning("Pas de compte rattach&eacute; à l'email : "+resp.email);
+                            $.Oda.Display.Notification.warning($.Oda.I8n.get('oda-auth','noAccount')+resp.email);
                         }else if(retour.data.nombre == 1){
                             $.Oda.Security.auth({"login" : retour.data.data[0].code_user, "mdp" : "authByGoogle-"+resp.email, "reload" : true});
                         }else {
@@ -95,7 +95,7 @@
                                 strHtml += "<a class=\"list-group-item\" onclick=\"$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
                             }
                             strHtml += '</div>';
-                            $.Oda.Display.Popup.open({"label" : "Choisir le compte.", "details" : strHtml});
+                            $.Oda.Display.Popup.open({"label" : $.Oda.I8n.get('oda-auth','chooseAccount'), "details" : strHtml});
                         }
                     }}, { "email" : resp.email});
                 });

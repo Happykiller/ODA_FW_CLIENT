@@ -377,4 +377,18 @@
     "es": "Español",
     "updateSuccess": "el éxito de actualización"
   }
+},{
+  "groupName": "oda-auth",
+  "fr": {
+    "noAccount": "Pas de compte rattach&eacute; à l'email : ",
+    "chooseAccount": "Choisir le compte."
+  },
+  "en": {
+    "noAccount": "No account for this email: ",
+    "chooseAccount": "Choose an account"
+  },
+  "es": {
+    "noAccount": "No se cuenta para este correo electr&oacute;nico: ",
+    "chooseAccount": "Seleccione cuenta."
+  }
 }]
