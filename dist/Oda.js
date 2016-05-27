@@ -3200,9 +3200,6 @@ var $;
              */
             merge: function(params) {
                 try {
-                    if(params.source === undefined){
-                        params.source = null;
-                    }
                     var objReturn = this.clone(params.default);
     
                     //if array
@@ -3216,7 +3213,7 @@ var $;
                     //if object    
                     }else if((objReturn !== null) && (objReturn !== undefined) && (objReturn.constructor === Object)){
                         for(var key in objReturn){
-                            if(params.source[key] !== undefined){
+                            if((params.source !== null) && (params.source !== undefined) && (params.source[key] !== undefined)){
                                 objReturn[key] =  this.merge({default: objReturn[key], source: params.source[key]});
                             }
                         }

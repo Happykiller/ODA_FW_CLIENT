@@ -583,8 +583,8 @@ test( "$.Oda.Tooling.merge", function() {
     );
 
     deepEqual(
-        $.Oda.Tooling.merge({default: 4, source: undefined}),
-        4,
+        $.Oda.Tooling.merge({default: {truc:1}, source: undefined}),
+        {truc:1},
         "$.Oda.Tooling.merge 14"
     );
 });
