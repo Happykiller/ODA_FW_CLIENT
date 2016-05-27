@@ -2439,12 +2439,13 @@ var $;
                                 // Si l'utilisateur est OK, on crée une notification
                                 if (permission === "granted") {
                                     if((params.options !== undefined) && (params.options !== null)){
-                                        return new $.Oda.Context.window.Notification(params.message, params.options);
+                                        var notification = new $.Oda.Context.window.Notification(params.message, params.options);
                                     }else{
-                                        return new $.Oda.Context.window.Notification(params.message);
+                                        var notification = new $.Oda.Context.window.Notification(params.message);
                                     }
                                 }
                             });
+                            return true;
                         }
                         // Comme ça, si l'utlisateur a refusé toute notification, et que vous respectez ce choix,
                         // il n'y a pas besoin de l'ennuyer à nouveau.
