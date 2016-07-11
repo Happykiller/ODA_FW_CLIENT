@@ -886,14 +886,11 @@ var $;
         
         Mobile: {
             /* return elet*/
-            funcReturnGPSPosition : null,
-
-            funcReturnCaptureImg : null,
-
+            funcReturnGPSPosition: null,
+            funcReturnCaptureImg: null,
             /* var intern */
-            networkState : null,
-
-            positionGps : {
+            networkState: null,
+            positionGps: {
                 coords : {
                     latitude : 0,
                     longitude : 0,
@@ -906,20 +903,16 @@ var $;
                 timestamp : 0,
                 statut : ''
             },
-
-            pictureSource : null,
-
-            destinationType : null,
-
-            onMobile : false,
-
-            onMobileTest : false,
-
+            pictureSource: null,
+            destinationType: null,
+            onMobile: false,
+            onMobileTest: false,
             /**
              * @name getGPSPosition
              * @desc getGPSPosition
+             * @param {Object} p_position
              */
-            onSuccessGPSPosition : function(p_position) {
+            onSuccessGPSPosition: function(p_position) {
                 try {
                     $.Oda.Mobile.positionGps.coords = p_position.coords;
                     $.Oda.Mobile.positionGps.timestamp = p_position.timestamp;
@@ -929,12 +922,12 @@ var $;
                     $.Oda.Log.error("$.Oda.Mobile.onSuccessGPSPosition: " + er.message);
                 }
             },
-
             /**
              * @name getGPSPosition
              * @desc getGPSPosition
+             * @param {Object} p_position
              */
-            onErrorGPSPosition : function(p_error) {
+            onErrorGPSPosition: function(p_error) {
                 try {
                     $.Oda.Mobile.positionGps.statut = "KO : code=>"+ p_error.code+", message=>"+ p_error.message;
                     $.Oda.Mobile.funcReturnGPSPosition($.Oda.Mobile.positionGps);
@@ -942,8 +935,11 @@ var $;
                     $.Oda.Log.error("$.Oda.Mobile.onErrorGPSPosition: " + er.message);
                 }
             },
-
-            onPhotoSuccess : function(p_imageData) {
+            /**
+             * @name onPhotoSuccess
+             * @param p_imageData
+             */
+            onPhotoSuccess: function(p_imageData) {
                 try {
                     var imgSrc = "data:image/jpeg;base64,"+p_imageData;
 
@@ -952,8 +948,11 @@ var $;
                     $.Oda.Log.error("$.Oda.Mobile.onPhotoSuccess: " + er.message);
                 }
             },
-
-            onPhotoURISuccess : function(p_imageURI) {
+            /**
+             *
+             * @param p_imageURI
+             */
+            onPhotoURISuccess: function(p_imageURI) {
                 try {
                     var imgSrc = p_imageURI;
 
@@ -962,16 +961,22 @@ var $;
                     $.Oda.Log.error("$.Oda.Mobile.onPhotoURISuccess: " + er.message);
                 }
             },
-
-            onPhotoFail : function(p_message) {
+            /**
+             *
+             * @param p_message
+             */
+            onPhotoFail: function(p_message) {
                 try {
                     alert('Failed because: ' + p_message);
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Mobile.onPhotoFail: " + er.message);
                 }
             },
-
-            initModuleMobile : function(){
+            /**
+             *
+             * @returns {*}
+             */
+            initModuleMobile: function(){
                 try {
                     var boolRetour = true;
 
@@ -985,13 +990,12 @@ var $;
                     return null;
                 }
             },
-
             ///////////////// PART NETWORK
             /**
              *
              * @returns {Boolean}
              */
-            getConnectionString : function(p_networkState){
+            getConnectionString: function(p_networkState){
                 try {
                     var retour = "";
 
@@ -1012,12 +1016,11 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @returns {Boolean}
              */
-            testConnection : function(){
+            testConnection: function(){
                 try {
                     var boolRetour = true;
 
@@ -1029,8 +1032,12 @@ var $;
                     return null;
                 }
             },
-
             ///////////////// PART GPS
+            /**
+             *
+             * @param p_onReturn
+             * @returns {*}
+             */
             getGpsPosition: function(p_onReturn){
                 try {
                     var boolRetour = true;
@@ -1045,6 +1052,11 @@ var $;
                     return null;
                 }
             },
+            /**
+             *
+             * @param p_position
+             * @returns {*}
+             */
             getGpsPositionString: function(p_position){
                 try {
                     var retour = "";
@@ -1065,8 +1077,12 @@ var $;
                     return null;
                 }
             },
-
             ///////////////// PART CAMERA
+            /**
+             *
+             * @param p_retourCapture
+             * @returns {*}
+             */
             getPhotoFromCamera: function(p_retourCapture){
                 try {
                     var boolRetour = true;
@@ -1081,6 +1097,11 @@ var $;
                     return null;
                 }
             },
+            /**
+             *
+             * @param p_retourCapture
+             * @returns {*}
+             */
             getPhotoFromLibrary: function(p_retourCapture){
                 try {
                     var boolRetour = true;
@@ -1191,6 +1212,10 @@ var $;
         },
         
         Date: {
+            /**
+             * 
+             * @returns {*}
+             */
             getStrDateFR : function(){
                 try {
                     var currentTime = new Date();
@@ -1204,7 +1229,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              * getStrDateTimeFrFromUs
              * @param {String} p_strDateTime
@@ -1222,7 +1246,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              * getStrDateFrFromUs
              * @param {String} p_strDate
@@ -1240,7 +1263,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              * @name convertSecondsToTime
              * @desc Seconds to hh:mm:ss
@@ -1264,7 +1286,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              * @name getStrDateTime
              * @returns {String}
@@ -1293,7 +1314,7 @@ var $;
              * @param params
              * @returns {{strErreur: string, data: {}, statut: number}}
              */
-            call : function(params){
+            call: function(params){
                 var response = {"strErreur": "No call", "data": {}, "statut": 4}
                 if(params.odaInterface.length>0){
                     var theInterface = params.odaInterface[0];
@@ -1371,8 +1392,8 @@ var $;
                     return null;
                 }
             },
-            Methode : {
-                "ajax": function (params) {
+            Methode: {
+                ajax: function (params) {
                     var retour;
                     var jqXHRMaster = $.ajax(params)
                         .done(function (data, textStatus, jqXHR) {
@@ -1436,7 +1457,12 @@ var $;
                         });
                     return retour;
                 },
-                "mokup": function (params) {
+                /**
+                 *
+                 * @param params
+                 * @returns {*}
+                 */
+                mokup: function (params) {
                     var retour = $.Oda.MokUp.get({url: params.url, tabInput: params.data});
                     if((retour.hasOwnProperty("strErreur")) && (retour.strErreur.startsWith("No mokup found for")) && (params.odaInterface.length>0)){
                         return $.Oda.Interface.call(params);
@@ -1451,7 +1477,12 @@ var $;
                         }
                     }
                 },
-                "cache": function (params) {
+                /**
+                 *
+                 * @param params
+                 * @returns {*}
+                 */
+                cache: function (params) {
                     var attrs = $.Oda.Tooling.clone(params.data);
                     if(attrs.hasOwnProperty("ctrl")){
                         delete attrs.ctrl;
@@ -1548,7 +1579,7 @@ var $;
              * @param {string} p_param_name
              * @returns { int|varchar }
              */
-            getParameter : function(p_param_name) {
+            getParameter: function(p_param_name) {
                 try {
                     var strResponse;
 
@@ -1583,7 +1614,7 @@ var $;
              * geRangs
              * @returns {json}
              */
-            getRangs :  function() {
+            getRangs: function() {
                 try {
                     var valeur = $.Oda.Storage.get("ODA_rangs");
                     if(valeur === null){
@@ -1613,7 +1644,7 @@ var $;
              * @param {String} p_page
              * @param {String} p_action
              */
-            addStat : function(p_user, p_page, p_action) {
+            addStat: function(p_user, p_page, p_action) {
                 try {
                     var tabSetting = { callback : function(){} };
                     var tabInput = {
@@ -1628,14 +1659,13 @@ var $;
                     return null;
                 }
             },
-
             /**
              * sendMail
              * @ex $.Oda.Interface.sendMail({email_mails_dest:'fabrice.rosito@gmail.com',message_html:'HelloContent',sujet:'HelloSujet'});
              * @param {json} p_params
              * @returns {boolean}
              */
-            sendMail : function(p_params) {
+            sendMail: function(p_params) {
                 try {
                     var params_attempt = {
                         email_mails_dest : null,
@@ -1662,7 +1692,7 @@ var $;
              * @param {String} p_params.msg
              * @returns {$.Oda.Interface}
              */
-            traceLog : function(p_params) {
+            traceLog: function(p_params) {
                 try {
                     var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/insertLog.php", {"callback":function(response){}}, {
                         "type":1,
