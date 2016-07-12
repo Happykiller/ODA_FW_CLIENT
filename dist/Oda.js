@@ -3420,7 +3420,7 @@ var $;
              * @exemple $.Oda.I8n.get("qcm-main","test", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"});
              * @returns {String}
              */
-            get : function(p_group, p_tag, options) {
+            get: function(p_group, p_tag, options) {
                 try {
                     var returnvalue = "Not define";
 
@@ -3538,7 +3538,7 @@ var $;
              * @param {object} p_params
              * @returns {$.Oda}
              */
-            auth : function(p_params) {
+            auth: function(p_params) {
                 try {
                     var tabInput = { "login" : p_params.login, "mdp" : p_params.mdp };
                     var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuth.php", {callback:function(response){
@@ -3595,7 +3595,7 @@ var $;
             /**
              * @name : loadRight
              */
-            loadRight : function() {
+            loadRight: function() {
                 try {
                     $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
                     var tabInput = { "rang" : $.Oda.Session.userInfo.profile, "id_page" : 0 };
@@ -3616,11 +3616,10 @@ var $;
                     $.Oda.Log.error("$.Oda.Security.loadRight() : " + er.message);
                 }
             },
-
             /**
              * @name : logout
              */
-            logout : function(){
+            logout: function(){
                 try {
                     var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/deleteSession.php", {callback:function(response){
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
@@ -3640,7 +3639,10 @@ var $;
         },
         
         Worker: {
-            lib : function(){
+            /**
+             * 
+             */
+            lib: function(){
                 this.$Oda = {
                     Context : {
                         rest : "$$REST$$"
@@ -3792,8 +3794,12 @@ var $;
                     }
                 };
             },
-
-            message : function(cmd, parameter){
+            /**
+             * 
+             * @param cmd
+             * @param parameter
+             */
+            message: function(cmd, parameter){
                 try {
                     this.cmd = cmd;
                     this.parameter = parameter;
@@ -3801,7 +3807,6 @@ var $;
                     $.Oda.Log.error("$Oda.message : " + er.message);
                 }
             },
-
             /**
              * @name initWorker
              * @desc pour initialiser un worker
@@ -3809,7 +3814,7 @@ var $;
              * @param {string} p_fonctionRetour
              * @returns {Worker}
              */
-            initWorker : function(p_nameWorker, p_dataInit, p_functionCore, p_fonctionRetour) {
+            initWorker: function(p_nameWorker, p_dataInit, p_functionCore, p_fonctionRetour) {
                 try {
                     var strFunctionLib = $.Oda.Worker.lib.toString();
                     strFunctionLib = strFunctionLib.substring(12);
@@ -3835,14 +3840,13 @@ var $;
                     $.Oda.Log.error("$.Oda.Worker.initWorker : " + er.message);
                 }
             },
-
             /**
              * @name terminateWorker
              * @desc pour finir le worker
              * @param {type} p_worker
              * @returns {undefined}
              */
-            terminateWorker : function(p_worker) {
+            terminateWorker: function(p_worker) {
                 try {
                     // On aurait pu créer une commande 'stop' qui aurait été traitée
                     // au sein du worker qui se serait fait hara-kiri via .close()
@@ -3854,13 +3858,13 @@ var $;
         },
 
         Tuto: {
-            enable : true,
-
-            currentElt : "",
-
-            listElt : [],
-
-            start : function (){
+            enable: true,
+            currentElt: "",
+            listElt: [],
+            /**
+             * 
+             */
+            start: function (){
                 try {
                     if($.Oda.Tuto.enable){
                         $('[oda-tuto]').each(function(index, value){
@@ -3896,8 +3900,11 @@ var $;
                     $.Oda.Log.error("$.Oda.Tuto.start : " + er.message);
                 }
             },
-
-            readed : function(id){
+            /**
+             * 
+             * @param id
+             */
+            readed: function(id){
                 try {
                     $.Oda.Tuto.listElt[id].enable = false;
 
@@ -3916,8 +3923,11 @@ var $;
                     $.Oda.Log.error("$.Oda.Tuto.readed : " + er.message);
                 }
             },
-
-            show : function (id){
+            /**
+             * 
+             * @param id
+             */
+            show: function (id){
                 try {
                     var elt = $("[oda-tuto^='id:"+id+"']");
 
@@ -3947,7 +3957,7 @@ var $;
                 }
             }
         },
-
+        
         Scope: {
             /**
              * @param {Object} p_params
@@ -3955,7 +3965,7 @@ var $;
              * @exemple $.Oda.Scope.transform({str:"<span oda-label='oda-main.logout'>logout</span>"});
              * @returns {String}
              */
-            transform : function (p_params) {
+            transform: function (p_params) {
                 try {
                     var strReturn = '';
 
@@ -3973,13 +3983,12 @@ var $;
                     return null;
                 }
             },
-
             /**
              * @param {Object} p_params
              * @param p_params.id
              * @returns {undefined}
              */
-            init : function(p_params){
+            init: function(p_params){
                 try {
                     var divTarget = "";
                     if(!$.Oda.Tooling.isUndefined(p_params)){
@@ -4143,8 +4152,8 @@ var $;
                     return null;
                 }
             },
-            Gardian : {
-                inventory : {},
+            Gardian: {
+                inventory: {},
                 /**
                  * @param {Object} p_params
                  * @param p_params.id
@@ -4152,7 +4161,7 @@ var $;
                  * @param p_params.function
                  * @returns {$.Oda.Scope}
                  */
-                add : function (p_params) {
+                add: function (p_params) {
                     try {
                         $.Oda.Scope.Gardian.inventory[p_params.id] = {
                             listElt : p_params.listElt,
@@ -4169,7 +4178,7 @@ var $;
                  * @param p_params.id
                  * @returns {$.Oda.Scope}
                  */
-                remove : function (p_params) {
+                remove: function (p_params) {
                     try {
                         $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
                             delete $.Oda.Scope.Gardian.inventory[key];
@@ -4183,7 +4192,7 @@ var $;
                 /**
                  * @returns {$.Oda.Scope}
                  */
-                removeAll : function () {
+                removeAll: function () {
                     try {
                         $.Oda.Scope.Gardian.inventory = {};
                         return this;
@@ -4197,7 +4206,7 @@ var $;
                  * @param p_params.id
                  * @returns {$.Oda.Scope}
                  */
-                findByElt : function (p_params) {
+                findByElt: function (p_params) {
                     try {
                         $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
                             if($.Oda.Tooling.isInArray(p_params.id, value.listElt)){
@@ -4212,13 +4221,12 @@ var $;
                 },
             }
         },
-
+        
         Storage: {
             /* Version number */
             version : VERSION,
             ttl_default : 86400, //24H
             storageKey : "ODA__default__",
-
             /**
              *
              * @returns {Boolean}
@@ -4237,7 +4245,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {string} p_key
@@ -4279,7 +4286,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {string} p_key
@@ -4332,7 +4338,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              * @desc reset ttl with new
              * @param {string} p_key
@@ -4364,7 +4369,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {string} p_key
@@ -4400,7 +4404,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {string} p_key
@@ -4418,7 +4421,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @returns {int}
@@ -4437,7 +4439,6 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {string} p_key
@@ -4462,31 +4463,24 @@ var $;
                 }
             }
         },
-
+        
         Router: {
-            current : {
+            current: {
                 route : "",
                 args : []
             },
-
-            routes : {},
-
-            routerExit : false,
-
-            routesAllowed : [],
-
-            routeDependencies : [],
-
-            routesAllowedDefault : [],
-
-            MiddleWares : {},
-
+            routes: {},
+            routerExit: false,
+            routesAllowed: [],
+            routeDependencies: [],
+            routesAllowedDefault: [],
+            MiddleWares: {},
             /**
              * navigateTo
              * @param {object} p_request
              * @returns {$.Oda.Router}
              */
-            navigateTo : function(p_request) {
+            navigateTo: function(p_request) {
                 try {
                     $.Oda.Display.Popup.closeAll();
 
@@ -4530,7 +4524,7 @@ var $;
              * @param {object} p_routeDef
              * @returns {$.Oda.Router}
              */
-            addRoute : function(p_name, p_routeDef) {
+            addRoute: function(p_name, p_routeDef) {
                 try {
                     if(!p_routeDef.hasOwnProperty("system")){
                         p_routeDef.system = false;
@@ -4557,7 +4551,7 @@ var $;
              * @param {object} p_midlleWareDef
              * @returns {$.Oda.Router}
              */
-            addMiddleWare : function(p_name, p_midlleWareDef) {
+            addMiddleWare: function(p_name, p_midlleWareDef) {
                 try {
                     $.Oda.Router.MiddleWares[p_name] = p_midlleWareDef;
                     $.Oda.Router.MiddleWares[p_name].name = p_name;
@@ -4573,7 +4567,7 @@ var $;
              * @param {object} p_dependenciesLoad
              * @returns {$.Oda.Router}
              */
-            addDependencies : function(p_name, p_dependenciesLoad) {
+            addDependencies: function(p_name, p_dependenciesLoad) {
                 try {
                     p_dependenciesLoad.name = p_name;
                     $.Oda.Router.routeDependencies[p_name] = p_dependenciesLoad;
@@ -4583,13 +4577,12 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @param {Object} p_params
              * @returns {$.Oda.Router}
              */
-            loadPartial : function(p_params) {
+            loadPartial: function(p_params) {
                 try {
                     $.get(p_params.routeDef.path, function(data) {
                             $('#'+$.Oda.Context.mainDiv).html(data);
@@ -4607,12 +4600,11 @@ var $;
                     return null;
                 }
             },
-
             /**
              *
              * @returns {$.Oda.Router}
              */
-            startRooter : function() {
+            startRooter: function() {
                 try {
                     if($("#projectLabel").exists()){
                         $("#projectLabel").text($.Oda.Context.projectLabel);
@@ -4643,13 +4635,12 @@ var $;
                     return null;
                 }
             },
-
             /**
              * go
              * @param {object} p_params description
              * @returns {$.Oda.Router}
              */
-            routerGo : function(p_params) {
+            routerGo: function(p_params) {
                 try {
                     $.Oda.Log.debug("RouterGo : " + p_params.routeDef.path);
 
@@ -4894,7 +4885,12 @@ var $;
         },
         
         Log: {
-            "info" : function(p_msg) {
+            /**
+             * 
+             * @param p_msg
+             * @returns {*}
+             */
+            info: function(p_msg) {
                 try {
                     $.Oda.Context.console.info(p_msg);
                     return this;
@@ -4903,7 +4899,12 @@ var $;
                     return null;
                 }
             },
-            "trace" : function(p_msg) {
+            /**
+             * 
+             * @param p_msg
+             * @returns {*}
+             */
+            trace: function(p_msg) {
                 try {
                     $.Oda.Context.console.log(p_msg);
                     return this;
@@ -4912,7 +4913,12 @@ var $;
                     return null;
                 }
             },
-            "debug" : function(p_msg) {
+            /**
+             * 
+             * @param p_msg
+             * @returns {*}
+             */
+            debug: function(p_msg) {
                 try {
                     if($.Oda.Context.debug){
                         $.Oda.Context.console.debug(p_msg);
@@ -4923,7 +4929,12 @@ var $;
                     return null;
                 }
             },
-            "error" : function(p_msg) {
+            /**
+             * 
+             * @param p_msg
+             * @returns {*}
+             */
+            error: function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
                     if($.Oda.Context.rest !== ""){
@@ -4935,7 +4946,12 @@ var $;
                     return null;
                 }
             },
-            "warning" : function(p_msg) {
+            /**
+             * 
+             * @param p_msg
+             * @returns {*}
+             */
+            warning: function(p_msg) {
                 try {
                     $.Oda.Context.console.warn(p_msg);
                     return this;
