@@ -445,7 +445,7 @@ var $;
         Controller: {},
 
         App: {},
-        
+
         Cache: {
             config : [],
             cache : [],
@@ -883,7 +883,7 @@ var $;
                 }
             },
         },
-        
+
         Mobile: {
             /* return elet*/
             funcReturnGPSPosition: null,
@@ -1117,7 +1117,7 @@ var $;
                 }
             }
         },
-        
+
         MokUp: {
             mokup : [],
             /**
@@ -1172,7 +1172,7 @@ var $;
                 }
             }
         },
-        
+
         Event: {
             /**
              * @param {Object} p_params
@@ -1210,10 +1210,10 @@ var $;
                 }
             }
         },
-        
+
         Date: {
             /**
-             * 
+             *
              * @returns {*}
              */
             getStrDateFR : function(){
@@ -3315,7 +3315,7 @@ var $;
             merge: function(params) {
                 try {
                     var objReturn = this.clone(params.default);
-    
+
                     //if array
                     if(Array.isArray(objReturn)){
                         //for each elt of target we apply the partn array
@@ -3324,7 +3324,7 @@ var $;
                         for(var index in params.source){
                             objReturn.push(this.merge({default: defaultEltArray, source: params.source[index]}));
                         }
-                    //if object    
+                        //if object    
                     }else if((objReturn !== null) && (objReturn !== undefined) && (objReturn.constructor === Object)){
                         for(var key in objReturn){
                             if((params.source !== null) && (params.source !== undefined) && (params.source[key] !== undefined)){
@@ -3637,10 +3637,10 @@ var $;
                 }
             }
         },
-        
+
         Worker: {
             /**
-             * 
+             *
              */
             lib: function(){
                 this.$Oda = {
@@ -3795,7 +3795,7 @@ var $;
                 };
             },
             /**
-             * 
+             *
              * @param cmd
              * @param parameter
              */
@@ -3862,7 +3862,7 @@ var $;
             currentElt: "",
             listElt: [],
             /**
-             * 
+             *
              */
             start: function (){
                 try {
@@ -3893,6 +3893,10 @@ var $;
 
                             if(($.Oda.Tuto.listElt[theTuto.id].enable)&&($.Oda.Tuto.currentElt === "")){
                                 $.Oda.Tuto.show(theTuto.id);
+                            }else{
+                                if(!$.Oda.Tuto.listElt[theTuto.id].props.hasOwnProperty("bt-next")){
+                                    $.Oda.Tuto.show(theTuto.id);
+                                }
                             }
                         });
                     }
@@ -3901,10 +3905,27 @@ var $;
                 }
             },
             /**
-             * 
+             *
              * @param id
              */
-            readed: function(id){
+            read: function(id){
+                try {
+                    $.Oda.Tuto.listElt[id].enable = false;
+
+                    var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user);
+                    sessionTuto[id] = false;
+                    $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
+
+                    $("[oda-tuto^='id:"+id+"']").tooltip('destroy');
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tuto.read : " + er.message);
+                }
+            },
+            /**
+             *
+             * @param id
+             */
+            next: function(id){
                 try {
                     $.Oda.Tuto.listElt[id].enable = false;
 
@@ -3920,11 +3941,11 @@ var $;
                         }
                     }
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.readed : " + er.message);
+                    $.Oda.Log.error("$.Oda.Tuto.next : " + er.message);
                 }
             },
             /**
-             * 
+             *
              * @param id
              */
             show: function (id){
@@ -3942,9 +3963,10 @@ var $;
                     var strHtml = $('[oda-tuto-content='+id+']').html();
 
                     if($.Oda.Tuto.listElt[id].props.hasOwnProperty("bt-next")){
-                        strHtml += "";
+                        strHtml += '<br><button type="button" onclick="$.Oda.Tuto.next(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-next')+'</button >';
+                    }else{
+                        strHtml += '<br><button type="button" onclick="$.Oda.Tuto.read(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-read')+'</button >';
                     }
-                    strHtml += '<br><button type="button" onclick="$.Oda.Tuto.readed(\''+id+'\');" class="btn btn-info btn-xs">Readed</button >';
                     elt.attr("title",strHtml);
                     elt.on('hidden.bs.tooltip', function () {
                         $.Oda.Tuto.enable = false;
@@ -3957,7 +3979,7 @@ var $;
                 }
             }
         },
-        
+
         Scope: {
             /**
              * @param {Object} p_params
@@ -4221,7 +4243,7 @@ var $;
                 },
             }
         },
-        
+
         Storage: {
             /* Version number */
             version : VERSION,
@@ -4463,7 +4485,7 @@ var $;
                 }
             }
         },
-        
+
         Router: {
             current: {
                 route : "",
@@ -4585,12 +4607,12 @@ var $;
             loadPartial: function(p_params) {
                 try {
                     $.get(p_params.routeDef.path, function(data) {
-                            $('#'+$.Oda.Context.mainDiv).html(data);
-                            $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
-                            if($.Oda.Session.code_user !== ""){
-                                $.Oda.Tuto.start();
-                            }
-                        })
+                        $('#'+$.Oda.Context.mainDiv).html(data);
+                        $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
+                        if($.Oda.Session.code_user !== ""){
+                            $.Oda.Tuto.start();
+                        }
+                    })
                         .fail(function(){
                             $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
                         });
@@ -4883,10 +4905,10 @@ var $;
                 }
             },
         },
-        
+
         Log: {
             /**
-             * 
+             *
              * @param p_msg
              * @returns {*}
              */
@@ -4900,7 +4922,7 @@ var $;
                 }
             },
             /**
-             * 
+             *
              * @param p_msg
              * @returns {*}
              */
@@ -4914,7 +4936,7 @@ var $;
                 }
             },
             /**
-             * 
+             *
              * @param p_msg
              * @returns {*}
              */
@@ -4930,7 +4952,7 @@ var $;
                 }
             },
             /**
-             * 
+             *
              * @param p_msg
              * @returns {*}
              */
@@ -4947,7 +4969,7 @@ var $;
                 }
             },
             /**
-             * 
+             *
              * @param p_msg
              * @returns {*}
              */

@@ -46,7 +46,11 @@
         "select-default": "Choisir une option",
         "new": "Nouveau",
         "add": "Ajouter",
-        "all": "Tous"
+        "all": "Tous",
+        "tuto-read": "Lu",
+        "tuto-next": "Suivant",
+        "tuto-label-avatar": "For display system menu, click.",
+        "tuto-label-brand": "To go home click."
     },
     "en": {
         "authentication": "Authentication",
@@ -94,7 +98,11 @@
         "select-default": "Choose option",
         "new": "New",
         "add": "Add",
-        "all": "All"
+        "all": "All",
+        "tuto-read" : "Check",
+        "tuto-next": "Next",
+        "tuto-label-avatar": "Pour affichier le menu, cliquer",
+        "tuto-label-brand": "Pour rejoindre l'accueil"
     },
     "es": {
         "authentication": "Autenticación",
@@ -142,7 +150,11 @@
         "select-default": "Choose option",
         "new": "New",
         "add": "Add",
-        "all": "All"
+        "all": "All",
+        "tuto-read" : "Leer",
+        "tuto-next": "Siguiente",
+        "tuto-label-avatar": "Para el menú sistema de visualización, clic.",
+        "tuto-label-brand": "Para volver a casa clic."
     }
 }, {
     "groupName": "oda-project",
@@ -322,73 +334,73 @@
         "Confirmpassword": "Confirme password :"
     }
 }, {
-  "groupName": "oda-profile",
-  "fr": {
-    "title": "Mon profil",
-    "infos": "Informations",
-    "uploadSuccess": "Upload réussi.",
-    "uploadError": "Erreur upload : {{msg}}",
-    "codeUser": "Code utilisateur",
-    "lastName": "Nom",
-    "firstName": "Prénom",
-    "email": "E-mail",
-    "language": "Langue",
-    "avatar": "Avatar",
-    "passwordActual": "Mot de pass actuelle",
-    "update": "Mise à jour : ",
-    "fr": "Français",
-    "en": "Anglais",
-    "es": "Espagnole",
-    "updateSuccess": "Mise &agrave; jour r&eacute;ussi"
-  },
-  "en": {
-    "title": "My profile",
-    "infos": "Informations",
-    "uploadSuccess": "Upload success",
-    "uploadError": "Upload error: {{msg}}",
-    "codeUser": "User code",
-    "lastName": "LastName",
-    "firstName": "FirstName",
-    "email": "E-mail",
-    "language": "Language",
-    "avatar": "Avatar",
-    "passwordActual": "Current pass word",
-    "update": "Update: ",
-    "fr": "French",
-    "en": "English",
-    "es": "Spanish",
-    "updateSuccess": "Update success"
-  },
-  "es": {
-    "title": "Mi perfil",
-    "infos": "Informaciones",
-    "uploadSuccess": "Subida exitosa",
-    "uploadError": "Error al Subir: {{msg}}",
-    "codeUser": "Código de usuario",
-    "lastName": "Nombre",
-    "firstName": "Primer nombre",
-    "email": "E-mail",
-    "language": "Idioma",
-    "avatar": "Avatar",
-    "passwordActual": "Palabra pasada actual",
-    "update": "Actualización: ",
-    "fr": "Francés",
-    "en": "Inglés",
-    "es": "Español",
-    "updateSuccess": "el éxito de actualización"
-  }
+    "groupName": "oda-profile",
+    "fr": {
+        "title": "Mon profil",
+        "infos": "Informations",
+        "uploadSuccess": "Upload réussi.",
+        "uploadError": "Erreur upload : {{msg}}",
+        "codeUser": "Code utilisateur",
+        "lastName": "Nom",
+        "firstName": "Prénom",
+        "email": "E-mail",
+        "language": "Langue",
+        "avatar": "Avatar",
+        "passwordActual": "Mot de pass actuelle",
+        "update": "Mise à jour : ",
+        "fr": "Français",
+        "en": "Anglais",
+        "es": "Espagnole",
+        "updateSuccess": "Mise &agrave; jour r&eacute;ussi"
+    },
+    "en": {
+        "title": "My profile",
+        "infos": "Informations",
+        "uploadSuccess": "Upload success",
+        "uploadError": "Upload error: {{msg}}",
+        "codeUser": "User code",
+        "lastName": "LastName",
+        "firstName": "FirstName",
+        "email": "E-mail",
+        "language": "Language",
+        "avatar": "Avatar",
+        "passwordActual": "Current pass word",
+        "update": "Update: ",
+        "fr": "French",
+        "en": "English",
+        "es": "Spanish",
+        "updateSuccess": "Update success"
+    },
+    "es": {
+        "title": "Mi perfil",
+        "infos": "Informaciones",
+        "uploadSuccess": "Subida exitosa",
+        "uploadError": "Error al Subir: {{msg}}",
+        "codeUser": "Código de usuario",
+        "lastName": "Nombre",
+        "firstName": "Primer nombre",
+        "email": "E-mail",
+        "language": "Idioma",
+        "avatar": "Avatar",
+        "passwordActual": "Palabra pasada actual",
+        "update": "Actualización: ",
+        "fr": "Francés",
+        "en": "Inglés",
+        "es": "Español",
+        "updateSuccess": "el éxito de actualización"
+    }
 },{
-  "groupName": "oda-auth",
-  "fr": {
-    "noAccount": "Pas de compte rattach&eacute; à l'email : ",
-    "chooseAccount": "Choisir le compte."
-  },
-  "en": {
-    "noAccount": "No account for this email: ",
-    "chooseAccount": "Choose an account"
-  },
-  "es": {
-    "noAccount": "No se cuenta para este correo electr&oacute;nico: ",
-    "chooseAccount": "Seleccione cuenta."
-  }
+    "groupName": "oda-auth",
+    "fr": {
+        "noAccount": "Pas de compte rattach&eacute; à l'email : ",
+        "chooseAccount": "Choisir le compte."
+    },
+    "en": {
+        "noAccount": "No account for this email: ",
+        "chooseAccount": "Choose an account"
+    },
+    "es": {
+        "noAccount": "No se cuenta para este correo electr&oacute;nico: ",
+        "chooseAccount": "Seleccione cuenta."
+    }
 }]
