@@ -1313,6 +1313,10 @@ var $;
              */
             dateFormat: function(myDate, format){
                 try {
+                    if(!(myDate instanceof Date)){
+                        myDate = new Date(myDate);
+                    }
+
                     var yearFull = myDate.getFullYear();
                     var year = myDate.getYear();
                     var mounth = $.Oda.Tooling.pad2(myDate.getMonth() + 1);
