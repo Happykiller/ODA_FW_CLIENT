@@ -1305,7 +1305,37 @@ var $;
                     $.Oda.Log.error("$.Oda.Date.getStrDateTime : " + er.message);
                     return null;
                 }
-            }
+            },
+            /**
+             * @param {Date} myDate
+             * @param {string} format
+             * @returns {string}
+             */
+            dateFormat: function(myDate, format){
+                try {
+                    var yearFull = myDate.getFullYear();
+                    var year = myDate.getYear();
+                    var mounth = $.Oda.Tooling.pad2(myDate.getMonth() + 1);
+                    var day = $.Oda.Tooling.pad2(myDate.getDate());
+                    var hour = $.Oda.Tooling.pad2(myDate.getHours());
+                    var minute = $.Oda.Tooling.pad2(myDate.getMinutes());
+                    var second = $.Oda.Tooling.pad2(myDate.getSeconds());
+
+                    var response = format
+                    .replace(new RegExp('yyyy', "ig"), yearFull)
+                    .replace(new RegExp('yy', "ig"),year)
+                    .replace(new RegExp('mm', "ig"),mounth)
+                    .replace(new RegExp('dd', "ig"),day)
+                    .replace(new RegExp('hh', "ig"),hour)
+                    .replace(new RegExp('mi', "ig"),minute)
+                    .replace(new RegExp('ss', "ig"),second);
+
+                    return response;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Date.dateFormat : " + er.message);
+                    return null;
+                }
+            },
         },
 
         Interface: {
