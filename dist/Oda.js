@@ -4027,10 +4027,6 @@ var $;
 
                             if(($.Oda.Tuto.listElt[theTuto.id].enable)&&($.Oda.Tuto.currentElt === "")){
                                 $.Oda.Tuto.show(theTuto.id);
-                            }else{
-                                if(!$.Oda.Tuto.listElt[theTuto.id].props.hasOwnProperty("bt-next")){
-                                    $.Oda.Tuto.show(theTuto.id);
-                                }
                             }
                         });
                     }
@@ -4051,23 +4047,7 @@ var $;
                     $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
 
                     $("[oda-tuto^='id:"+id+"']").tooltip('destroy');
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.read : " + er.message);
-                }
-            },
-            /**
-             *
-             * @param id
-             */
-            next: function(id){
-                try {
-                    $.Oda.Tuto.listElt[id].enable = false;
 
-                    var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user);
-                    sessionTuto[id] = false;
-                    $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
-
-                    $("[oda-tuto^='id:"+id+"']").tooltip('destroy');
                     for(var elt in $.Oda.Tuto.listElt){
                         if($.Oda.Tuto.listElt[elt].enable){
                             this.show(elt);
@@ -4075,7 +4055,7 @@ var $;
                         }
                     }
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.next : " + er.message);
+                    $.Oda.Log.error("$.Oda.Tuto.read : " + er.message);
                 }
             },
             /**
@@ -4095,12 +4075,8 @@ var $;
                     elt.attr("data-html",true);
 
                     var strHtml = $('[oda-tuto-content='+id+']').html();
-
-                    if($.Oda.Tuto.listElt[id].props.hasOwnProperty("bt-next")){
-                        strHtml += '<br><button type="button" onclick="$.Oda.Tuto.next(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-next')+'</button >';
-                    }else{
-                        strHtml += '<br><button type="button" onclick="$.Oda.Tuto.read(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-read')+'</button >';
-                    }
+                    strHtml += '<br><button type="button" onclick="$.Oda.Tuto.read(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-read')+'</button >';
+                    
                     elt.attr("title",strHtml);
                     elt.on('hidden.bs.tooltip', function () {
                         $.Oda.Tuto.enable = false;

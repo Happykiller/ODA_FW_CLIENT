@@ -48,7 +48,6 @@
         "add": "Ajouter",
         "all": "Tous",
         "tuto-read": "Lu",
-        "tuto-next": "Suivant",
         "tuto-label-avatar": "For display system menu, click.",
         "tuto-label-brand": "To go home click."
     },
@@ -100,7 +99,6 @@
         "add": "Add",
         "all": "All",
         "tuto-read" : "Check",
-        "tuto-next": "Next",
         "tuto-label-avatar": "Pour affichier le menu, cliquer",
         "tuto-label-brand": "Pour rejoindre l'accueil"
     },
@@ -152,7 +150,6 @@
         "add": "Add",
         "all": "All",
         "tuto-read" : "Leer",
-        "tuto-next": "Siguiente",
         "tuto-label-avatar": "Para el menú sistema de visualización, clic.",
         "tuto-label-brand": "Para volver a casa clic."
     }
