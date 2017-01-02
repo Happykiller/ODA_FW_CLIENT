@@ -1741,6 +1741,106 @@ var $;
         },
 
         Display: {
+            Polyfill: {
+                /**
+                 * @param {Object} params
+                 * @param params.name mandatory
+                 * @param params.createdCallback mandatory var elt = $(this);
+                 * @param params.attachedCallback optional
+                 * @param params.detachedCallback optional
+                 * @param params.attributeChangedCallback optional (attrName, oldValue, newValue)
+                 * @returns {$.Oda.Polyfill}
+                 */
+                /** example <oda-card card-id="1" card-quality="Rare">Abomination</oda-card>
+                    $.Oda.Display.Polyfill.createHtmlElement({
+                        name: "oda-card",
+                        createdCallback: function(){
+                            var elt = $(this);
+                            var id = elt.attr("card-id");
+                            var qualite = elt.attr("card-quality");
+                            elt.css("color", $.Oda.App.colorCard[qualite]);
+                            elt.attr("data-toggle","tooltip");
+                            elt.attr("data-placement","auto");
+                            elt.attr("data-html",true);
+                            elt.attr("class",'oda-tooltip-class');
+                            elt.attr("title",'<img src="img/cards/'+id+'.png" />');
+                            elt.tooltip();
+                        }
+                    });
+                 */
+                createHtmlElement: function(params){
+                    try {
+                        $.Oda.Log.debug("CreateHtmlElement: " + params.name);
+                        var elt = Object.create(HTMLElement.prototype, {
+                            createdCallback: {
+                                value: params.createdCallback
+                            }
+                        });
+
+                        if(params.attributeChangedCallback !== undefined){
+                            elt.attributeChangedCallback = {
+                                value: params.attributeChangedCallback
+                            };
+                        }
+                            
+                        document.registerElement(params.name, {
+                            prototype: elt
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.polyfill.createHtmlElement : " + er.message);
+                        return null;
+                    }
+                },
+
+                /**
+                 * @param {Object} params
+                 * @param params.name mandatory
+                 * @param params.type mandatory a, p, br, etc
+                 * @param params.createdCallback mandatory var elt = $(this);
+                 * @param params.attachedCallback optional
+                 * @param params.detachedCallback optional
+                 * @param params.attributeChangedCallback optional (attrName, oldValue, newValue)
+                 * @returns {$.Oda.Polyfill}
+                 */
+                /** example <a href="coucou" is="oda-link" oda-link-value="nonici">Hello</a>
+                    $.Oda.Display.Polyfill.extendHtmlElement({
+                        name: "oda-link",
+                        type: "a",
+                        createdCallback: function(){
+                            var elt = $(this);
+                            var link = elt.attr("oda-link-value");
+                            console.log("link: "+ link);
+                        }
+                    });
+                */
+                extendHtmlElement: function(params){
+                    try {
+                        $.Oda.Log.debug("extendHtmlElement: " + params.name);
+                        
+                        var elt = Object.create(HTMLElement.prototype, {
+                            createdCallback: {
+                                value: params.createdCallback
+                            }
+                        });
+
+                        if(params.attributeChangedCallback !== undefined){
+                            elt.attributeChangedCallback = {
+                                value: params.attributeChangedCallback
+                            };
+                        }
+                            
+                        document.registerElement(params.name, {
+                            prototype: elt,
+                            extends: params.type
+                        });
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.polyfill.extendHtmlElement : " + er.message);
+                        return null;
+                    }
+                }
+            },
             /**
              * @param {Object} p_params
              * @param p_params.json
