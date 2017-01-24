@@ -1309,6 +1309,7 @@ var $;
             /**
              * @param {Date} myDate
              * @param {string} format
+             * @example $.Oda.Date.dateFormat(new Date(), "yyyy-mm-dd")
              * @returns {string}
              */
             dateFormat: function(myDate, format){
