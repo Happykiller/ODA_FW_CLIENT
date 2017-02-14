@@ -1674,7 +1674,7 @@ var $;
             },
             /**
              * @name addStat
-             * @test addStat('ADMI', 'page_home.html', 'checkAuth : ok');
+             * @example addStat('ADMI', 'page_home.html', 'checkAuth : ok');
              * @param {String} p_user
              * @param {String} p_page
              * @param {String} p_action
@@ -1695,10 +1695,21 @@ var $;
                 }
             },
             /**
-             * sendMail
-             * @ex $.Oda.Interface.sendMail({email_mails_dest:'fabrice.rosito@gmail.com',message_html:'HelloContent',sujet:'HelloSujet'});
-             * @param {json} p_params
-             * @returns {boolean}
+             * @name sendMail
+             * @example $.Oda.Interface.sendMail({email_mails_dest:'fabrice.rosito@gmail.com',message_html:'HelloContent',sujet:'HelloSujet'});
+             * @example return {"data":{"resultat": "ok"}}
+             * @param {Object} p_params
+             * @param {String} p_params.email_mails_dest mandatory 
+             * @param {String} p_params.message_html mandatory 
+             * @param {String} p_params.sujet mandatory 
+             * @param {String} p_params.email_mail_ori optional 
+             * @param {String} p_params.email_labelle_ori optional 
+             * @param {String} p_params.email_mail_reply optional 
+             * @param {String} p_params.email_labelle_reply optional 
+             * @param {String} p_params.email_mails_copy optional 
+             * @param {String} p_params.email_mails_cache optional 
+             * @param {String} p_params.message_txt optional 
+             * @returns {Object}
              */
             sendMail: function(p_params) {
                 try {
@@ -1888,36 +1899,48 @@ var $;
                 }
             },
             Notification: {
-                id : 0,
-                success : function(p_message){
+                id: 0,
+                /**
+                 * @name success
+                 * @example $.Oda.Display.Notification.success("Hello !");
+                 * @param {String} p_message
+                 * @returns {$.Oda.Display.Notification}
+                 */
+                success: function(p_message){
                     this.create(p_message,"success", 2000);
                 },
-                successI8n : function(p_message){
+                /**
+                 * @name successI8n
+                 * @example $.Oda.Display.Notification.successI8n("home.hello");
+                 * @param {String} p_message
+                 * @returns {$.Oda.Display.Notification}
+                 */
+                successI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"success", 2000);
                 },
-                info : function(p_message){
+                info: function(p_message){
                     this.create(p_message,"info", 3000);
                 },
-                infoI8n : function(p_message){
+                infoI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"info", 3000);
                 },
-                warning : function(p_message){
+                warning: function(p_message){
                     this.create(p_message,"warning", 5000);
                 },
-                warningI8n : function(p_message){
+                warningI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"warning", 5000);
                 },
-                danger : function(p_message){
+                danger: function(p_message){
                     this.create(p_message,"danger");
                 },
-                dangerI8n : function(p_message){
+                dangerI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"danger");
                 },
-                error : function(p_message){
+                error: function(p_message){
                     this.create(p_message,"danger");
                     $.Oda.Log.error(p_message);
                 },
-                errorI8n : function(p_message){
+                errorI8n: function(p_message){
                     var message = $.Oda.I8n.getByString(p_message);
                     this.create(message,"danger");
                     $.Oda.Log.error(message);
