@@ -39,7 +39,13 @@
          */
         start: function () {
             try {
-                var compressToken = $.Oda.Tooling.getParameterGet({url: decodeURI($.Oda.Context.window.location)});
+                var tokenUri;
+                try{
+                    tokenUri = decodeURI($.Oda.Context.window.location);
+                }catch (er) {
+                    tokenUri = unescape($.Oda.Context.window.location);
+                }
+                var compressToken = $.Oda.Tooling.getParameterGet({url: tokenUri});
                 var data = LZString.decompress(compressToken.token);
                 var token = JSON.parse(data);
                 if(!token.hasOwnProperty("userCode") || !token.hasOwnProperty("valideDate")){

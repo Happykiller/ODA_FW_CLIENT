@@ -1972,7 +1972,7 @@ var $;
                  * @param {int} p_type
                  * @returns {boolean}
                  */
-                create : function(p_message, p_type, time) {
+                create: function(p_message, p_type, time) {
                     try {
                         $.Oda.Display.Notification.id++;
                         var strHtml = "";
@@ -1997,7 +1997,7 @@ var $;
                  * @param {int} params.id
                  * @returns {$.Oda.Notification}
                  */
-                remove : function(params){
+                remove: function(params){
                     try {
                         $('#oda-notification-'+params.id).fadeOut( 500, function(){
                             $( this ).remove();
@@ -2011,7 +2011,7 @@ var $;
                 /**
                  * @returns {$.Oda.Notification}
                  */
-                removeAll : function(){
+                removeAll: function(){
                     try {
                         $("[id^='oda-notification-']").fadeOut( 500, function(){
                             $( this ).remove();

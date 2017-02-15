@@ -314,6 +314,23 @@
         }
     }
 }, {
+    "groupName": "oda-forgot",
+    "fr": {
+        "unknown": "Aucune correspondance trouvée.",
+        "mailSend": "Un email pour r&eacute;initialiser votre mot de passe a &eacute;t&eacute; envoy&eacute;",
+        "mailSubjet": "[ODA]Récupération de votre compte."
+    },
+    "en": {
+        "title": "Reset your password",
+        "intro": "Please provide your new password ",
+        "Confirmpassword": "Confirme password :"
+    },
+    "es": {
+        "title": "Reset your password",
+        "intro": "Please provide your new password ",
+        "Confirmpassword": "Confirme password :"
+    }
+}, {
     "groupName": "oda-resetPwd",
     "fr": {
         "title": "Réinitialiser son mot de passe",
