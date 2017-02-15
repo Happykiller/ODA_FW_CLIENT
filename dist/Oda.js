@@ -2391,28 +2391,63 @@ var $;
                 }
             },
             TemplateHtml: {
+                iterateLoadTemplate:0,
                 /**
                  * @param {Object} p_params
                  * @param {string} p_params.template
                  * @param {Object} p_params.scope opt
+                 * @param {Function} p_params.callback opt
                  * @returns {$.Oda.Display.TemplateHtml}
                  */
                 create: function (p_params) {
                     try {
-                        var strHtml = $('#'+p_params.template).html();
-                        if(p_params.hasOwnProperty("scope")){
-                            var listExpression = $.Oda.Tooling.findBetweenWords({str : $('#'+p_params.template).html(), first : "{{", last : "}}" });
-                            for(var indice in listExpression){
-                                var resultEval = $.Oda.Display.TemplateHtml.eval({exrp : listExpression[indice], scope : p_params.scope});
-                                strHtml = $.Oda.Tooling.replaceAll({str : strHtml, find : '{{'+listExpression[indice]+'}}', by : resultEval});
+                        var $template = $('#'+p_params.template);
+                        if(p_params.hasOwnProperty("callback")){
+                        
+                            if($template.html() === undefined){
+                                if($.Oda.Display.TemplateHtml.iterateLoadTemplate < 10){
+                                    $.Oda.Display.TemplateHtml.iterateLoadTemplate++;
+                                    $.Oda.Log.debug("$.Oda.Display.TemplateHtml.create: template load problem, retry.");
+                                    setTimeout(function(){ 
+                                        $.Oda.Display.TemplateHtml.create(p_params);
+                                    }, 200);
+                                }
+                            }else{
+                                var strHtml = $template.html();
+
+                                if(p_params.hasOwnProperty("scope")){
+                                    var listExpression = $.Oda.Tooling.findBetweenWords({str: $template.html(), first: "{{", last: "}}" });
+                                    for(var indice in listExpression){
+                                        var resultEval = $.Oda.Display.TemplateHtml.eval({exrp: listExpression[indice], scope: p_params.scope});
+                                        strHtml = $.Oda.Tooling.replaceAll({str: strHtml, find: '{{'+listExpression[indice]+'}}', by: resultEval});
+                                    }
+                                }
+
+                                strHtml = $.Oda.Scope.transform({str:strHtml});
+
+                                p_params.callback(strHtml);
                             }
+                        }else{
+                            if($template.html() === undefined){
+                                throw new Error("Template not load.");
+                            }
+
+                            var strHtml = $template.html();
+
+                            if(p_params.hasOwnProperty("scope")){
+                                var listExpression = $.Oda.Tooling.findBetweenWords({str: $template.html(), first: "{{", last: "}}" });
+                                for(var indice in listExpression){
+                                    var resultEval = $.Oda.Display.TemplateHtml.eval({exrp: listExpression[indice], scope: p_params.scope});
+                                    strHtml = $.Oda.Tooling.replaceAll({str: strHtml, find: '{{'+listExpression[indice]+'}}', by: resultEval});
+                                }
+                            }
+
+                            strHtml = $.Oda.Scope.transform({str:strHtml});
+
+                            return strHtml;
                         }
-
-                        strHtml = $.Oda.Scope.transform({str:strHtml});
-
-                        return strHtml;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.TemplateHtml.create : " + er.message);
+                        $.Oda.Log.error("$.Oda.Display.TemplateHtml.create: " + er.message);
                         return null;
                     }
                 },

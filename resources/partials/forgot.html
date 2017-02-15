@@ -82,29 +82,30 @@
                             tokenUri = escape(compressToken);
                         }
 
-                        var message_html = $.Oda.Display.TemplateHtml.create({
-                            template : "mailForgot",
-                            scope : {
+                        $.Oda.Display.TemplateHtml.create({
+                            template: "mailForgot",
+                            scope: {
                                 "userName": compte.prenom + " " + compte.nom,
                                 "siteUrl": $.Oda.Context.host,
                                 "urlReset": $.Oda.Context.host+"#resetPwd?token="+tokenUri
+                            },
+                            callback: function(strHtml){
+                                var paramsMail = {
+                                    email_mails_dest: compte["mail"]+",",
+                                    email_mail_ori: contact_mail_administrateur,
+                                    email_labelle_ori: "Service Mail ODA",
+                                    email_mail_reply: contact_mail_administrateur,
+                                    email_labelle_reply: "Service Mail ODA",
+                                    email_mails_cache: contact_mail_administrateur,
+                                    message_html: strHtml,
+                                    sujet : $.Oda.I8n.get("oda-forgot","mailSubjet"),
+                                };
+
+                                $.Oda.Interface.sendMail(paramsMail);
+
+                                $.Oda.Display.Notification.successI8n("oda-forgot.mailSend");
                             }
                         });
-
-                        var paramsMail = {
-                            email_mails_dest : compte["mail"]+","
-                            ,email_mail_ori : contact_mail_administrateur
-                            , email_labelle_ori : "Service Mail ODA"
-                            , email_mail_reply : contact_mail_administrateur
-                            , email_labelle_reply : "Service Mail ODA"
-                            , email_mails_cache : contact_mail_administrateur
-                            , message_html : message_html
-                            , sujet : $.Oda.I8n.get("oda-forgot","mailSubjet")
-                        };
-
-                        $.Oda.Interface.sendMail(paramsMail);
-
-                        $.Oda.Display.Notification.successI8n("oda-forgot.mailSend");
                     }
                 }}, tabInput);
                 $.Oda.Router.navigateTo();
