@@ -12,6 +12,11 @@
                             <td></td>
                         </tr>
                         <tr>
+                            <td oda-label="oda-profile.rank">oda-profile.rank</td>
+                            <td><label id="rank"></label></td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <td oda-label="oda-profile.lastName">oda-profile.lastName</td>
                             <td><label id="lab_nom"></label></td>
                             <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-nom" title="Mise &agrave; jour du nom" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
@@ -106,6 +111,12 @@
                     var nom = p_retour["data"]["detailsUser"]["nom"];
                     var prenom = p_retour["data"]["detailsUser"]["prenom"];
                     var langue = p_retour["data"]["detailsUser"]["langue"];
+                    var rankLabel;
+                    for(var index in p_retour.data.lesRangs.data){
+                        if(p_retour.data.lesRangs.data[index].id === p_retour.data.detailsUser.id_rang){
+                            rankLabel = p_retour.data.lesRangs.data[index].labelle;
+                        }
+                    }
 
                     $('#code_user').html(code_user);
                     $('#lab_nom').html(nom);
@@ -113,6 +124,7 @@
                     $('#lab_mail').html(mail);
                     $('#lab_langue').html(langue);
                     $('#lab_nom').html(nom);
+                    $('#rank').html(rankLabel);
 
                     $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');}});
                 } };

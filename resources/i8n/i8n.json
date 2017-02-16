@@ -365,7 +365,8 @@
         "fr": "Français",
         "en": "Anglais",
         "es": "Espagnole",
-        "updateSuccess": "Mise &agrave; jour r&eacute;ussi"
+        "updateSuccess": "Mise &agrave; jour r&eacute;ussi",
+        "rank": "Rang"
     },
     "en": {
         "title": "My profile",
@@ -383,7 +384,8 @@
         "fr": "French",
         "en": "English",
         "es": "Spanish",
-        "updateSuccess": "Update success"
+        "updateSuccess": "Update success",
+        "rank": "Rank"
     },
     "es": {
         "title": "Mi perfil",
@@ -401,7 +403,8 @@
         "fr": "Francés",
         "en": "Inglés",
         "es": "Español",
-        "updateSuccess": "el éxito de actualización"
+        "updateSuccess": "el éxito de actualización",
+        "rank": "fila"
     }
 },{
     "groupName": "oda-auth",
