@@ -1,0 +1,139 @@
+<div class="container">
+    <h2 oda-label="oda-tests.title"></h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <span oda-label="oda-tests.hello"></span>
+        </div>
+        <br><br>
+        <div class="col-md-12">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" oda-label="oda-tests.tabMail"></a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input required type="text" class="form-control" oda-input-text="mail" oda-input-text-tips="oda-tests.mail-tips" oda-input-text-placeholder="oda-tests.mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Tests.sendMail();" class="btn btn-primary disabled" disabled>oda-main.bt-submit</button >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.Oda.Controller.Tests = {
+        /**
+         * @returns {$.Oda.Controller.Tests}
+         */
+        start: function () {
+            try {
+                $('#myTabs a').click(function (e) {
+                    e.preventDefault()
+                    $(this).tab('show')
+                })
+
+                $.Oda.Scope.Gardian.add({
+                    id : "gardianMail",
+                    listElt : ["mail"],
+                    function : function(e){
+                        if( ($("#mail").data("isOk")) ){
+                            $("#submit").btEnable();
+                        }else{
+                            $("#submit").btDisable();
+                        }
+                    }
+                });
+
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Tests.start : " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Tests}
+         */
+        sendMail: function () {
+            try {
+                var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
+
+                $.Oda.Display.TemplateHtml.create({
+                    template: "mailTest",
+                    scope: {
+                        "siteUrl": $.Oda.Context.host
+                    },
+                    callback: function(strHtml){
+                        var paramsMail = {
+                            email_mails_dest: $('#mail').val()+",",
+                            email_mail_ori: contact_mail_administrateur,
+                            email_labelle_ori: "Service Mail ODA",
+                            email_mail_reply: contact_mail_administrateur,
+                            email_labelle_reply: "Service Mail ODA",
+                            email_mails_cache: contact_mail_administrateur,
+                            message_html: strHtml,
+                            sujet : $.Oda.I8n.get("oda-tests","mailSubjet"),
+                        };
+
+                        var result = $.Oda.Interface.sendMail(paramsMail);
+
+                        if(result.data.resultat === "ok"){
+                            $.Oda.Display.Notification.successI8n("oda-tests.mailSend");
+                        }else{
+                            $.Oda.Display.Notification.error("fail");
+                        }
+                    }
+                });
+
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Tests.sendMail : " + er.message);
+                return null;
+            }
+        }
+    };
+
+    $.Oda.Controller.Tests.start();
+</script>
+
+<script id="mailTest" type="text/template">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns:v="urn:schemas-microsoft-com:vml">
+    <head>
+        <meta http-equiv="content-type" content="text/html, charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
+    </head>
+    <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+        <table bgcolor="#343846" width="100%" border="0" cellpadding="10px" cellspacing="0">
+            <tbody>
+            <tr>
+                <td>
+                    <font face="verdana" color="#d3d3d3">
+                        Bonjour ceci est un test<br/>
+                        <br/>
+                        Merci et rendez-vous <a href='{{siteUrl}}'><font color="#add8e6">ici</font></a><br>
+                        <br/>
+                        L'&eacute;quipe<br>
+                    </font>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </html>
+</script>

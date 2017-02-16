@@ -446,4 +446,33 @@
     "saturday": "Sábado",
     "sunday": "Domingo"
   }
+},{
+  "groupName": "oda-tests",
+  "fr": {
+    "title": "Tests",
+    "hello": "Page pour vérifier les fonctionnalités du site",
+    "tabMail": "Mails",
+    "mail-tips": "mail@dom.com",
+    "mail-placeholder": "mail@dom.com",
+    "mailSend": "Le mail a &eacute;t&eacute; envoy&eacute;",
+    "mailSubjet": "[ODA]Test mail."
+  },
+  "en": {
+    "title": "Tests",
+    "hello": "Page to check site features",
+    "tabMail": "Mails",
+    "mail-tips": "mail@dom.com",
+    "mail-placeholder": "mail@dom.com",
+    "mailSend": "The mail has been sent",
+    "mailSubjet": "[ODA]Test mail."
+  },
+  "es": {
+    "title": "Pruebas",
+    "hello": "Página para verificar las características del sitio",
+    "tabMail": "Mails",
+    "mail-tips": "mail@dom.com",
+    "mail-placeholder": "mail@dom.com",
+    "mailSend": "El correo electrónico fue enviado",
+    "mailSubjet": "[ODA]Prueba de correo electrónico."
+  }
 }]

@@ -399,6 +399,13 @@ var $;
                         "dependencies" : ["dataTables"]
                     });
 
+                    $.Oda.Router.addRoute("tests", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/tests.html",
+                        "title" : "oda-tests.title",
+                        "urls" : ["tests"],
+                        "middleWares" : ["support", "auth"]
+                    });
+
                     var listDependsScene = [
                         {"name" : "scene" , ordered : false, "list" : [
                             { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/simple-sidebar.css", "type" : "css" },
