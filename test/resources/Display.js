@@ -1,5 +1,5 @@
-module( "Display" );
+QUnit.module( "Display" );
 
-test( "$.Oda.Display.jsonToStringSingleQuote", function() {
-    equal($.Oda.Display.jsonToStringSingleQuote({json: {"attri": "hello"}}), "{'attri':'hello'}", "Test 1" );
+QUnit.test( "$.Oda.Display.jsonToStringSingleQuote", function() {
+    QUnit.assert.equal($.Oda.Display.jsonToStringSingleQuote({json: {"attri": "hello"}}), "{'attri':'hello'}", "Test 1" );
 });

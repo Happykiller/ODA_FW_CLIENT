@@ -13,6 +13,8 @@ node_modules/*
 .idea/
 .idea/*
 *.iml
+.vscode/
+debug.log
 
 server/composer.lock
 server/config/*

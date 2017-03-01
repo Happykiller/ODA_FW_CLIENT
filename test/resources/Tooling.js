@@ -1,34 +1,34 @@
-module( "Tooling" );
+QUnit.module( "Tooling" );
 
-test( "$.Oda.Tooling.arrondir", function() {
-    equal($.Oda.Tooling.arrondir(10.42, 1), 10.4, "Test OK : Passed!" );
+QUnit.test( "$.Oda.Tooling.arrondir", function() {
+    QUnit.assert.equal($.Oda.Tooling.arrondir(10.42, 1), 10.4, "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.clearSlashes", function() {
-    equal($.Oda.Tooling.clearSlashes("Hello/"), "Hello", "Test OK : Passed!" );
+QUnit.test( "$.Oda.Tooling.clearSlashes", function() {
+    QUnit.assert.equal($.Oda.Tooling.clearSlashes("Hello/"), "Hello", "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.clone", function() {
+QUnit.test( "$.Oda.Tooling.clone", function() {
     var obj = {attr1 : "value1", attr2 : "value2"};
     var obj2 = $.Oda.Tooling.clone(obj);
-    deepEqual(obj2, {attr1 : "value1", attr2 : "value2"}, "Test OK : Passed!" );
+    QUnit.assert.deepEqual(obj2, {attr1 : "value1", attr2 : "value2"}, "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.deepEqual", function() {
-    ok($.Oda.Tooling.deepEqual([1,2],[1,2]), "Test OK : Passed!" );
+QUnit.test( "$.Oda.Tooling.deepEqual", function() {
+    QUnit.assert.ok($.Oda.Tooling.deepEqual([1,2],[1,2]), "Test OK : Passed!" );
 
-    ok($.Oda.Tooling.deepEqual({attr1 : "value1", attr2 : "value2"},{attr1 : "value1", attr2 : "value2"}), "Test OK : Passed!" );
+    QUnit.assert.ok($.Oda.Tooling.deepEqual({attr1 : "value1", attr2 : "value2"},{attr1 : "value1", attr2 : "value2"}), "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.pad2", function(){
-    equal( $.Oda.Tooling.pad2("03"), "03", "Test OK : Passed!" );
-    equal( $.Oda.Tooling.pad2(3), "03", "Test OK : Passed!" );
+QUnit.test( "$.Oda.Tooling.pad2", function(){
+    QUnit.assert.equal( $.Oda.Tooling.pad2("03"), "03", "Test OK : Passed!" );
+    QUnit.assert.equal( $.Oda.Tooling.pad2(3), "03", "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.replaceAll", function(){
+QUnit.test( "$.Oda.Tooling.replaceAll", function(){
     var strOri = '';
     var strWait = '';
-    equal( $.Oda.Tooling.replaceAll({
+    QUnit.assert.equal( $.Oda.Tooling.replaceAll({
         str: strOri,
         find: "",
         by: ""
@@ -36,14 +36,14 @@ test( "$.Oda.Tooling.replaceAll", function(){
 
     var strOri = 'ceci est un test pour un test pour faire un test';
     var strWait = 'ceci est deux test pour deux test pour faire deux test';
-    equal( $.Oda.Tooling.replaceAll({
+    QUnit.assert.equal( $.Oda.Tooling.replaceAll({
         str: strOri,
         find: "un",
         by: "deux"
     }), strWait, "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.TemplateHtml", function(){
+QUnit.test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var script = document.createElement("script");
     script.type = "text/template";
@@ -60,7 +60,7 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var attempt = '<b>bonjour</b>';
 
-    equal( attempt, recieve, "Test OK : Passed!" );
+    QUnit.assert.equal( attempt, recieve, "Test OK : Passed!" );
 
     //-------------------------------------------------------
 
@@ -76,7 +76,7 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var attempt = '<b>hello</b>';
 
-    equal( attempt, recieve, "Test OK : Passed!" );
+    QUnit.assert.equal( attempt, recieve, "Test OK : Passed!" );
 
     //-------------------------------------------------------
 
@@ -93,7 +93,7 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var attempt = '<b>hello</b>';
 
-    equal( attempt, recieve, "Test OK : Passed!" );
+    QUnit.assert.equal( attempt, recieve, "Test OK : Passed!" );
 
     //-------------------------------------------------------
 
@@ -109,7 +109,7 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var attempt = '<b>{{hello}}</b>';
 
-    equal( attempt, recieve, "Test OK : Passed!" );
+    QUnit.assert.equal( attempt, recieve, "Test OK : Passed!" );
 
     //-------------------------------------------------------
 
@@ -126,30 +126,30 @@ test( "$.Oda.Tooling.TemplateHtml", function(){
 
     var attempt = '<b>null</b>';
 
-    equal( attempt, recieve, "Test OK : Passed!" );
+    QUnit.assert.equal( attempt, recieve, "Test OK : Passed!" );
 });
 
-test( "$.Oda.Tooling.filter", function(assert ) {
+QUnit.test( "$.Oda.Tooling.filter", function(assert ) {
     var inputs = [1, 2, 3];
 
-    deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt > 1;}}), [2, 3], "$.Oda.Tooling.filter with array of value" );
+    QUnit.assert.deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt > 1;}}), [2, 3], "$.Oda.Tooling.filter with array of value" );
 
     var inputs = [{age: 11}, {age: 12}, {age: 13}];
 
-    deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt.age > 11;}}), [{age: 12}, {age: 13}], "$.Oda.Tooling.filter with array of object" );
+    QUnit.assert.deepEqual($.Oda.Tooling.filter({src: inputs, condition: function(elt){return elt.age > 11;}}), [{age: 12}, {age: 13}], "$.Oda.Tooling.filter with array of object" );
 
-    equal($.Oda.Tooling.filter({src: "truc", condition: function(elt){return true;}}), null, "$.Oda.Tooling.filter with no array" );
+    QUnit.assert.equal($.Oda.Tooling.filter({src: "truc", condition: function(elt){return true;}}), null, "$.Oda.Tooling.filter with no array" );
 
     var inputs = [{age: 11, filter: true}, {age: 12, filter: false}, {age: 13, filter: false}];
-    equal($.Oda.Tooling.filter({src: inputs, condition: "truc"}), null, "$.Oda.Tooling.filter with attribute in condition but not an object" );
+    QUnit.assert.equal($.Oda.Tooling.filter({src: inputs, condition: "truc"}), null, "$.Oda.Tooling.filter with attribute in condition but not an object" );
 
-    deepEqual($.Oda.Tooling.filter({src: inputs, condition: {filter: true}}), [{age: 11, filter: true}], "$.Oda.Tooling.filter with attribute in condition" );
+    QUnit.assert.deepEqual($.Oda.Tooling.filter({src: inputs, condition: {filter: true}}), [{age: 11, filter: true}], "$.Oda.Tooling.filter with attribute in condition" );
 });
 
-test( "$.Oda.Tooling.order", function(assert ) {
+QUnit.test( "$.Oda.Tooling.order", function(assert ) {
     var inputs = [1, 2, 3];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.order({
             collection: inputs, compare: function(elt1, elt2){
                 if(elt1 < elt2){
@@ -167,7 +167,7 @@ test( "$.Oda.Tooling.order", function(assert ) {
 
     var inputs = ["aa", "ba", "ca"];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.order({
             collection: inputs, compare: function(elt1, elt2){
                 if(elt1 < elt2){
@@ -185,7 +185,7 @@ test( "$.Oda.Tooling.order", function(assert ) {
 
     var inputs = [{label:"a"},{label:"b"},{label:"b"},{label:"c"}];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.order({
             collection: inputs, compare: function(elt1, elt2){
                 if(elt1.label < elt2.label){
@@ -202,14 +202,14 @@ test( "$.Oda.Tooling.order", function(assert ) {
     );
 });
 
-test( "$.Oda.Tooling.merge", function() {
-    deepEqual(
+QUnit.test( "$.Oda.Tooling.merge", function() {
+    QUnit.assert.equal(
         $.Oda.Tooling.merge({default: "4", source: "5"}),
         "5",
         "$.Oda.Tooling.merge 1"
     );
 
-    deepEqual(
+    QUnit.assert.equal(
         $.Oda.Tooling.merge({default: 4, source: null}),
         4,
         "$.Oda.Tooling.merge 2"
@@ -221,7 +221,7 @@ test( "$.Oda.Tooling.merge", function() {
 
     var expected = [];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 3"
@@ -233,7 +233,7 @@ test( "$.Oda.Tooling.merge", function() {
 
     var expected = [1,2];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 4"
@@ -245,7 +245,7 @@ test( "$.Oda.Tooling.merge", function() {
 
     var expected = [1,2];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 5"
@@ -265,7 +265,7 @@ test( "$.Oda.Tooling.merge", function() {
         b: 3
     }
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 6"
@@ -313,7 +313,7 @@ test( "$.Oda.Tooling.merge", function() {
         e : "e"
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 7"
@@ -387,7 +387,7 @@ test( "$.Oda.Tooling.merge", function() {
         ]
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 8"
@@ -415,7 +415,7 @@ test( "$.Oda.Tooling.merge", function() {
         ]
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 9"
@@ -449,7 +449,7 @@ test( "$.Oda.Tooling.merge", function() {
         ]
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 10"
@@ -506,7 +506,7 @@ test( "$.Oda.Tooling.merge", function() {
         }
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 11"
@@ -544,7 +544,7 @@ test( "$.Oda.Tooling.merge", function() {
         ]
     };
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 12"
@@ -576,64 +576,64 @@ test( "$.Oda.Tooling.merge", function() {
         }
     ];
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: objDefault, source: objInput}),
         expected,
         "$.Oda.Tooling.merge 13"
     );
 
-    deepEqual(
+    QUnit.assert.deepEqual(
         $.Oda.Tooling.merge({default: {truc:1}, source: undefined}),
         {truc:1},
         "$.Oda.Tooling.merge 14"
     );
 });
 
-test( "$.Oda.Tooling.checkParams", function() {
+QUnit.test( "$.Oda.Tooling.checkParams", function() {
     var inputs = {attr1 : null, attr2 : "truc"};
     var def = {attr1 : null, attr2 : "defaultValue"};
     var attemps = {attr1 : null, attr2 : "truc"};
     var receive = $.Oda.Tooling.checkParams(inputs, def);
 
-    deepEqual(receive, attemps, "Test 1" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 1" );
 
     var inputs = {attr1 : null};
     var def = {attr1 : null, attr2 : "defaultValue"};
     var attemps = {attr1 : null, attr2 : "defaultValue"};
     var receive = $.Oda.Tooling.checkParams(inputs, def);
 
-    deepEqual(receive, attemps, "Test 2" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 2" );
 
     var inputs = {attr2 : "truc"};
     var def = {attr1 : null, attr2 : "defaultValue"};
     var attemps = null;
     var receive = $.Oda.Tooling.checkParams(inputs, def);
 
-    deepEqual(receive, attemps, "Test 3" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 3" );
 
     var inputs = {attr1 : 1, attr2 : "truc"};
     var def = {attr1 : 1, attr2 : "defaultValue"};
     var attemps = {attr1 : 1, attr2 : "truc"};
     var receive = $.Oda.Tooling.checkParams(inputs, def);
 
-    deepEqual(receive, attemps, "Test 4" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 4" );
 
     var inputs = {attr1 : 1, attr2 : "truc"};
     var def = {attr1 : 1};
     var attemps = {attr1 : 1, attr2 : "truc"};
     var receive = $.Oda.Tooling.checkParams(inputs, def);
 
-    deepEqual(receive, attemps, "Test 5" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 5" );
 });
 
-test( "$.Oda.Tooling.decodeHtml", function() {
+QUnit.test( "$.Oda.Tooling.decodeHtml", function() {
     var attemps = 'Hello';
     var receive = $.Oda.Tooling.decodeHtml('<b>Hello</b>')
 
-    equal(receive, attemps, "Test 1" );
+    QUnit.assert.equal(receive, attemps, "Test 1" );
 });
 
-test( "$.Oda.Tooling.findBetweenWords", function() {
+QUnit.test( "$.Oda.Tooling.findBetweenWords", function() {
     var attemps = [' here '];
     var receive = $.Oda.Tooling.findBetweenWords({
         str: 'Hello here you',
@@ -641,7 +641,7 @@ test( "$.Oda.Tooling.findBetweenWords", function() {
         last: 'you'
     })
 
-    deepEqual(receive, attemps, "Test 1" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 1" );
 
     var attemps = [];
     var receive = $.Oda.Tooling.findBetweenWords({
@@ -650,10 +650,10 @@ test( "$.Oda.Tooling.findBetweenWords", function() {
         last: 'you'
     })
 
-    deepEqual(receive, attemps, "Test 2" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 2" );
 });
 
-test( "$.Oda.Tooling.getListValeurPourAttribut", function() {
+QUnit.test( "$.Oda.Tooling.getListValeurPourAttribut", function() {
     var attemps = ['here', 'ici'];
     var inputs = [
         {
@@ -669,34 +669,42 @@ test( "$.Oda.Tooling.getListValeurPourAttribut", function() {
     ];
     var receive = $.Oda.Tooling.getListValeurPourAttribut(inputs,"attr2");
 
-    deepEqual(receive, attemps, "Test 1" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 1" );
 });
 
-test( "$.Oda.Tooling.isInArray", function() {
-    equal($.Oda.Tooling.isInArray(1,[1,2]), true, "Test 1 " );
-
-    equal($.Oda.Tooling.isInArray(3,[1,2]), false, "Test 2 " );
-
-    equal($.Oda.Tooling.isInArray("1",[1,2]), false, "Test 3 " );
-
-    equal($.Oda.Tooling.isInArray("1",["1",2]), true, "Test 4 " );
-
-    equal($.Oda.Tooling.isInArray({attr:"hello"},[{attr:"hello"},2]), true, "Test 5 " );
+QUnit.test( "$.Oda.Tooling.getTypeOfVar", function() {
+    QUnit.assert.equal($.Oda.Tooling.getTypeOfVar("String"), "String", "Test String");
+    QUnit.assert.equal($.Oda.Tooling.getTypeOfVar(1), "Number", "Test Number");
+    QUnit.assert.equal($.Oda.Tooling.getTypeOfVar(true), "Boolean", "Test Boolean");
+    QUnit.assert.equal($.Oda.Tooling.getTypeOfVar([]), "Array", "Test Array");
+    QUnit.assert.equal($.Oda.Tooling.getTypeOfVar({}), "Object", "Test Object");
 });
 
-test( "$.Oda.Tooling.isUndefined", function() {
+QUnit.test( "$.Oda.Tooling.isInArray", function() {
+    QUnit.assert.equal($.Oda.Tooling.isInArray(1,[1,2]), true, "Test 1 " );
+
+    QUnit.assert.equal($.Oda.Tooling.isInArray(3,[1,2]), false, "Test 2 " );
+
+    QUnit.assert.equal($.Oda.Tooling.isInArray("1",[1,2]), false, "Test 3 " );
+
+    QUnit.assert.equal($.Oda.Tooling.isInArray("1",["1",2]), true, "Test 4 " );
+
+    QUnit.assert.equal($.Oda.Tooling.isInArray({attr:"hello"},[{attr:"hello"},2]), true, "Test 5 " );
+});
+
+QUnit.test( "$.Oda.Tooling.isUndefined", function() {
     var notExist;
-    equal($.Oda.Tooling.isUndefined(notExist), true, "Test 1 " );
+    QUnit.assert.equal($.Oda.Tooling.isUndefined(notExist), true, "Test 1 " );
 
     var notExist = true;
-    equal($.Oda.Tooling.isUndefined(notExist), false, "Test 2 " );
+    QUnit.assert.equal($.Oda.Tooling.isUndefined(notExist), false, "Test 2 " );
 });
 
-test( "$.Oda.Tooling.objectSize", function() {
-    equal($.Oda.Tooling.objectSize({attr1:1, attr2:2}), 2, "Test 1 " );
+QUnit.test( "$.Oda.Tooling.objectSize", function() {
+    QUnit.assert.equal($.Oda.Tooling.objectSize({attr1:1, attr2:2}), 2, "Test 1 " );
 });
 
-test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
+QUnit.test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
     var inputs = [
         {
             attr1: "attr1",
@@ -725,10 +733,10 @@ test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
             ]
         ]
     };
-    deepEqual(receive, attemps, "Test 1" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 1" );
 });
 
-test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
+QUnit.test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
     var inputs = [
         {
             attr1: "attr1",
@@ -757,5 +765,5 @@ test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
             ]
         ]
     };
-    deepEqual(receive, attemps, "Test 1" );
+    QUnit.assert.deepEqual(receive, attemps, "Test 1" );
 });

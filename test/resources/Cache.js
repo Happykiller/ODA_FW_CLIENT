@@ -1,1 +1,1 @@
-module( "Cache" );
+QUnit.module( "Cache" );
