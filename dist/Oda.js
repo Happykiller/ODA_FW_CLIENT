@@ -134,6 +134,9 @@ var $;
             noInjection: "^(?!.*?function())",
         },
 
+        /**
+         * @name $.Oda.init
+         */
         init: function(){
             try {
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
@@ -457,6 +460,7 @@ var $;
             config : [],
             cache : [],
             /**
+             * @name $.Oda.Cache.save
              * @param {object} p_params
              * @param {string} p_params.key
              * @param {object} p_params.attrs
@@ -504,6 +508,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Cache.load
              * @desc interface cache
              * @param {object} p_params
              * @param {string} p_params.key
@@ -562,6 +567,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Cache.loadWithOutTtl
              * @param {object} p_params
              * @param {string} p_params.key
              * @param {object} p_params.attrs
@@ -599,6 +605,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Cache.remove
              * @param {object} p_params
              * @param {string} p_params.key
              * @param {object} p_params.attrs
@@ -623,6 +630,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Cache.clean
              * @desc remove the user cache
              * @returns {$.Oda.Cache}
              */
@@ -638,6 +646,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Cache.cleanAll
              * @desc remove all the ODA-CACHE%
              * @returns {$.Oda.Cache}
              */
