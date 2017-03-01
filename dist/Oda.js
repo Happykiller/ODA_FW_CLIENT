@@ -2499,6 +2499,7 @@ var $;
             },
             Table: {
                 /**
+                 * @name $.Oda.Display.Table.createDataTable
                  * @param {String} p_params.target
                  * @param {Array} p_params.data
                  * @param {Array} p_params.attribute
@@ -2509,10 +2510,49 @@ var $;
                  * @param {String} p_params.attribute[indice].size Optional
                  * @param {Object} p_params.option Optional
                  * @param {Object} p_params
+                 * @example $.Oda.Display.Table.createDataTable({
+                 *      target: "test",
+                 *      data: [{
+                 *          id: 1
+                 *      }],
+                 *      attribute: [
+                 *          {
+                 *              header: "Id",
+                 *              size: "50px",
+                 *              align: "center",
+                 *              value: function(data, type, full, meta, row){
+                 *                  return row.id;
+                 *              }
+                 *          }
+                 *      ]
+                 *  });
                  * @returns {$.Oda.Display.Table}
                  */
                 "createDataTable": function(p_params){
                     try {
+                        //Check if all params are presents
+                        var params_attempt = {
+                            target: null,
+                            data: null,
+                            attribute: null
+                        };
+
+                        var params = $.Oda.Tooling.checkParams(p_params, params_attempt);
+                        if(params === null){
+                            return false;
+                        }
+
+                        //Check if the format of data is correct
+                        if(!Array.isArray(p_params.data)){
+                            $.Oda.Log.error("$.Oda.Display.Table.createDataTable: paramater 'data' is not an array");
+                            return false;
+                        }else{
+                            if((p_params.data.length > 0) && ($.Oda.Tooling.getTypeOfVar(p_params.data[0]) !== "Object")){
+                                $.Oda.Log.error("$.Oda.Display.Table.createDataTable: content paramater 'data' is not an object");
+                                return false;
+                            }
+                        }
+
                         var divTable = $('#'+p_params.target);
 
                         var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table-'+p_params.target+'" style="width: 100%">';
@@ -2655,7 +2695,7 @@ var $;
 
                         return this;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.Table.createDataTable : " + er.message);
+                        $.Oda.Log.error("$.Oda.Display.Table.createDataTable: " + er.message);
                         return null;
                     }
                 }
@@ -3057,6 +3097,21 @@ var $;
                     return retour;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.getListValeurPourAttribut : " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @name $.Oda.Tooling.getTypeOfVar
+             * @param {unknown} v
+             * @example of return Array, Object, String, Number, Boolean
+             * @returns {string}
+             */
+            getTypeOfVar: function(v){
+                try {
+                    var response = Object.prototype.toString.call(v);
+                    return response.substring(8, response.length-1);
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.getTypeOfVar : " + er.message);
                     return null;
                 }
             },
