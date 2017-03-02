@@ -457,8 +457,8 @@ var $;
         App: {},
 
         Cache: {
-            config : [],
-            cache : [],
+            config: [],
+            cache: [],
             /**
              * @name $.Oda.Cache.save
              * @param {object} p_params
@@ -666,24 +666,24 @@ var $;
         },
 
         Loader: {
-            Status : {
-                init : 0,
-                loading : 1,
-                loaded : 2,
-                fail : 3
+            Status: {
+                init: 0,
+                loading: 1,
+                loaded: 2,
+                fail: 3
             },
-            iterator : 0,
-            buffer : [],
-            eltAlreadyLoad : {},
+            iterator: 0,
+            buffer: [],
+            eltAlreadyLoad: {},
             /**
-             *
+             * @name $.Oda.Loader.load
              * @param {Object} params
              * @param {Object} params.depends
              * @param {Object} params.functionFeedback
              * @param {Object} params.functionFeedbackParams
              * @returns {Boolean}
              */
-            load : function(params){
+            load: function(params){
                 try {
                     var eltLoader = params;
                     eltLoader.id = $.Oda.Loader.iterator;
@@ -708,6 +708,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Loader.loading
              * @param {Object} p_params
              * @param p_params.id
              * @returns {$.Oda.Loader}
@@ -746,6 +747,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Loader.loadingGrp
              * @param {Object} p_params
              * @param p_params.idLoader
              * @param p_params.grp
@@ -803,6 +805,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Loader.loadingElt
              * @param {object} p_params
              * @param p_params.idLoader
              * @param p_params.grp
@@ -924,7 +927,7 @@ var $;
             onMobile: false,
             onMobileTest: false,
             /**
-             * @name getGPSPosition
+             * @name $.Oda.Mobile.onSuccessGPSPosition
              * @desc getGPSPosition
              * @param {Object} p_position
              */
@@ -939,7 +942,7 @@ var $;
                 }
             },
             /**
-             * @name getGPSPosition
+             * @name $.Oda.Mobile.onErrorGPSPosition
              * @desc getGPSPosition
              * @param {Object} p_position
              */
@@ -952,7 +955,7 @@ var $;
                 }
             },
             /**
-             * @name onPhotoSuccess
+             * @name $.Oda.Mobile.onPhotoSuccess
              * @param p_imageData
              */
             onPhotoSuccess: function(p_imageData) {
@@ -965,7 +968,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.onPhotoURISuccess
              * @param p_imageURI
              */
             onPhotoURISuccess: function(p_imageURI) {
@@ -978,7 +981,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.onPhotoFail
              * @param p_message
              */
             onPhotoFail: function(p_message) {
@@ -989,7 +992,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.initModuleMobile
              * @returns {*}
              */
             initModuleMobile: function(){
@@ -1008,7 +1011,7 @@ var $;
             },
             ///////////////// PART NETWORK
             /**
-             *
+             * @name $.Oda.Mobile.getConnectionString
              * @returns {Boolean}
              */
             getConnectionString: function(p_networkState){
@@ -1033,7 +1036,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.testConnection
              * @returns {Boolean}
              */
             testConnection: function(){
@@ -1050,7 +1053,7 @@ var $;
             },
             ///////////////// PART GPS
             /**
-             *
+             * @name $.Oda.Mobile.getGpsPosition
              * @param p_onReturn
              * @returns {*}
              */
@@ -1069,7 +1072,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.getGpsPositionString
              * @param p_position
              * @returns {*}
              */
@@ -1095,7 +1098,7 @@ var $;
             },
             ///////////////// PART CAMERA
             /**
-             *
+             * @name $.Oda.Mobile.getPhotoFromCamera
              * @param p_retourCapture
              * @returns {*}
              */
@@ -1114,7 +1117,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Mobile.getPhotoFromLibrary
              * @param p_retourCapture
              * @returns {*}
              */
@@ -1137,6 +1140,7 @@ var $;
         MokUp: {
             mokup : [],
             /**
+             * @name $.Oda.MokUp.get
              * @param params
              * @param params.url
              * @param params.tabInput
@@ -1191,6 +1195,7 @@ var $;
 
         Event: {
             /**
+             * @name $.Oda.Event.addListener
              * @param {Object} p_params
              * @param {string} p_params.name
              * @param {function} p_params.callback function (e) { e.detail ... }
@@ -1207,6 +1212,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Event.send
              * @param {Object} p_params
              * @param {string} p_params.name
              * @param {object} p_params.data
@@ -1229,8 +1235,8 @@ var $;
 
         Date: {
             /**
-             *
-             * @returns {*}
+             * @name $.Oda.Date.getStrDateFR
+             * @returns {String}
              */
             getStrDateFR : function(){
                 try {
@@ -1246,7 +1252,7 @@ var $;
                 }
             },
             /**
-             * getStrDateTimeFrFromUs
+             * @name $.Oda.Date.getStrDateTimeFrFromUs
              * @param {String} p_strDateTime
              * @returns {String}
              */
@@ -1263,7 +1269,7 @@ var $;
                 }
             },
             /**
-             * getStrDateFrFromUs
+             * @name $.Oda.Date.getStrDateFrFromUs
              * @param {String} p_strDate
              * @returns {String}
              */
@@ -1280,7 +1286,7 @@ var $;
                 }
             },
             /**
-             * @name convertSecondsToTime
+             * @name $.Oda.Date.convertSecondsToTime
              * @desc Seconds to hh:mm:ss
              * @param {int} p_second
              * @returns {String}
@@ -1303,7 +1309,7 @@ var $;
                 }
             },
             /**
-             * @name getStrDateTime
+             * @name $.Oda.Date.getStrDateTime
              * @returns {String}
              */
             getStrDateTime : function() {
@@ -1318,11 +1324,12 @@ var $;
                     var strDateTime = annee + "/" + mois + "/" + jour + " " + hours + ":" + minutes + ":" + secondes;
                     return strDateTime;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Date.getStrDateTime : " + er.message);
+                    $.Oda.Log.error("$.Oda.Date.getStrDateTime: " + er.message);
                     return null;
                 }
             },
             /**
+             * @name $.Oda.Date.dateFormat
              * @param {Date} myDate
              * @param {string} format
              * @example $.Oda.Date.dateFormat(new Date(), "yyyy-mm-dd")
@@ -1353,7 +1360,7 @@ var $;
 
                     return response;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Date.dateFormat : " + er.message);
+                    $.Oda.Log.error("$.Oda.Date.dateFormat: " + er.message);
                     return null;
                 }
             },
