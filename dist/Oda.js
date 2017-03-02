@@ -1368,6 +1368,7 @@ var $;
 
         Interface: {
             /**
+             * @name $.Oda.Interface.call
              * @desc factorisation pour choisir le type de call à faire
              * @param params
              * @returns {{strErreur: string, data: {}, statut: number}}
@@ -1382,7 +1383,7 @@ var $;
                 return response;
             },
             /**
-             * @name callRest
+             * @name $.Oda.Interface.callRest
              * @desc Hello
              * @param {String} p_url
              * @param {Object} p_tabSetting
@@ -1451,6 +1452,9 @@ var $;
                 }
             },
             Methode: {
+                /**
+                 * @name $.Oda.Interface.Methode.ajax
+                 */
                 ajax: function (params) {
                     var retour;
                     var jqXHRMaster = $.ajax(params)
@@ -1516,7 +1520,7 @@ var $;
                     return retour;
                 },
                 /**
-                 *
+                 * @name $.Oda.Interface.Methode.mokup
                  * @param params
                  * @returns {*}
                  */
@@ -1536,7 +1540,7 @@ var $;
                     }
                 },
                 /**
-                 *
+                 * @name $.Oda.Interface.Methode.cache
                  * @param params
                  * @returns {*}
                  */
@@ -1581,6 +1585,7 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Interface.Methode.offline
                  * @param {Object} p_params
                  * @param p_params.attr
                  * @returns {$.Oda.Interface}
@@ -1632,7 +1637,7 @@ var $;
                 },
             },
             /**
-             * getParameter
+             * @name $.Oda.Interface.getParameter
              * #ex $.Oda.Interface.getParameter("contact_mail_administrateur");
              * @param {string} p_param_name
              * @returns { int|varchar }
@@ -1669,7 +1674,7 @@ var $;
                 }
             },
             /**
-             * geRangs
+             * @name $.Oda.Interface.getRangs
              * @returns {json}
              */
             getRangs: function() {
@@ -1696,7 +1701,7 @@ var $;
                 }
             },
             /**
-             * @name addStat
+             * @name $.Oda.Interface.addStat
              * @example addStat('ADMI', 'page_home.html', 'checkAuth : ok');
              * @param {String} p_user
              * @param {String} p_page
@@ -1718,7 +1723,7 @@ var $;
                 }
             },
             /**
-             * @name sendMail
+             * @name $.Oda.Interface.sendMail
              * @example $.Oda.Interface.sendMail({email_mails_dest:'fabrice.rosito@gmail.com',message_html:'HelloContent',sujet:'HelloSujet'});
              * @example return {"data":{"resultat": "ok"}}
              * @param {Object} p_params
@@ -1756,7 +1761,7 @@ var $;
                 }
             },
             /**
-             * traceLog
+             * @name $.Oda.Interface.traceLog
              * @param {Object} p_params
              * @param {String} p_params.msg
              * @returns {$.Oda.Interface}
@@ -1778,6 +1783,7 @@ var $;
         Display: {
             Polyfill: {
                 /**
+                 * @name $.Oda.Display.Polyfill.createHtmlElement
                  * @param {Object} params
                  * @param params.name mandatory
                  * @param params.createdCallback mandatory var elt = $(this);
@@ -1827,8 +1833,8 @@ var $;
                         return null;
                     }
                 },
-
                 /**
+                 * @name $.Oda.Display.Polyfill.extendHtmlElement
                  * @param {Object} params
                  * @param params.name mandatory
                  * @param params.type mandatory a, p, br, etc
@@ -1877,6 +1883,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Display.jsonToStringSingleQuote
              * @param {Object} p_params
              * @param p_params.json
              * @returns {String}
@@ -1892,6 +1899,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Display.render
              * @param {Object} p_params
              * @param p_params.id
              * @param p_params.html
@@ -1908,6 +1916,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Display.loading
              * @param {Object} p_params
              * @param p_params.elt
              * @returns {$.Oda.Display}
@@ -1924,7 +1933,7 @@ var $;
             Notification: {
                 id: 0,
                 /**
-                 * @name success
+                 * @name $.Oda.Display.Notification.success
                  * @example $.Oda.Display.Notification.success("Hello !");
                  * @param {String} p_message
                  * @returns {$.Oda.Display.Notification}
@@ -1933,7 +1942,7 @@ var $;
                     this.create(p_message,"success", 2000);
                 },
                 /**
-                 * @name successI8n
+                 * @name $.Oda.Display.Notification.successI8n
                  * @example $.Oda.Display.Notification.successI8n("home.hello");
                  * @param {String} p_message
                  * @returns {$.Oda.Display.Notification}
@@ -1941,28 +1950,52 @@ var $;
                 successI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"success", 2000);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.info
+                 */
                 info: function(p_message){
                     this.create(p_message,"info", 3000);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.infoI8n
+                 */
                 infoI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"info", 3000);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.warning
+                 */
                 warning: function(p_message){
                     this.create(p_message,"warning", 5000);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.warningI8n
+                 */
                 warningI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"warning", 5000);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.danger
+                 */
                 danger: function(p_message){
                     this.create(p_message,"danger");
                 },
+                /**
+                 * @name $.Oda.Display.Notification.dangerI8n
+                 */
                 dangerI8n: function(p_message){
                     this.create($.Oda.I8n.getByString(p_message),"danger");
                 },
+                /**
+                 * @name $.Oda.Display.Notification.error
+                 */
                 error: function(p_message){
                     this.create(p_message,"danger");
                     $.Oda.Log.error(p_message);
                 },
+                /**
+                 * @name $.Oda.Display.Notification.errorI8n
+                 */
                 errorI8n: function(p_message){
                     var message = $.Oda.I8n.getByString(p_message);
                     this.create(message,"danger");
