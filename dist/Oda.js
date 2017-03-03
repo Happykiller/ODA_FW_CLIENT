@@ -57,14 +57,14 @@ var $;
     }
 
     if (!String.prototype.startsWith) {
-        String.prototype.startsWith = function (searchString, position) {
+        String.prototype.startsWith = function(searchString, position) {
             position = position || 0;
             return this.indexOf(searchString, position) === position;
         };
     }
 
     if (!String.prototype.includes) {
-        String.prototype.includes = function (searchString, position) {
+        String.prototype.includes = function(searchString, position) {
             return this.indexOf(searchString, position) >= 0;
         };
     }
@@ -74,7 +74,7 @@ var $;
 
     var
     /* version */
-        VERSION = '0.160503.00'
+        VERSION = '0.170303.00'
         ;
 
     $.Oda = {
@@ -467,7 +467,7 @@ var $;
              * @param {object} p_params.datas
              * @returns {$.Oda.Cache}
              */
-            save: function (p_params) {
+            save: function(p_params) {
                 try {
                     if($.Oda.Session.code_user !== "") {
                         var founded = false;
@@ -516,7 +516,7 @@ var $;
              * @param {boolean} p_params.demande opt
              * @returns {$.Oda.Cache}
              */
-            load: function (p_params) {
+            load: function(p_params) {
                 try {
                     if($.Oda.Session.code_user !== "") {
 
@@ -573,7 +573,7 @@ var $;
              * @param {object} p_params.attrs
              * @returns {$.Oda.Cache}
              */
-            loadWithOutTtl: function (p_params) {
+            loadWithOutTtl: function(p_params) {
                 try {
                     if($.Oda.Session.code_user !== "") {
 
@@ -611,7 +611,7 @@ var $;
              * @param {object} p_params.attrs
              * @returns {$.Oda.Cache}
              */
-            remove: function (p_params) {
+            remove: function(p_params) {
                 try {
                     $.Oda.Cache.cache = $.Oda.Storage.get("ODA-CACHE-"+$.Oda.Session.code_user, $.Oda.Cache.cache);
 
@@ -634,7 +634,7 @@ var $;
              * @desc remove the user cache
              * @returns {$.Oda.Cache}
              */
-            clean: function () {
+            clean: function() {
                 try {
                     if($.Oda.Session.code_user !== "") {
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
@@ -650,7 +650,7 @@ var $;
              * @desc remove all the ODA-CACHE%
              * @returns {$.Oda.Cache}
              */
-            cleanAll: function () {
+            cleanAll: function() {
                 try {
                     var listCache = $.Oda.Storage.getIndex("ODA-CACHE");
                     for(var indice in listCache){
@@ -713,7 +713,7 @@ var $;
              * @param p_params.id
              * @returns {$.Oda.Loader}
              */
-            loading: function (p_params) {
+            loading: function(p_params) {
                 try {
                     var eltLoader = $.Oda.Loader.buffer[p_params.id];
 
@@ -753,7 +753,7 @@ var $;
              * @param p_params.grp
              * @returns {$.Oda.Loader}
              */
-            loadingGrp: function (p_params) {
+            loadingGrp: function(p_params) {
                 try {
                     var statutGrp = $.Oda.Loader.Status.loaded;
                     //lunch
@@ -812,7 +812,7 @@ var $;
              * @param p_params.elt
              * @returns {$.Oda.Loader}
              */
-            loadingElt: function (p_params) {
+            loadingElt: function(p_params) {
                 try {
                     if(p_params.elt.state !== $.Oda.Loader.Status.loaded){
                         if(!p_params.elt.hasOwnProperty("force")){
@@ -1198,10 +1198,10 @@ var $;
              * @name $.Oda.Event.addListener
              * @param {Object} p_params
              * @param {string} p_params.name
-             * @param {function} p_params.callback function (e) { e.detail ... }
+             * @param {function} p_params.callback function(e) { e.detail ... }
              * @returns {$.Oda.Event}
              */
-            addListener: function (p_params) {
+            addListener: function(p_params) {
                 try {
                     // Listen for the event.
                     $.Oda.Context.window.addEventListener(p_params.name, p_params.callback, false);
@@ -1218,7 +1218,7 @@ var $;
              * @param {object} p_params.data
              * @returns {$.Oda.Event}
              */
-            send: function (p_params) {
+            send: function(p_params) {
                 try {
                     if(!p_params.hasOwnProperty("data")){
                         p_params.data = {};
@@ -1455,10 +1455,10 @@ var $;
                 /**
                  * @name $.Oda.Interface.Methode.ajax
                  */
-                ajax: function (params) {
+                ajax: function(params) {
                     var retour;
                     var jqXHRMaster = $.ajax(params)
-                        .done(function (data, textStatus, jqXHR) {
+                        .done(function(data, textStatus, jqXHR) {
                             if(data === undefined){
                                 data = {"strErreur": '', "data": {}, "statut": 4};
                             }else{
@@ -1499,7 +1499,7 @@ var $;
                                 params.callback(data);
                             }
                         })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
+                        .fail(function(jqXHR, textStatus, errorThrown) {
                             var msg = textStatus + " - " + errorThrown + " on " + params.url;
                             $.Oda.Log.error("$.Oda.Interface.Methode.ajax : " + msg);
 
@@ -1524,7 +1524,7 @@ var $;
                  * @param params
                  * @returns {*}
                  */
-                mokup: function (params) {
+                mokup: function(params) {
                     var retour = $.Oda.MokUp.get({url: params.url, tabInput: params.data});
                     if((retour.hasOwnProperty("strErreur")) && (retour.strErreur.startsWith("No mokup found for")) && (params.odaInterface.length>0)){
                         return $.Oda.Interface.call(params);
@@ -1544,7 +1544,7 @@ var $;
                  * @param params
                  * @returns {*}
                  */
-                cache: function (params) {
+                cache: function(params) {
                     var attrs = $.Oda.Tooling.clone(params.data);
                     if(attrs.hasOwnProperty("ctrl")){
                         delete attrs.ctrl;
@@ -1590,7 +1590,7 @@ var $;
                  * @param p_params.attr
                  * @returns {$.Oda.Interface}
                  */
-                offline: function (params) {
+                offline: function(params) {
                     try {
                         var attrs = $.Oda.Tooling.clone(params.data);
                         if(attrs.hasOwnProperty("ctrl")){
@@ -1888,7 +1888,7 @@ var $;
              * @param p_params.json
              * @returns {String}
              */
-            jsonToStringSingleQuote: function (p_params) {
+            jsonToStringSingleQuote: function(p_params) {
                 try {
                     var str = JSON.stringify(p_params.json);
                     str = $.Oda.Tooling.replaceAll({"str":str, "find":'"', "by":"'"});
@@ -1905,7 +1905,7 @@ var $;
              * @param p_params.html
              * @returns {$.Oda.Display.render}
              */
-            render: function (p_params) {
+            render: function(p_params) {
                 try {
                     $('#'+p_params.id).html(p_params.html);
                     $.Oda.Scope.init({id:p_params.id});
@@ -1921,7 +1921,7 @@ var $;
              * @param p_params.elt
              * @returns {$.Oda.Display}
              */
-            loading: function (p_params) {
+            loading: function(p_params) {
                 try {
                     p_params.elt.html('<div class="oda-loader-container"><div class="oda-loader"><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-text"></div></div></div>');
                     return this;
@@ -2004,7 +2004,7 @@ var $;
                 /**
                  * @returns {$.Oda.Notification}
                  */
-                load: function () {
+                load: function() {
                     try {
                         var html = $.Oda.Display.TemplateHtml.create({
                             template : "oda-notification-tpl"
@@ -2081,9 +2081,10 @@ var $;
             },
             Scene: {
                 /**
+                 * @name $.Oda.Display.Scene.load
                  * @returns {$.Oda.Display.Scene}
                  */
-                load: function () {
+                load: function() {
                     try {
                         var htmlScene = $.Oda.Display.TemplateHtml.create({
                             template : "oda-scene-tpl"
@@ -2108,14 +2109,14 @@ var $;
                         return null;
                     }
                 },
-
                 Avatar: {
                     loaded: false,
                     $elt: null,
                     /**
+                     * @name $.Oda.Display.Scene.Avatar.getElt
                      * @returns {$.Oda.Display.Scene.Avatar.$elt}
                      */
-                    getElt : function () {
+                    getElt: function() {
                         try {
                             if(this.$elt === null){
                                 var $avatar = $("#avatar");
@@ -2130,9 +2131,10 @@ var $;
                         }
                     },
                     /**
+                     * @name $.Oda.Display.Scene.Avatar.load
                      * @returns {$.Oda.Display.Scene.Avatar}
                      */
-                    load : function () {
+                    load: function() {
                         try {
                             if(!$.Oda.Display.Scene.Avatar.loaded){
                                 $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$.Oda.Display.Scene.Avatar.getElt().attr('src',data.src);}});
@@ -2145,9 +2147,10 @@ var $;
                         }
                     },
                     /**
+                     * @name $.Oda.Display.Scene.Avatar.unLoad
                      * @returns {$.Oda.Display.Scene.Avatar}
                      */
-                    unLoad : function () {
+                    unLoad: function() {
                         try {
                             $.Oda.Display.Scene.Avatar.getElt().attr('src',$.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
                             $.Oda.Display.Scene.Avatar.loaded = false;
@@ -2158,12 +2161,13 @@ var $;
                         }
                     },
                     /**
+                     * @name $.Oda.Display.Scene.Avatar.avatar
                      * @param {Object} p_params
                      * @param {string} p_params.code_user
                      * @param {function} p_params.callback
                      * @returns {$.Oda.Display.Scene.avatar}
                      */
-                    avatar : function (p_params) {
+                    avatar: function(p_params) {
                         try {
                             var targetUser = $.Oda.Session.code_user;
                             if(p_params.hasOwnProperty("code_user") && p_params.code_user !== ""){
@@ -2195,11 +2199,11 @@ var $;
                 },
             },
             MenuSlide: {
-                display : false,
+                display: false,
                 /**
-                 * @name : show
+                 * @name $.Oda.Display.MenuSlide.show
                  */
-                show : function(){
+                show: function(){
                     try {
                         if (this.display) {
                         } else {
@@ -2216,11 +2220,10 @@ var $;
                         $.Oda.Log.error("$.Oda.Display.MenuSlide.show : " + er.message);
                     }
                 },
-
                 /**
-                 * @name : remove
+                 * @name $.Oda.Display.MenuSlide.remove
                  */
-                remove : function(){
+                remove: function(){
                     try {
                         $("#wrapper").removeClass("toggled");
                         var strHtml = '<li class="sidebar-brand" id="profileDisplay">' + $.Oda.I8n.get('oda-project','userLabel') + '</li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
@@ -2228,16 +2231,16 @@ var $;
                         $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.MenuSlide.remove : " + er.message);
+                        $.Oda.Log.error("$.Oda.Display.MenuSlide.remove: " + er.message);
                     }
                 }
             },
             Menu: {
-                display : false,
+                display: false,
                 /**
-                 * @name : show
+                 * @name $.Oda.Display.Menu.show
                  */
-                show : function(){
+                show: function(){
                     try {
                         if(!this.display){
                             var tabInput = { rang : $.Oda.Session.userInfo.profile, id_page : 0 };
@@ -2275,11 +2278,10 @@ var $;
                         $.Oda.Log.error("$.Oda.Display.Menu.show : " + er.message);
                     }
                 },
-
                 /**
-                 * @name : remove
+                 * @name $.Oda.Display.Menu.remove
                  */
-                remove : function(){
+                remove: function(){
                     try {
                         $('#menu').html('');
                         this.display = false;
@@ -2290,9 +2292,10 @@ var $;
             },
             Message: {
                 /**
+                 * @name $.Oda.Display.Message.show
                  * @returns {$.Oda}
                  */
-                show: function () {
+                show: function() {
                     try {
                         var tabInput = { code_user : $.Oda.Session.code_user };
                         var callback = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessagesToDisplay.php", { callback : function(datas) {
@@ -2316,16 +2319,17 @@ var $;
                         }}, tabInput);
                         return this;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Display.Message.show : " + er.message);
+                        $.Oda.Log.error("$.Oda.Display.Message.show: " + er.message);
                         return null;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Message.hide
                  * @param {object} p_params
                  * @param {object} p_params.id
                  * @returns {$.Oda}
                  */
-                hide: function (p_params) {
+                hide: function(p_params) {
                     try {
                         var tabInput = { code_user : $.Oda.Session.code_user, id : p_params.id };
                         var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setMessagesLus.php", {callback : function(datas) {
@@ -2343,9 +2347,9 @@ var $;
                 }
             },
             Popup: {
-                iterator : 0,
+                iterator: 0,
                 /**
-                 * affichePopUp
+                 * @name $.Oda.Display.Popup.open
                  * @param {Object} p_params
                  * @param {string} p_params.name opt
                  * @param {string} p_params.size opt (sm, lg)
@@ -2355,7 +2359,7 @@ var $;
                  * @param {function} p_params.callback opt
                  * @param {object} p_params.callbackParams opt
                  */
-                open : function(p_params){
+                open: function(p_params){
                     try {
                         if(!p_params.hasOwnProperty("name")){
                             $.Oda.Display.Popup.iterator++;
@@ -2389,7 +2393,7 @@ var $;
                         $.Oda.Scope.init({id:p_params.name+'_footer'});
 
                         if(p_params.hasOwnProperty("callback")) {
-                            $('#'+p_params.name).on('shown.bs.modal', function (e) {
+                            $('#'+p_params.name).on('shown.bs.modal', function(e) {
                                 if(p_params.hasOwnProperty("callbackParams")) {
                                     p_params.callback(p_params.callbackParams);
                                 }else{
@@ -2400,7 +2404,7 @@ var $;
                             $( "#"+p_params.name ).unbind( "shown.bs.modal" );
                         }
 
-                        $('#'+p_params.name).on('hidden.bs.modal', function (e) {
+                        $('#'+p_params.name).on('hidden.bs.modal', function(e) {
                             $('#'+p_params.name).remove();
                         })
 
@@ -2410,11 +2414,12 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Popup.close
                  * @param {object} p_params
                  * @param {string} p_params.name
                  * @returns {$.Oda.Display.Popup}
                  */
-                close: function (p_params) {
+                close: function(p_params) {
                     try {
                         if($.Oda.Tooling.isUndefined(p_params)){
                             var p_params = {};
@@ -2432,9 +2437,10 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Popup.closeAll
                  * @returns {$.Oda.Display.Popup}
                  */
-                closeAll: function () {
+                closeAll: function() {
                     try {
                         $('.modal').each(function(index, value) {
                             $(value).modal("hide");
@@ -2449,13 +2455,14 @@ var $;
             TemplateHtml: {
                 iterateLoadTemplate:0,
                 /**
+                 * @name $.Oda.Display.TemplateHtml.create
                  * @param {Object} p_params
                  * @param {string} p_params.template
                  * @param {Object} p_params.scope opt
                  * @param {Function} p_params.callback opt
                  * @returns {$.Oda.Display.TemplateHtml}
                  */
-                create: function (p_params) {
+                create: function(p_params) {
                     try {
                         var $template = $('#'+p_params.template);
                         if(p_params.hasOwnProperty("callback")){
@@ -2508,12 +2515,13 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.TemplateHtml.eval
                  * @param {Object} p_params.exrp
                  * @param {Object} p_params.scope
                  * @param {Object} p_params
                  * @returns {String}
                  */
-                eval: function (p_params) {
+                eval: function(p_params) {
                     try {
                         'use strict'
 
@@ -2568,7 +2576,7 @@ var $;
                  *  });
                  * @returns {$.Oda.Display.Table}
                  */
-                "createDataTable": function(p_params){
+                createDataTable: function(p_params){
                     try {
                         //Check if all params are presents
                         var params_attempt = {
@@ -2691,7 +2699,7 @@ var $;
 
                         var oTable = eltTable.DataTable(dataTableParams);
 
-                        $('#table-'+p_params.target+' tbody').on('click', 'tr', function () {
+                        $('#table-'+p_params.target+' tbody').on('click', 'tr', function() {
                             if ($(this).hasClass('selected')) {
                                 $(this).removeClass('selected');
                             }
@@ -2701,12 +2709,12 @@ var $;
                             }
                         });
 
-                        $('#table-'+p_params.target+' tfoot th').each(function (i) {
+                        $('#table-'+p_params.target+' tfoot th').each(function(i) {
                             var valOdaAttri = $(this).attr("oda-attr");
                             if (valOdaAttri == "select") {
                                 var select = $('<select data-mini="true"><option></option></select>')
                                     .appendTo($(this).empty())
-                                    .on('change', function () {
+                                    .on('change', function() {
                                         var val = $(this).val();
 
                                         oTable.column(i)
@@ -2714,14 +2722,14 @@ var $;
                                             .draw();
                                     });
 
-                                oTable.column(i - 1).data().unique().sort().each(function (d, j) {
+                                oTable.column(i - 1).data().unique().sort().each(function(d, j) {
                                     select.append('<option value="' + d + '">' + d + '</option>');
                                 });
                             } else {
                                 if($(this).html() !== 'null'){
                                     $('<input type="text" placeholder="Search" size="4"/>')
                                         .appendTo($(this).empty())
-                                        .on('keyup change', function () {
+                                        .on('keyup change', function() {
                                             oTable
                                                 .column(i)
                                                 .search(this.value)
@@ -2742,6 +2750,7 @@ var $;
             },
             Push: {
                 /**
+                 * @name $.Oda.Display.Push.create
                  * @param {Object} params
                  * @param params.message
                  * @param params.options opt
@@ -2767,7 +2776,7 @@ var $;
                         // Note : Chrome n'implémente pas la propriété statique permission
                         // Donc, nous devons vérifier s'il n'y a pas 'denied' à la place de 'default'
                         else if ($.Oda.Context.window.Notification.permission !== 'denied') {
-                            $.Oda.Context.window.Notification.requestPermission(function (permission) {
+                            $.Oda.Context.window.Notification.requestPermission(function(permission) {
                                 // Quelque soit la réponse de l'utilisateur, nous nous assurons de stocker cette information
                                 if(!('permission' in $.Oda.Context.window.Notification)) {
                                     $.Oda.Context.window.Notification.permission = permission;
@@ -2792,6 +2801,7 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Push.createI8n
                  * @param {Object} params
                  * @param params.message
                  * @returns {$.Oda.Display.Push}
@@ -4135,7 +4145,7 @@ var $;
 
                     var monWorker = new Worker(window.URL.createObjectURL(blob));
 
-                    monWorker.addEventListener("message", function (event) {
+                    monWorker.addEventListener("message", function(event) {
                         p_fonctionRetour(event.data);
                     }, false);
 
@@ -4168,7 +4178,7 @@ var $;
             /**
              *
              */
-            start: function (){
+            start: function(){
                 try {
                     if($.Oda.Tuto.enable){
                         $('[oda-tuto]').each(function(index, value){
@@ -4232,7 +4242,7 @@ var $;
              *
              * @param id
              */
-            show: function (id){
+            show: function(id){
                 try {
                     var elt = $("[oda-tuto^='id:"+id+"']");
 
@@ -4248,7 +4258,7 @@ var $;
                     strHtml += '<br><button type="button" onclick="$.Oda.Tuto.read(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-read')+'</button >';
                     
                     elt.attr("title",strHtml);
-                    elt.on('hidden.bs.tooltip', function () {
+                    elt.on('hidden.bs.tooltip', function() {
                         $.Oda.Tuto.enable = false;
                         elt.tooltip('destroy');
                     });
@@ -4267,7 +4277,7 @@ var $;
              * @exemple $.Oda.Scope.transform({str:"<span oda-label='oda-main.logout'>logout</span>"});
              * @returns {String}
              */
-            transform: function (p_params) {
+            transform: function(p_params) {
                 try {
                     var strReturn = '';
 
@@ -4400,7 +4410,7 @@ var $;
              * @param p_params.elt
              * @returns {$.Oda.Scope}
              */
-            checkInputText: function (p_params) {
+            checkInputText: function(p_params) {
                 try {
                     var $elt = $(p_params.elt);
                     var required = !$.Oda.Tooling.isUndefined($elt.attr("required"));
@@ -4437,7 +4447,7 @@ var $;
              * @param p_params.elt
              * @returns {$.Oda.Scope.checkInputSelect}
              */
-            checkInputSelect : function (p_params) {
+            checkInputSelect : function(p_params) {
                 try {
                     var $elt = $(p_params.elt);
                     var required = !$.Oda.Tooling.isUndefined($elt.attr("required"));
@@ -4463,7 +4473,7 @@ var $;
                  * @param p_params.function
                  * @returns {$.Oda.Scope}
                  */
-                add: function (p_params) {
+                add: function(p_params) {
                     try {
                         $.Oda.Scope.Gardian.inventory[p_params.id] = {
                             listElt : p_params.listElt,
@@ -4480,7 +4490,7 @@ var $;
                  * @param p_params.id
                  * @returns {$.Oda.Scope}
                  */
-                remove: function (p_params) {
+                remove: function(p_params) {
                     try {
                         $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
                             delete $.Oda.Scope.Gardian.inventory[key];
@@ -4494,7 +4504,7 @@ var $;
                 /**
                  * @returns {$.Oda.Scope}
                  */
-                removeAll: function () {
+                removeAll: function() {
                     try {
                         $.Oda.Scope.Gardian.inventory = {};
                         return this;
@@ -4508,7 +4518,7 @@ var $;
                  * @param p_params.id
                  * @returns {$.Oda.Scope}
                  */
-                findByElt: function (p_params) {
+                findByElt: function(p_params) {
                     try {
                         $.each($.Oda.Scope.Gardian.inventory, function( key, value ) {
                             if($.Oda.Tooling.isInArray(p_params.id, value.listElt)){
@@ -5034,7 +5044,7 @@ var $;
             gaips : [],
             urlTokenInfo : "https://www.googleapis.com/oauth2/v1/tokeninfo",
 
-            init : function () {
+            init : function() {
                 try {
                     switch($.Oda.Google.gapiStatut) {
                         case $.Oda.Google.gapiStatuts.zero :
@@ -5115,7 +5125,7 @@ var $;
                             }
                         }
 
-                        $.Oda.Google.gapi.client.load(tabApi[0].api, tabApi[0].version, function (resp) {
+                        $.Oda.Google.gapi.client.load(tabApi[0].api, tabApi[0].version, function(resp) {
                             if (typeof resp === "undefined") {
                                 $.Oda.Google.gaips.push({"api": tabApi[0].api, "version": tabApi[0].version});
                                 $.Oda.Log.debug('$.Oda.Google.loadGapis : Chargement ok pour ' + tabApi[0].api + " en " + tabApi[0].version);
@@ -5170,7 +5180,7 @@ var $;
              * @example $.Oda.Google.sessionState({'callback':function(response){console.log(response);}});
              * @returns {$.Oda.Google.session}
              */
-            sessionState : function (p_params) {
+            sessionState : function(p_params) {
                 try {
                     var tabInput = {
                         "access_token" : $.Oda.Google.sessionInfo.access_token
