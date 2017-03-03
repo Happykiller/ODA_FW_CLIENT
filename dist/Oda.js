@@ -2824,7 +2824,7 @@ var $;
             timerThrottle: null,
             lastThrottle: null,
             /**
-             * checkParams
+             * @name $.Oda.Tooling.checkParams
              * @param {Object} p_params
              * @param {json} p_def ex : {attr1 : null, attr2 : "truc"}
              * @desc null for mandatory params, present with default value or not for optional
@@ -2869,6 +2869,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.urlDownloadFromServerResources
              * @param {Object} p_params
              * @param p_params.strPath relative from resources/
              * @returns {String}
@@ -2883,6 +2884,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.timeout
              * @param func
              * @param time
              * @param arg
@@ -2898,7 +2900,7 @@ var $;
                 }
             },
             /**
-             * arrondir
+             * @name $.Oda.Tooling.arrondir
              * @param {float|int} p_value
              * @param {int} p_precision
              * @returns {float|int}
@@ -2921,7 +2923,7 @@ var $;
                 }
             },
             /**
-             * @name clone
+             * @name $.Oda.Tooling.clone
              * @desc Clone an object JS
              * @param{object} p_params
              * @returns {object}
@@ -2940,6 +2942,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.deepEqual
              * @param {object} elt1
              * @param {object} elt2
              * @returns {$.Oda.Tooling}
@@ -2972,6 +2975,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.debounce
              * @param callback Function
              * @param delay Integer
              * @returns {$.Oda.Tooling}
@@ -2991,7 +2995,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Tooling.decodeHtml
              * @param {string} html
              * @returns {string}
              */
@@ -3005,6 +3009,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.findBetweenWords
              * @param {object} p_params
              * @param p_params.str
              * @param p_params.first
@@ -3027,6 +3032,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.replaceAll
              * @param p_params
              * @param p_params.str
              * @param p_params.find
@@ -3073,6 +3079,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.clearSlashes
              * @param {type} path
              * @returns {unresolved}
              */
@@ -3085,6 +3092,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.getLangBrowser
              * @returns {String}
              */
             getLangBrowser: function(p_params) {
@@ -3115,7 +3123,7 @@ var $;
                 }
             },
             /**
-             * getListValeurPourAttribut
+             * @name $.Oda.Tooling.getListValeurPourAttribut
              * @param {json} p_obj
              * @param {string} p_attribut
              * @returns {Array}
@@ -3166,7 +3174,7 @@ var $;
                 }
             },
             /**
-             * isInArray
+             * @name $.Oda.Tooling.isInArray
              * @param {object} p_value
              * @param {array} p_array
              * @returns {Boolean}
@@ -3189,7 +3197,7 @@ var $;
                 }
             },
             /**
-             * @name isUndefined
+             * @name $.Oda.Tooling.isUndefined
              * @desc is ndefined N
              * @param {object} p_object
              * @returns {Boolean}
@@ -3209,7 +3217,7 @@ var $;
                 }
             },
             /**
-             * @name getMilise
+             * @name $.Oda.Tooling.getMilise
              * @returns {string}
              */
             getMilise: function() {
@@ -3222,6 +3230,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.getParameterGet
              * @param {Object} p_params
              * @param p_params.url
              * @returns {Object}
@@ -3245,6 +3254,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.getParamsLibrary
              * @param {Object} p_params
              * @param p_params.library
              * @returns {Object}
@@ -3267,6 +3277,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.objectSize
              * @param {Object} obj
              * @returns {Int}
              */
@@ -3283,8 +3294,7 @@ var $;
                 }
             },
             /**
-             * objDataTableFromJsonArray
-             *
+             * @name $.Oda.Tooling.objDataTableFromJsonArray
              * @param {object} p_JsonArray
              * @returns {object}
              */
@@ -3319,6 +3329,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.order
              * @param {Object} p_params
              * @param p_params.collection
              * @param p_params.compare with a, b
@@ -3341,6 +3352,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.orderInter
              * @param {Object} p_params
              * @param p_params.collectionOri
              * @param p_params.collectionDest
@@ -3386,7 +3398,7 @@ var $;
                 }
             },
             /**
-             * pad2
+             * @name $.Oda.Tooling.pad2
              * @param {int} number
              * @returns {String}
              */
@@ -3402,7 +3414,7 @@ var $;
                 }
             },
             /**
-             * @name postResources
+             * @name $.Oda.Tooling.postResources
              * @desc for send resources in the resources folder
              * @param {Object} params
              * @param params.idInput mandatory
@@ -3456,6 +3468,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.throttle
              * @param callback Function
              * @param delay Integer
              * @returns {$.Oda.Tooling}
@@ -3482,6 +3495,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.detectBrower
              * @returns {$.Oda.Tooling}
              */
             detectBrower: function() {
@@ -3604,6 +3618,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.isOdaConpatible
              * @returns {Boolean}
              */
             isOdaConpatible: function() {
@@ -3621,6 +3636,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.merge
              * @param {Object} params.default
              * @param {Object} params.source
              * @param {Object} params
@@ -3664,6 +3680,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Tooling.filter
              * @param {Array} params.src
              * @param {Function|Object} params.condition
              * @param {Object} params
@@ -3722,16 +3739,16 @@ var $;
         },
 
         I8n: {
-            datas : [],
+            datas: [],
             /**
-             * @name get
+             * @name $.Oda.I8n.get
              * @param {string} p_group
              * @param {string} p_tag
              * @param {object} options
              * @param {string} options.defaultLang
              * @param {string} options.forced
              * @param {object} options.variables
-             * @exemple $.Oda.I8n.get("qcm-main","test", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"});
+             * @example $.Oda.I8n.get("qcm-main","test", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"});
              * @returns {String}
              */
             get: function(p_group, p_tag, options) {
@@ -3800,7 +3817,7 @@ var $;
                 }
             },
             /**
-             * @name getByString
+             * @name $.Oda.I8n.getByString
              * @param {string} p_group
              * @returns {String}
              */
@@ -3820,7 +3837,7 @@ var $;
                 }
             },
             /**
-             * @name getByGroupName
+             * @name $.Oda.I8n.getByString
              * @param {string} p_group
              * @returns {String}
              */
@@ -3846,7 +3863,7 @@ var $;
 
         Security: {
             /**
-             * auth
+             * @name $.Oda.Security.auth
              * @param {String} p_params.login
              * @param {String} p_params.mdp
              * @param {object} p_params
@@ -3907,7 +3924,7 @@ var $;
                 }
             },
             /**
-             * @name : loadRight
+             * @name $.Oda.Security.loadRight()
              */
             loadRight: function() {
                 try {
@@ -3931,7 +3948,7 @@ var $;
                 }
             },
             /**
-             * @name : logout
+             * @name $.Oda.Security.logout
              */
             logout: function(){
                 try {
@@ -3954,7 +3971,7 @@ var $;
 
         Worker: {
             /**
-             *
+             * @name $.Oda.Worker.lib
              */
             lib: function(){
                 this.$Oda = {
@@ -4109,7 +4126,7 @@ var $;
                 };
             },
             /**
-             *
+             * @name $.Oda.Worker.message
              * @param cmd
              * @param parameter
              */
@@ -4118,11 +4135,11 @@ var $;
                     this.cmd = cmd;
                     this.parameter = parameter;
                 } catch (er) {
-                    $.Oda.Log.error("$Oda.message : " + er.message);
+                    $.Oda.Log.error("$.Oda.Worker.message : " + er.message);
                 }
             },
             /**
-             * @name initWorker
+             * @name $.Oda.Worker.initWorker
              * @desc pour initialiser un worker
              * @param {string} p_nameWorker
              * @param {string} p_fonctionRetour
@@ -4155,7 +4172,7 @@ var $;
                 }
             },
             /**
-             * @name terminateWorker
+             * @name $.Oda.Worker.terminateWorker
              * @desc pour finir le worker
              * @param {type} p_worker
              * @returns {undefined}
@@ -4176,7 +4193,7 @@ var $;
             currentElt: "",
             listElt: [],
             /**
-             *
+             * @name $.Oda.Tuto.start
              */
             start: function(){
                 try {
@@ -4215,7 +4232,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Tuto.read
              * @param id
              */
             read: function(id){
@@ -4239,7 +4256,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Tuto.show
              * @param id
              */
             show: function(id){
@@ -4272,9 +4289,10 @@ var $;
 
         Scope: {
             /**
+             * @name $.Oda.Scope.transform
              * @param {Object} p_params
              * @param p_params.str
-             * @exemple $.Oda.Scope.transform({str:"<span oda-label='oda-main.logout'>logout</span>"});
+             * @example $.Oda.Scope.transform({str:"<span oda-label='oda-main.logout'>logout</span>"});
              * @returns {String}
              */
             transform: function(p_params) {
@@ -4296,6 +4314,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Scope.init
              * @param {Object} p_params
              * @param p_params.id
              * @returns {undefined}
@@ -4406,6 +4425,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Scope.checkInputText
              * @param {Object} p_params
              * @param p_params.elt
              * @returns {$.Oda.Scope}
@@ -4443,6 +4463,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Scope.checkInputSelect
              * @param {Object} p_params
              * @param p_params.elt
              * @returns {$.Oda.Scope.checkInputSelect}
@@ -4467,11 +4488,12 @@ var $;
             Gardian: {
                 inventory: {},
                 /**
+                 * @name $.Oda.Scope.Gardian.add
                  * @param {Object} p_params
                  * @param p_params.id
                  * @param p_params.listElt
                  * @param p_params.function
-                 * @returns {$.Oda.Scope}
+                 * @returns {$.Oda.Scope.Gardian}
                  */
                 add: function(p_params) {
                     try {
@@ -4486,9 +4508,10 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Scope.Gardian.remove
                  * @param {Object} p_params
                  * @param p_params.id
-                 * @returns {$.Oda.Scope}
+                 * @returns {$.Oda.Scope.Gardian}
                  */
                 remove: function(p_params) {
                     try {
@@ -4502,7 +4525,8 @@ var $;
                     }
                 },
                 /**
-                 * @returns {$.Oda.Scope}
+                 * @name $.Oda.Scope.Gardian.removeAll
+                 * @returns {$.Oda.Scope.Gardian}
                  */
                 removeAll: function() {
                     try {
@@ -4514,9 +4538,10 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Scope.Gardian.findByElt
                  * @param {Object} p_params
                  * @param p_params.id
-                 * @returns {$.Oda.Scope}
+                 * @returns {$.Oda.Scope.Gardian}
                  */
                 findByElt: function(p_params) {
                     try {
@@ -4527,7 +4552,7 @@ var $;
                         });
                         return this;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.Scope.findByElt : " + er.message);
+                        $.Oda.Log.error("$.Oda.Scope.Gardian.findByElt : " + er.message);
                         return null;
                     }
                 },
@@ -4540,7 +4565,7 @@ var $;
             ttl_default : 86400, //24H
             storageKey : "ODA__default__",
             /**
-             *
+             * @name Oda.Storage.isStorageAvaible
              * @returns {Boolean}
              */
             isStorageAvaible: function(){
@@ -4558,11 +4583,11 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.set
              * @param {string} p_key
              * @param {json} p_value
              * @param {integer} p_ttl in seconde
-             * @ex $.Oda.Storage.set('key',{'key':'value'});
+             * @example $.Oda.Storage.set('key',{'key':'value'});
              * @returns {Boolean}
              */
             set: function(p_key, p_value, p_ttl) {
@@ -4599,10 +4624,10 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.get
              * @param {string} p_key
              * @param {json} p_default
-             * @ex $.Oda.Storage.get('key',{'key':'value'});
+             * @example $.Oda.Storage.get('key',{'key':'value'});
              * @returns {json}
              */
             get: function(p_key, p_default) {
@@ -4651,6 +4676,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Storage.setTtl
              * @desc reset ttl with new
              * @param {string} p_key
              * @param {int} p_ttl
@@ -4677,12 +4703,12 @@ var $;
 
                     return myReturn;
                 } catch (er) {
-                    $.Oda.Log.error("Oda.Storage.setTtl : " + er.message);
+                    $.Oda.Log.error("$.Oda.Storage.setTtl : " + er.message);
                     return null;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.getTtl
              * @param {string} p_key
              * @returns {int}
              */
@@ -4712,12 +4738,12 @@ var $;
 
                     return myReturn;
                 } catch (er) {
-                    $.Oda.Log.error("Oda.Storage.getTtl : " + er.message);
+                    $.Oda.Log.error("$.Oda.Storage.getTtl : " + er.message);
                     return null;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.setTtl
              * @param {string} p_key
              * @returns {int}
              */
@@ -4729,12 +4755,12 @@ var $;
 
                     return myReturn;
                 } catch (er) {
-                    $.Oda.Log.error("Oda.Storage.setTtl : " + er.message);
+                    $.Oda.Log.error("$.Oda.Storage.setTtl : " + er.message);
                     return null;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.reset
              * @returns {int}
              */
             reset: function() {
@@ -4747,12 +4773,12 @@ var $;
 
                     return myReturn;
                 } catch (er) {
-                    $.Oda.Log.error("Oda.Storage.reset : " + er.message);
+                    $.Oda.Log.error("$.Oda.Storage.reset : " + er.message);
                     return null;
                 }
             },
             /**
-             *
+             * @name $.Oda.Storage.getIndex
              * @param {string} p_key
              * @returns {array}
              */
@@ -4770,7 +4796,7 @@ var $;
 
                     return myReturn;
                 } catch (er) {
-                    $.Oda.Log.error("Oda.Storage.getIndex : " + er.message);
+                    $.Oda.Log.error("$.Oda.Storage.getIndex : " + er.message);
                     return null;
                 }
             }
@@ -4788,7 +4814,7 @@ var $;
             routesAllowedDefault: [],
             MiddleWares: {},
             /**
-             * navigateTo
+             * @name $.Oda.Router.navigateTo
              * @param {object} p_request
              * @returns {$.Oda.Router}
              */
@@ -4826,12 +4852,12 @@ var $;
                     $.Oda.Router.routes["404"].go(p_request);
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.ODa.Router.navigateTo : " + er.message);
+                    $.Oda.Log.error("$.Oda.Router.navigateTo : " + er.message);
                     return null;
                 }
             },
             /**
-             * addRoute
+             * @name $.Oda.Router.addRoute
              * @param {String} name description
              * @param {object} p_routeDef
              * @returns {$.Oda.Router}
@@ -4853,12 +4879,12 @@ var $;
                     $.Oda.Router.routes[p_name] = p_routeDef;
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.ODa.Router.addRoute : " + er.message);
+                    $.Oda.Log.error("$.Oda.Router.addRoute : " + er.message);
                     return null;
                 }
             },
             /**
-             * addMiddleWare
+             * @name $.Oda.Router.addMiddleWare
              * @param {string} p_name
              * @param {object} p_midlleWareDef
              * @returns {$.Oda.Router}
@@ -4869,12 +4895,12 @@ var $;
                     $.Oda.Router.MiddleWares[p_name].name = p_name;
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.ODa.Router.addMiddleWare : " + er.message);
+                    $.Oda.Log.error("$.Oda.Router.addMiddleWare : " + er.message);
                     return null;
                 }
             },
             /**
-             * addDependencies
+             * @name $.Oda.Router.addDependencies
              * @param {string} p_name
              * @param {object} p_dependenciesLoad
              * @returns {$.Oda.Router}
@@ -4890,7 +4916,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Router.loadPartial
              * @param {Object} p_params
              * @returns {$.Oda.Router}
              */
@@ -4913,7 +4939,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Router.startRooter
              * @returns {$.Oda.Router}
              */
             startRooter: function() {
@@ -4948,7 +4974,7 @@ var $;
                 }
             },
             /**
-             * go
+             * @name $.Oda.Router.routerGo
              * @param {object} p_params description
              * @returns {$.Oda.Router}
              */
@@ -5043,8 +5069,10 @@ var $;
             sessionInfo : null,
             gaips : [],
             urlTokenInfo : "https://www.googleapis.com/oauth2/v1/tokeninfo",
-
-            init : function() {
+            /**
+             * @name $.Oda.Google.init
+             */
+            init: function() {
                 try {
                     switch($.Oda.Google.gapiStatut) {
                         case $.Oda.Google.gapiStatuts.zero :
@@ -5063,7 +5091,10 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.init :" + er.message);
                 }
             },
-            handleClientLoad : function() {
+            /**
+             * @name $.Oda.Google.handleClientLoad
+             */
+            handleClientLoad: function() {
                 try {
                     if(gapi.hasOwnProperty("client")) {
                         $.Oda.Google.gapi = gapi;
@@ -5078,7 +5109,10 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.handleClientLoad :" + er.message);
                 }
             },
-            startSessionAuth : function(methodOk, methodKo){
+            /**
+             * @name $.Oda.Google.startSessionAuth
+             */
+            startSessionAuth: function(methodOk, methodKo){
                 try {
                     if(!$.Oda.Tooling.isUndefined(methodOk)){
                         $.Oda.Google.methodeSessionAuthOk = methodOk;
@@ -5113,6 +5147,9 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.startSessionAuth : " + er.message);
                 }
             },
+            /**
+             * @name $.Oda.Google.loadGapis
+             */
             loadGapis : function(tabApi, callbackFunction) {
                 try {
                     if (tabApi.length > 0) {
@@ -5143,6 +5180,9 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.loadGapis :" + er.message);
                 }
             },
+            /**
+             * @name $.Oda.Google.callbackAuthSession
+             */
             callbackAuthSession : function(){
                 try {
                     $.Oda.Google.gapi.client.setApiKey($.Oda.Google.apiKey);
@@ -5152,6 +5192,9 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.callbackAuthSession :" + er.message);
                 }
             },
+            /**
+             * @name $.Oda.Google.handleAuthResult
+             */
             handleAuthResult : function(authResult) {
                 try {
                     if ((authResult) && (!authResult.error) && (authResult.access_token !== undefined)) {
@@ -5165,6 +5208,9 @@ var $;
                     $.Oda.Log.error("$.Oda.Google.handleAuthResult :" + er.message);
                 }
             },
+            /**
+             * @name $.Oda.Google.callServiceGoogleAuth
+             */
             callServiceGoogleAuth : function(callMethodeOk) {
                 try {
                     $.Oda.Google.methodeSessionAuthOk = callMethodeOk;
@@ -5175,6 +5221,7 @@ var $;
                 }
             },
             /**
+             * @name $.Oda.Google.sessionState
              * @param {Object} p_params
              * @param p_params.callback
              * @example $.Oda.Google.sessionState({'callback':function(response){console.log(response);}});
@@ -5198,7 +5245,7 @@ var $;
 
         Log: {
             /**
-             *
+             * @name $.Oda.Log.info
              * @param p_msg
              * @returns {*}
              */
@@ -5212,7 +5259,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Log.trace
              * @param p_msg
              * @returns {*}
              */
@@ -5226,7 +5273,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Log.debug
              * @param p_msg
              * @returns {*}
              */
@@ -5242,7 +5289,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Log.error
              * @param p_msg
              * @returns {*}
              */
@@ -5259,7 +5306,7 @@ var $;
                 }
             },
             /**
-             *
+             * @name $.Oda.Log.warning
              * @param p_msg
              * @returns {*}
              */
