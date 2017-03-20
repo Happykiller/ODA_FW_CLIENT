@@ -3333,7 +3333,19 @@ var $;
              * @param {Object} p_params
              * @param p_params.collection
              * @param p_params.compare with a, b
-             * @desc compare must be return 1 si a before b, -1 if b before a, 0 if equal
+             * @description compare must be return 1 si a before b, -1 if b before a, 0 if equal
+             * @example
+             * $.Oda.Tooling.order({
+             *      collection: inputs, compare: function(elt1, elt2){
+             *          if(elt1.label < elt2.label){
+             *              return 1;
+             *          }else if(elt1.label > elt2.label){
+             *              return -1;
+             *          }else{
+             *              return 0;
+             *          }
+             *      }
+             *  })
              * @returns {$.Oda.Tooling}
              */
             order: function(p_params) {
