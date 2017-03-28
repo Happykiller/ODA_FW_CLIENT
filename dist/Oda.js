@@ -198,6 +198,10 @@ var $;
 
                     listDepends = listDepends.concat(listDependsApp);
                 }
+                
+                if($.Oda.Context.ModeExecution.widget){
+                    $.Oda.Display.Widget.load();
+                }
 
                 if($.Oda.Context.ModeExecution.scene){
 
@@ -2816,6 +2820,140 @@ var $;
                         return null;
                     }
                 }
+            },
+            Widget: {
+                /**
+                 * @name $.Oda.Display.Widget.load
+                 */
+                load: function(){
+                    try {
+                        $.Oda.Display.Widget.loadBtn();
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.checkBtnEnter
+                 */
+                checkBtnEnter: function(){
+                    try {
+                        $(document).unbind("keypress");
+                        var maxPrio;
+                        var maxBt;
+                        $('[oda-btn-enter]').each( function(index) {
+                            var current = $(this);
+                            current.removeClass("btn-listenEnter");
+                            var currentPrio = parseInt(current.attr("oda-btn-enter"));
+                            if((maxPrio === undefined) || (currentPrio > maxPrio)){
+                                maxPrio = currentPrio;
+                                maxBt = current;
+                            }else{
+                                current.removeClass("btn-listenEnter");
+                            }
+                        });
+                        if(maxBt){
+                            maxBt.addClass("btn-listenEnter");
+                            $(document).keypress(function(e) {
+                                if(e.which === 13) {
+                                    if(maxBt.attr("oda-btn-click")){
+                                        maxBt.click();
+                                    }else{
+                                        throw new Error('Not clickable');
+                                    }
+                                }
+                            });
+                        }
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.checkBtnEnter: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadBtn
+                 */
+                loadBtn: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-btn",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name))){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                    throw new Error("Name:'"+name+"' already exist");
+                                }
+
+                                elt.attr("id", name);
+                                elt.attr("name", name);
+                                elt.attr("type", "button");
+                                
+                                var text = elt.text();            
+                                var textTrad = $.Oda.I8n.getByString(text);
+                                elt.text(textTrad);
+
+                                var style = elt.attr("oda-btn-style");
+                                var alreadyClass = elt.attr("class");
+                                if(alreadyClass){
+                                    elt.attr("class", 'btn btn-'+style + " " + alreadyClass);
+                                }else{
+                                    elt.attr("class", 'btn btn-'+style);
+                                }
+                                
+                                var iconAfter = elt.attr("oda-btn-icon-after");
+                                var iconBefore = elt.attr("oda-btn-icon-before");
+                                if(iconBefore){
+                                    elt.prepend('<span class="glyphicon glyphicon-'+iconBefore+'" aria-hidden="true"></span> ');
+                                }
+                                if(iconAfter){
+                                    elt.append(' <span class="glyphicon glyphicon-'+iconAfter+'" aria-hidden="true"></span>');
+                                }
+
+                                var odaBtnEnter = elt.attr("oda-btn-enter");
+                                if(odaBtnEnter){
+                                    $.Oda.Display.Widget.checkBtnEnter();
+                                }
+
+                                elt.click(function( event ) {
+                                    event.preventDefault();
+                                    var disabled = elt.attr("disabled");
+                                    var click = elt.attr("oda-btn-click");
+                                    if(click && !disabled){
+                                        try{
+                                            var newclick = new Function(click);
+                                            newclick();
+                                        }catch(e){
+                                            throw new Error('Not a function');
+                                        }
+                                    }
+                                });
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var elt = $(this);
+                                switch(attrName) {
+                                    default:
+                                }
+                            },
+                            attachedCallback: function(){
+                                var elt = $(this);
+                                var odaBtnEnter = elt.attr("oda-btn-enter");
+                                if(odaBtnEnter){
+                                    $.Oda.Display.Widget.checkBtnEnter();
+                                }
+                            },
+                            detachedCallback: function(){
+                                $.Oda.Display.Widget.checkBtnEnter();
+                            }
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadBtn: " + er.message);
+                        return null;
+                    }
+                }
             }
         },
 
@@ -5351,6 +5489,7 @@ var $;
                 $.Oda.Context.ModeExecution.notification = true;
                 $.Oda.Context.ModeExecution.message = true;
                 $.Oda.Context.ModeExecution.footer = true;
+                $.Oda.Context.ModeExecution.widget = true;
                 break;
             case "app":
                 $.Oda.Context.ModeExecution.app = true;
@@ -5358,6 +5497,7 @@ var $;
                 $.Oda.Context.ModeExecution.notification = true;
                 $.Oda.Context.ModeExecution.message = true;
                 $.Oda.Context.ModeExecution.footer = true;
+                $.Oda.Context.ModeExecution.widget = true;
                 break;
             case "mini":
                 $.Oda.Context.ModeExecution.init = true;
