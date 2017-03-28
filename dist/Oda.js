@@ -1816,16 +1816,20 @@ var $;
                 createHtmlElement: function(params){
                     try {
                         $.Oda.Log.debug("CreateHtmlElement: " + params.name);
-                        var elt = Object.create(HTMLElement.prototype, {
-                            createdCallback: {
-                                value: params.createdCallback
-                            }
-                        });
+                        var elt = Object.create(HTMLElement.prototype);
+                        
+                        elt.createdCallback = params.createdCallback;
 
                         if(params.attributeChangedCallback !== undefined){
-                            elt.attributeChangedCallback = {
-                                value: params.attributeChangedCallback
-                            };
+                            elt.attributeChangedCallback = params.attributeChangedCallback;
+                        }
+
+                        if(params.attachedCallback !== undefined){
+                            elt.attachedCallback = params.attachedCallback;
+                        }
+
+                        if(params.detachedCallback !== undefined){
+                            elt.detachedCallback = params.detachedCallback;
                         }
                             
                         document.registerElement(params.name, {
@@ -1863,16 +1867,20 @@ var $;
                     try {
                         $.Oda.Log.debug("extendHtmlElement: " + params.name);
                         
-                        var elt = Object.create(HTMLElement.prototype, {
-                            createdCallback: {
-                                value: params.createdCallback
-                            }
-                        });
+                        var elt = Object.create(HTMLElement.prototype);
+                        
+                        elt.createdCallback = params.createdCallback;
 
                         if(params.attributeChangedCallback !== undefined){
-                            elt.attributeChangedCallback = {
-                                value: params.attributeChangedCallback
-                            };
+                            elt.attributeChangedCallback = params.attributeChangedCallback;
+                        }
+
+                        if(params.attachedCallback !== undefined){
+                            elt.attachedCallback = params.attachedCallback;
+                        }
+
+                        if(params.detachedCallback !== undefined){
+                            elt.detachedCallback = params.detachedCallback;
                         }
                             
                         document.registerElement(params.name, {
