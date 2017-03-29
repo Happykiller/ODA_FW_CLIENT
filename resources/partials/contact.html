@@ -18,7 +18,7 @@
         <label for="msg" oda-label="oda-main.contact-msg">oda-main.contact-msg</label>
         <textarea class="form-control" rows="3" id="msg" oda-input-text="msg" oda-input-text-tips="oda-main.contact-msg-tips" oda-input-text-placeholder="oda-main.contact-msg-placeholder" oda-input-text-check=".{25,}"></textarea>
     </div>
-    <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Contact.contact();" class="btn btn-primary disabled" disabled>oda-main.bt-submit</button >
+    <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Contact.contact();" disabled>oda-main.bt-submit</oda-btn>
 </div>
 
 <script>
@@ -54,6 +54,7 @@
          */
         contact: function () {
             try {
+                $("#submit").btDisable();
                 var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
                 if (contact_mail_administrateur !== "") {
                     var message_html  = $.Oda.Display.TemplateHtml.create({
@@ -91,6 +92,7 @@
                 } else {
                     $.Oda.Display.Notification.error("Mail du service non définie.");
                 }
+                $("#submit").btEnable();
             } catch (er) {
                 $.Oda.Log.error("$.Oda.contact() : " + er.message);
             }
