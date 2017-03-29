@@ -2886,7 +2886,7 @@ var $;
                             name: "oda-btn",
                             createdCallback: function(){
                                 var elt = $(this);
-                                var name = elt.attr("oda-name");
+                                var name = elt.attr("oda-btn-name");
 
                                 if(($.Oda.Context.window.document.getElementById(name))){
                                     throw new Error("Id:'"+name+"' already exist");

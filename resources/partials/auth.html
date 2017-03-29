@@ -15,9 +15,9 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Auth.goIn();" class="btn btn-primary disabled" disabled>oda-main.bt-submit</button >
-                <button type="button" oda-label="oda-main.bt-forgot" onclick="$.Oda.Router.navigateTo({'route':'forgot','args':[]});" class="btn btn-info">oda-main.bt-forgot</button >
-                <button type="button" oda-label="oda-main.bt-subscrib" onclick="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});" class="btn btn-info">oda-main.bt-subscrib</button >
+                <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Auth.goIn();" disabled>oda-main.bt-submit</oda-btn>
+                <oda-btn oda-btn-style="info" oda-btn-click="$.Oda.Router.navigateTo({'route':'forgot','args':[]});">oda-main.bt-forgot</oda-btn>
+                <oda-btn oda-btn-style="info" oda-btn-click="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});">oda-main.bt-subscrib</oda-btn>
             </p>
         </div>
         <div class="col-md-12">

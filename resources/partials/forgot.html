@@ -16,8 +16,8 @@
         </div>
         <div class="col-md-12">
             <p>
-                <button type="button" oda-label="oda-main.bt-submit" oda-submit="submit" onclick="$.Oda.Controller.Forgot.recupCompte();" class="btn btn-primary disabled" disabled>Submit</button >
-                <button type="button" oda-label="oda-main.bt-back" onclick="$.Oda.Router.navigateTo({'route':'home','args':[]});" class="btn btn-info">Back</button >
+                <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Forgot.recupCompte();" disabled>oda-main.bt-submit</oda-btn>
+                <oda-btn oda-btn-style="info" oda-btn-click="$.Oda.Router.navigateTo({'route':'home','args':[]});">oda-main.bt-back</oda-btn>
             </p>
         </div>
     </div>
