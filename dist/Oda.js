@@ -2900,9 +2900,11 @@ var $;
                                 elt.attr("name", name);
                                 elt.attr("type", "button");
                                 
-                                var text = elt.text();            
-                                var textTrad = $.Oda.I8n.getByString(text);
-                                elt.text(textTrad);
+                                var text = elt.text();  
+                                if(text !== ""){        
+                                    var textTrad = $.Oda.I8n.getByString(text);
+                                    elt.text(textTrad);
+                                }  
 
                                 var style = elt.attr("oda-btn-style");
                                 var alreadyClass = elt.attr("class");

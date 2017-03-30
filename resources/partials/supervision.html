@@ -169,7 +169,7 @@
                     }
                 }
 
-                strhtml += '<button type="button" onclick="chargerMaintenance(true);" class="btn btn-danger" oda-submit="bt_valider"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '+ $.Oda.I8n.get('oda-supervision','purge')+'</button>';
+                strhtml += '<oda-btn oda-btn-style="danger" oda-btn-icon-before="remove" oda-btn-click="chargerMaintenance(true);">oda-supervision.purge</oda-btn>';
 
                 $('#div_maintenance').html(strhtml);
             } else{

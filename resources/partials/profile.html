@@ -19,22 +19,22 @@
                         <tr>
                             <td oda-label="oda-profile.lastName">oda-profile.lastName</td>
                             <td><label id="lab_nom"></label></td>
-                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-nom" title="Mise &agrave; jour du nom" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                            <td><oda-btn title="Mise &agrave; jour du nom" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('lastName');"></oda-btn></td>
                         </tr>
                         <tr>
                             <td oda-label="oda-profile.firstName">oda-profile.firstName</td>
                             <td><label id="lab_prenom"></label></td>
-                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-prenom" title="Mise &agrave; jour du pr&eacute;nom" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                            <td><oda-btn title="Mise &agrave; jour du pr&eacute;nom" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('firstName');"></oda-btn></td>
                         </tr>
                         <tr>
                             <td oda-label="oda-profile.email">oda-profile.email</td>
                             <td><label id="lab_mail"></label></td>
-                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-mail" title="Mise &agrave; jour de l\'eMail" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                            <td><oda-btn title="Mise &agrave; jour de l\'eMail" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('email');"></oda-btn></td>
                         </tr>
                         <tr>
                             <td oda-label="oda-profile.language">oda-profile.language</td>
                             <td><label id="lab_langue"></label></td>
-                            <td> <button type="button" class="btn btn-default" aria-label="Left Align" id="bt_ch-langue" title="Mise &agrave; jour de la langue" onclick="$.Oda.Controller.Profile.updateChamps(this);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                            <td><oda-btn title="Mise &agrave; jour de la langue" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('language');"></oda-btn></td>
                         </tr>
                         <tr>
                             <td oda-label="oda-profile.avatar">oda-profile.avatar</td>
@@ -112,6 +112,7 @@
                     var prenom = p_retour["data"]["detailsUser"]["prenom"];
                     var langue = p_retour["data"]["detailsUser"]["langue"];
                     var rankLabel;
+
                     for(var index in p_retour.data.lesRangs.data){
                         if(p_retour.data.lesRangs.data[index].id === p_retour.data.detailsUser.id_rang){
                             rankLabel = p_retour.data.lesRangs.data[index].labelle;
@@ -123,7 +124,6 @@
                     $('#lab_prenom').html(prenom);
                     $('#lab_mail').html(mail);
                     $('#lab_langue').html(langue);
-                    $('#lab_nom').html(nom);
                     $('#rank').html(rankLabel);
 
                     $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');}});
@@ -140,34 +140,34 @@
 
         /**
          * updateChamps
-         * @param {type} p_obj
+         * @param {String} p
          */
-         updateChamps: function(p_obj){
+         updateChamps: function(p){
             try {
                 var label = "";
                 var details = "";
                 var footer = "";
 
-                switch (p_obj.id){
-                    case "bt_ch-nom":
+                switch (p){
+                    case "lastName":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'lastName');
                         details += '<label for="input_nom" oda-label="oda-profile.lastName">oda-profile.lastName</label>';
-                        details += '<input class="form-control" type="text" oda-input-text="input_nom" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName" />';
-                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'nom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        details += '<input class="form-control" type="text" value="'+$.Oda.Session.userInfo.lastName+'" oda-input-text="input_nom" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName" />';
+                        footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'nom\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
-                    case "bt_ch-prenom":
+                    case "firstName":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'firstName');
                         details += '<label for="input_prenom" oda-label="oda-profile.firstName">oda-profile.firstName</label>';
-                        details += '<input class="form-control" type="text" oda-input-text="input_prenom" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName" />';
-                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'prenom\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        details += '<input class="form-control" type="text" value="'+$.Oda.Session.userInfo.firstName+'" oda-input-text="input_prenom" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName" />';
+                        footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'prenom\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
-                    case "bt_ch-mail":
+                    case "email":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'email');
                         details += '<label for="input_mail" oda-label="oda-profile.email">oda-profile.email</label>';
-                        details += '<input class="form-control" type="email" oda-input-text="input_mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail" />';
-                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'mail\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
-                        break;oda-main.bt-submit
-                    case "bt_ch-langue":
+                        details += '<input class="form-control" type="email" value="'+$.Oda.Session.userInfo.email+'" oda-input-text="input_mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail" />';
+                        footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'mail\');" disabled>oda-main.bt-submit</oda-btn>';
+                        break;
+                    case "language":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'language');
                         details += '<label for="input_langue" oda-label="oda-profile.language">oda-profile.language</label>';
                         details += '<select oda-input-select="input_langue" class="form-control">';
@@ -175,7 +175,7 @@
                         details += '<option value="en" '+(($.Oda.Session.userInfo.locale === 'en')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'en')+' ('+$.Oda.I8n.get('oda-profile', 'en', {forced: 'en'})+')</option>';
                         details += '<option value="es" '+(($.Oda.Session.userInfo.locale === 'es')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'es')+' ('+$.Oda.I8n.get('oda-profile', 'es', {forced: 'es'})+')</option>';
                         details += '</select>';
-                        footer += '<a class="btn btn-info" oda-label="oda-main.bt-submit" oda-submit="submit" disabled onclick="$.Oda.Controller.Profile.submitChange(\'langue\');" class="ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all">oda-main.bt-submit</a>';
+                        footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'langue\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                 }
 
@@ -235,8 +235,8 @@
                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {callback : function(response){
                         var userInfo = {
                             "locale" : response.data.resultat.langue
-                            , "firstName" : response.data.resultat.nom
-                            , "lastName" : response.data.resultat.prenom
+                            , "firstName" : response.data.resultat.prenom
+                            , "lastName" : response.data.resultat.nom
                             , "mail" : response.data.resultat.mail
                             , "profile" : response.data.resultat.profile
                             , "profileLabel" : response.data.resultat.labelle
