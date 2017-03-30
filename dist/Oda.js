@@ -2836,6 +2836,7 @@ var $;
                 load: function(){
                     try {
                         $.Oda.Display.Widget.loadBtn();
+                        $.Oda.Display.Widget.loadTextInput();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -2963,7 +2964,144 @@ var $;
                         $.Oda.Log.error("$.Oda.Display.Widget.loadBtn: " + er.message);
                         return null;
                     }
-                }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.checkInputText
+                 * @param {Object} p
+                 * @param p.elt
+                 * @param p.required
+                 * @param p.check
+                 * @returns {$.Oda.Display.Widget}
+                 */
+                checkInputText: function(p) {
+                    try {
+                        var $elt = $(p.elt);
+                        if(p.required && (($elt.val() === undefined) || ($elt.val() === ""))){
+                            $elt.data("isOk", false);
+                            $elt.css("border-color","#FF0000");
+                        }else{
+                            if(p.check){
+                                if(p.check.startsWith("Oda.Regexs:")){
+                                    p.check = p.check.replace("Oda.Regexs:", '');
+                                    p.check = $.Oda.Regexs[p.check];
+                                }
+
+                                var patt = new RegExp(p.check, "g");
+                                var res = patt.test($elt.val());
+                                if(res){
+                                    $elt.data("isOk", true);
+                                    $elt.css("border-color","#04B404");
+                                }else{
+                                    $elt.data("isOk", false);
+                                    $elt.css("border-color","#FF0000");
+                                }
+                            }
+                        }
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.checkInputText: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadTextInput
+                 */
+                loadTextInput: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-input-text",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-text-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name))){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                    throw new Error("Name:'"+name+"' already exist");
+                                }
+
+                                var label = elt.attr("oda-input-text-label");
+                                var type = elt.attr("oda-input-text-type");
+
+                                var required = elt.attr("required");
+                                var requiredStart = "";
+                                var requiredBalise = "";
+                                if(required){
+                                    requiredStart = '<span style="color:red;">*</span>';
+                                    requiredBalise = 'required';
+                                }
+
+                                var html  = $.Oda.Display.TemplateHtml.create({
+                                    template : "oda-widget-input-text-tpl",
+                                    scope : {
+                                        id: name,
+                                        name: name,
+                                        label: $.Oda.I8n.getByString(label),
+                                        requiredStart: requiredStart,
+                                        requiredBalise: requiredBalise,
+                                        type: type
+                                    }
+                                });
+
+                                $(this).html(html);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var elt = $(this);
+                                switch(attrName) {
+                                    default:
+                                }
+                            },
+                            attachedCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-text-name");
+                                var tips = elt.attr("oda-input-text-tips");
+                                var placeholder = elt.attr("oda-input-text-placeholder");
+                                var check = elt.attr("oda-input-text-check");
+                                var required = elt.attr("required");
+
+                                var $inputText = $('#'+name);
+
+                                if(tips){
+                                    var tipsText = $.Oda.I8n.getByString(tips);
+                                    $inputText.after('<span style="color : #a1a1a1;">&nbsp;</span>');
+                                    var $spanTips = $inputText.parent().find('span:last');
+                                    $inputText.focus(function() {
+                                        $spanTips.html(tipsText);
+                                    });
+                                    $inputText.focusout(function() {
+                                        $spanTips.html("&nbsp;");
+                                    });
+                                }
+
+                                if(placeholder){
+                                    $inputText.attr("placeholder",$.Oda.I8n.getByString(placeholder));
+                                }
+
+                                $.Oda.Display.Widget.checkInputText({
+                                    elt: $inputText.get(0),
+                                    required: required,
+                                    check: check
+                                });
+
+                                $inputText.bind("keyup mouseup change",function(e){
+                                    $.Oda.Display.Widget.checkInputText({
+                                        elt: e.target,
+                                        required: required,
+                                        check: check
+                                    });
+                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                });
+                            },
+                            detachedCallback: function(){
+                            }
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadTextInput: " + er.message);
+                        return null;
+                    }
+                },
             }
         },
 

@@ -2,22 +2,47 @@
     <h2 oda-label="oda-main.authentication">oda-main.authentication</h2>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="login" oda-label="oda-main.login">oda-main.login</label>
-                <input required type="text" class="form-control" oda-input-text="login" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="Oda.Regexs:login">
-            </div>
+            <oda-input-text 
+                oda-input-text-name="login" 
+                oda-input-text-type="text" 
+                oda-input-text-label="oda-main.login" 
+                oda-input-text-tips="oda-main.io-login-tips" 
+                oda-input-text-placeholder="oda-main.io-login" 
+                oda-input-text-check="Oda.Regexs:login" 
+                required>
+            </oda-input-text>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="mdp" oda-label="oda-main.password">oda-main.password</label>
-                <input required type="password" class="form-control" oda-input-text="mdp" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
-            </div>
+            <oda-input-text 
+                oda-input-text-name="mdp" 
+                oda-input-text-type="password" 
+                oda-input-text-label="oda-main.password" 
+                oda-input-text-tips="oda-main.io-password-tips" 
+                oda-input-text-placeholder="oda-main.io-password" 
+                oda-input-text-check="Oda.Regexs:password" 
+                required>
+            </oda-input-text>
         </div>
         <div class="col-md-12">
             <p>
-                <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Auth.goIn();" disabled>oda-main.bt-submit</oda-btn>
-                <oda-btn oda-btn-style="info" oda-btn-click="$.Oda.Router.navigateTo({'route':'forgot','args':[]});">oda-main.bt-forgot</oda-btn>
-                <oda-btn oda-btn-style="info" oda-btn-click="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});">oda-main.bt-subscrib</oda-btn>
+                <oda-btn 
+                    oda-btn-name="submit" 
+                    oda-btn-style="primary" 
+                    oda-btn-enter="1" 
+                    oda-btn-click="$.Oda.Controller.Auth.goIn();" 
+                    disabled>
+                    oda-main.bt-submit
+                </oda-btn>
+                <oda-btn 
+                    oda-btn-style="info" 
+                    oda-btn-click="$.Oda.Router.navigateTo({'route':'forgot','args':[]});">
+                    oda-main.bt-forgot
+                </oda-btn>
+                <oda-btn 
+                    oda-btn-style="info" 
+                    oda-btn-click="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});">
+                    oda-main.bt-subscrib
+                </oda-btn>
             </p>
         </div>
         <div class="col-md-12">
@@ -48,12 +73,12 @@
                 });
 
                 $.Oda.Google.startSessionAuth(
-                        function(){
-                            $('#google').html('<button type="button" onclick="$.Oda.Controller.Auth.goInWithGoogle();" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
-                        }
-                        , function(){
-                            $('#google').html('<button type="button" onclick="$.Oda.Google.callServiceGoogleAuth($.Oda.Controller.Auth.goInWithGoogle);" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
-                        }
+                    function(){
+                        $('#google').html('<button type="button" onclick="$.Oda.Controller.Auth.goInWithGoogle();" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                    }
+                    , function(){
+                        $('#google').html('<button type="button" onclick="$.Oda.Google.callServiceGoogleAuth($.Oda.Controller.Auth.goInWithGoogle);" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                    }
                 );
                 return this;
             } catch (er) {
