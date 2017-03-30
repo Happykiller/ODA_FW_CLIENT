@@ -31,11 +31,9 @@
 <script>
     $.Oda.Controller.Auth = {
         /**
-         * @param {Object} p_params
-         * @param p_params.id
          * @returns {$.Oda.Controller.Auth}
          */
-        start : function (p_params) {
+        start: function () {
             try {
                 $.Oda.Scope.Gardian.add({
                     id : "gardianAuth",
@@ -68,7 +66,7 @@
          * @param p_params.id
          * @returns {$.Oda.Controller.Auth}
          */
-        goIn : function (p_params) {
+        goIn: function (p_params) {
             try {
                 $.Oda.Security.auth({'login' : $('#login').val(), 'mdp' : $('#mdp').val(), 'reload' : true});
                 return this;
@@ -80,7 +78,7 @@
         /**
          * @returns {$.Oda.Controller.Auth}
          */
-        goInWithGoogle : function () {
+        goInWithGoogle: function () {
             try {
                 gapi.client.oauth2.userinfo.get().execute(function(resp) {
                     var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {callback:function(retour){
