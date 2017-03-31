@@ -2,13 +2,15 @@
     <h2 oda-label="oda-main.authentication">oda-main.authentication</h2>
     <div class="row">
         <div class="col-md-6">
-            <oda-input-text 
-                oda-input-text-name="login" 
-                oda-input-text-type="text" 
-                oda-input-text-label="oda-main.login" 
-                oda-input-text-tips="oda-main.io-login-tips" 
-                oda-input-text-placeholder="oda-main.io-login" 
-                oda-input-text-check="Oda.Regexs:login" 
+            <oda-input-text
+                oda-input-text-name="login"
+                oda-input-text-type="text"
+                oda-input-text-label="oda-main.login"
+                oda-input-text-tips="oda-main.io-login-tips"
+                oda-input-text-advice="oda-main.io-login-advice"
+                oda-input-text-placeholder="oda-main.io-login-placeholder"
+                oda-input-text-check="Oda.Regexs:login"
+                oda-input-text-debounce="200"
                 required>
             </oda-input-text>
         </div>
@@ -17,12 +19,17 @@
                 oda-input-text-name="mdp" 
                 oda-input-text-type="password" 
                 oda-input-text-label="oda-main.password" 
-                oda-input-text-tips="oda-main.io-password-tips" 
-                oda-input-text-placeholder="oda-main.io-password" 
+                oda-input-text-tips="oda-main.io-pass-tips" 
+                oda-input-text-advice="oda-main.io-pass-advice"
+                oda-input-text-placeholder="oda-main.io-pass-placeholder" 
+                oda-input-text-paste="false" 
                 oda-input-text-check="Oda.Regexs:password" 
+                oda-input-text-throttle="200"
                 required>
             </oda-input-text>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <p>
                 <oda-btn 
@@ -30,25 +37,18 @@
                     oda-btn-style="primary" 
                     oda-btn-enter="1" 
                     oda-btn-click="$.Oda.Controller.Auth.goIn();" 
-                    disabled>
-                    oda-main.bt-submit
-                </oda-btn>
+                    disabled>oda-main.bt-submit</oda-btn>
                 <oda-btn 
                     oda-btn-style="info" 
-                    oda-btn-click="$.Oda.Router.navigateTo({'route':'forgot','args':[]});">
-                    oda-main.bt-forgot
-                </oda-btn>
+                    oda-btn-click="$.Oda.Router.navigateTo({'route':'forgot','args':[]});">oda-main.bt-forgot</oda-btn>
                 <oda-btn 
                     oda-btn-style="info" 
-                    oda-btn-click="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});">
-                    oda-main.bt-subscrib
-                </oda-btn>
+                    oda-btn-click="$.Oda.Router.navigateTo({'route':'subscrib','args':[]});">oda-main.bt-subscrib</oda-btn>
             </p>
         </div>
-        <div class="col-md-12">
-            <p id="google">
-                &nbsp;
-            </p>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="google" style="text-align: center;">
         </div>
     </div>
 </div>
@@ -74,10 +74,10 @@
 
                 $.Oda.Google.startSessionAuth(
                     function(){
-                        $('#google').html('<button type="button" onclick="$.Oda.Controller.Auth.goInWithGoogle();" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                        $('#google').html('<oda-btn oda-btn-style="danger" oda-btn-click="$.Oda.Controller.Auth.goInWithGoogle();">oda-main.bt-google</oda-btn>');
                     }
                     , function(){
-                        $('#google').html('<button type="button" onclick="$.Oda.Google.callServiceGoogleAuth($.Oda.Controller.Auth.goInWithGoogle);" class="btn btn-danger center-block">'+$.Oda.I8n.get("oda-main","bt-google")+'</button>');
+                        $('#google').html('<oda-btn oda-btn-style="danger" oda-btn-click="$.Oda.Google.callServiceGoogleAuth($.Oda.Controller.Auth.goInWithGoogle);">oda-main.bt-google</oda-btn>');
                     }
                 );
                 return this;

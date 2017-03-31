@@ -38,7 +38,20 @@
 
 <script id="oda-widget-input-text-tpl" type="text/template">
 <div class="form-group">
-    <label for="{{name}}">{{label}}&nbsp;{{requiredStart}}</label>
-    <input type="{{type}}" class="form-control" name="{{name}}" id="{{id}}" {{requiredBalise}}>
+    <label for="{{name}}" style="{{labelDisplay}}">{{label}}&nbsp;{{requiredStart}}</label>
+    <div class="{{adviceDisplayInput}}">
+        <input type="{{type}}" class="form-control" name="{{name}}" id="{{id}}" {{requiredBalise}} title="{{tips}}">
+        <span class="input-group-btn" style="{{adviceDisplay}}">
+            <button type="button"
+                class="btn btn-default"
+                data-container="body"
+                data-trigger="focus"
+                data-html="true"
+                data-toggle="popover"
+                data-placement="auto" 
+                data-content="{{advice}}">?</button>
+        </span>
+    </div>
+    <span style="color:#a1a1a1;{{tipsDisplay}}">&nbsp;</span>
 </div>
 </script>

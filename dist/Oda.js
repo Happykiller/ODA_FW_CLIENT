@@ -3022,8 +3022,34 @@ var $;
                                     throw new Error("Name:'"+name+"' already exist");
                                 }
 
-                                var label = elt.attr("oda-input-text-label");
+
                                 var type = elt.attr("oda-input-text-type");
+
+                                var label = elt.attr("oda-input-text-label");
+                                var labelDisplayHtml = "";
+                                if(!label){
+                                    labelDisplayHtml = "display:none;";
+                                }
+
+                                var tips = elt.attr("oda-input-text-tips");
+                                var tipsHtml = "";
+                                var tipsDisplayHtml = "";
+                                if(tips){
+                                    tipsHtml = $.Oda.I8n.getByString(tips);
+                                }else{
+                                    tipsDisplayHtml = "display:none;";
+                                }
+
+                                var advice = elt.attr("oda-input-text-advice");
+                                var adviceHtml = "";
+                                var adviceDisplayInputHtml = "input-group";
+                                var adviceDisplayHtml = "";
+                                if(advice){
+                                    adviceHtml = $.Oda.I8n.getByString(advice);
+                                }else{
+                                    adviceDisplayInputHtml = "";
+                                    adviceDisplayHtml = "display:none;";
+                                }
 
                                 var required = elt.attr("required");
                                 var requiredStart = "";
@@ -3041,7 +3067,13 @@ var $;
                                         label: $.Oda.I8n.getByString(label),
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
-                                        type: type
+                                        type: type,
+                                        tips: tipsHtml,
+                                        advice: adviceHtml,
+                                        labelDisplay: labelDisplayHtml,
+                                        tipsDisplay: tipsDisplayHtml,
+                                        adviceDisplayInput: adviceDisplayInputHtml,
+                                        adviceDisplay: adviceDisplayHtml
                                     }
                                 });
 
@@ -3057,16 +3089,19 @@ var $;
                                 var elt = $(this);
                                 var name = elt.attr("oda-input-text-name");
                                 var tips = elt.attr("oda-input-text-tips");
+                                var advice = elt.attr("oda-input-text-advice");
                                 var placeholder = elt.attr("oda-input-text-placeholder");
                                 var check = elt.attr("oda-input-text-check");
                                 var required = elt.attr("required");
+                                var paste = elt.attr("oda-input-text-paste");
+                                var debounce = elt.attr("oda-input-text-debounce");
+                                var throttle = elt.attr("oda-input-text-throttle");
 
                                 var $inputText = $('#'+name);
 
                                 if(tips){
                                     var tipsText = $.Oda.I8n.getByString(tips);
-                                    $inputText.after('<span style="color : #a1a1a1;">&nbsp;</span>');
-                                    var $spanTips = $inputText.parent().find('span:last');
+                                    var $spanTips = $inputText.parent().parent().find('span:last');
                                     $inputText.focus(function() {
                                         $spanTips.html(tipsText);
                                     });
@@ -3075,8 +3110,21 @@ var $;
                                     });
                                 }
 
+                                if(advice){
+                                    var $buttonAdvice = $inputText.parent().parent().find('button:last');
+                                    $buttonAdvice.click(function() {
+                                        $(this).popover('show');
+                                    });
+                                }
+
                                 if(placeholder){
                                     $inputText.attr("placeholder",$.Oda.I8n.getByString(placeholder));
+                                }
+
+                                if(paste && paste === "false"){
+                                    $inputText.bind("paste",function(e) {
+                                        e.preventDefault();
+                                    });
                                 }
 
                                 $.Oda.Display.Widget.checkInputText({
@@ -3091,7 +3139,22 @@ var $;
                                         required: required,
                                         check: check
                                     });
-                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                    if(debounce){
+                                        $.Oda.Tooling.debounce(function(){
+                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                            },
+                                            parseInt(debounce)
+                                        );
+                                    }else if(throttle){
+                                        $.Oda.Tooling.throttle(function(){
+                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                            },
+                                            parseInt(throttle)
+                                        );
+                                    }else{
+                                        console.log("normale");
+                                        $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                    }
                                 });
                             },
                             detachedCallback: function(){
