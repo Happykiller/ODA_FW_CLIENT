@@ -5,23 +5,43 @@
     </p>
     <div class="row">
         <div class="col-md-12">
-            <div class="form-group">
-                <label for="email" oda-label="oda-main.contact-mail">email</label>
-                <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
-            </div>
+            <oda-input-text
+                oda-input-text-name="email"
+                oda-input-text-type="mail"
+                oda-input-text-label="oda-main.contact-mail"
+                oda-input-text-tips="oda-main.contact-mail-tips"
+                oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+                oda-input-text-check="Oda.Regexs:mail"
+                required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <oda-input-text 
+                oda-input-text-name="pwd" 
+                oda-input-text-type="password" 
+                oda-input-text-label="oda-main.password" 
+                oda-input-text-tips="oda-main.io-pass-tips" 
+                oda-input-text-advice="oda-main.io-pass-advice"
+                oda-input-text-placeholder="oda-main.io-pass-placeholder" 
+                oda-input-text-paste="false" 
+                oda-input-text-check="Oda.Regexs:password"
+                required>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="pwd" oda-label="oda-main.password">Password :</label>
-                <input required type="password" class="form-control" oda-input-text="pwd" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
-            </div>
+            <oda-input-text 
+                oda-input-text-name="pwd2" 
+                oda-input-text-type="password" 
+                oda-input-text-label="oda-resetPwd.Confirmpassword" 
+                oda-input-text-tips="oda-main.io-pass-tips" 
+                oda-input-text-advice="oda-main.io-pass-advice"
+                oda-input-text-placeholder="oda-main.io-pass-placeholder" 
+                oda-input-text-paste="false" 
+                oda-input-text-check="Oda.Regexs:password"
+                required>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="pwd" oda-label="oda-resetPwd.Confirmpassword">Confirm password :</label>
-                <input required type="password" class="form-control" oda-input-text="pwd2" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass">
-            </div>
-        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <p>
                 <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.ResetPwd.reset();" disabled>oda-main.bt-submit</oda-btn>

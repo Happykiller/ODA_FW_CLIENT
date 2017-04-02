@@ -3,29 +3,50 @@
     <p  oda-label="oda-main.subscrib-intro">Intro</p>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="firstName" oda-label="oda-main.subscrib-firstName">oda-main.subscrib-firstName</label>
-                <input required="" type="text" class="form-control" oda-input-text="firstName" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName">
-            </div>
+            <oda-input-text
+                oda-input-text-name="firstName"
+                oda-input-text-type="text"
+                oda-input-text-label="oda-main.subscrib-firstName"
+                oda-input-text-tips="oda-main.subscrib-firstName-tips"
+                oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder"
+                oda-input-text-check="Oda.Regexs:firstName"
+                required>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="lastName" oda-label="oda-main.subscrib-lastName">oda-main.subscrib-lastName</label>
-                <input type="text" class="form-control" oda-input-text="lastName" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName">
-            </div>
+            <oda-input-text
+                oda-input-text-name="lastName"
+                oda-input-text-type="text"
+                oda-input-text-label="oda-main.subscrib-lastName"
+                oda-input-text-tips="oda-main.subscrib-lastName-tips"
+                oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder"
+                oda-input-text-check="Oda.Regexs:lastName"
+                required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <oda-input-text
+                oda-input-text-name="email"
+                oda-input-text-type="mail"
+                oda-input-text-label="oda-main.contact-mail"
+                oda-input-text-tips="oda-main.contact-mail-tips"
+                oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+                oda-input-text-check="Oda.Regexs:mail">
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="email" oda-label="oda-main.contact-mail">oda-main.contact-mail</label>
-                <input type="text" value="" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-check="Oda.Regexs:mail">
-            </div>
+            <oda-input-text 
+                oda-input-text-name="mdp" 
+                oda-input-text-type="password" 
+                oda-input-text-label="oda-main.password" 
+                oda-input-text-tips="oda-main.io-pass-tips" 
+                oda-input-text-advice="oda-main.io-pass-advice"
+                oda-input-text-placeholder="oda-main.io-pass-placeholder" 
+                oda-input-text-paste="false" 
+                oda-input-text-check="Oda.Regexs:password"
+                required>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="mdp" oda-label="oda-main.password">oda-main.password</label>
-                <input type="password" value="" class="form-control" oda-input-text="mdp" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-check="Oda.Regexs:pass">
-            </div>
-        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <p>
                 <span oda-label="oda-main.login">login</span>&nbsp;<span id="login" style="font-weight: bold;"></span>

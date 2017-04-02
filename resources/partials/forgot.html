@@ -3,17 +3,26 @@
     <p  oda-label="oda-main.forgot-intro">oda-main.forgot-intro</p>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="login" oda-label="oda-main.login">oda-main.login</label>
-                <input type="text" class="form-control" oda-input-text="login" oda-input-text-tips="oda-main.io-login-tips" oda-input-text-placeholder="oda-main.io-login" oda-input-text-check="^[a-zA-Z0-9]{3,}$">
-            </div>
+            <oda-input-text
+                oda-input-text-name="login"
+                oda-input-text-type="text"
+                oda-input-text-label="oda-main.login"
+                oda-input-text-tips="oda-main.io-login-tips"
+                oda-input-text-advice="oda-main.io-login-advice"
+                oda-input-text-placeholder="oda-main.io-login-placeholder"
+                oda-input-text-check="Oda.Regexs:login">
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="email" oda-label="oda-main.contact-mail">oda-main.contact-mail</label>
-                <input type="text" class="form-control" oda-input-text="email" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b">
-            </div>
+            <oda-input-text
+                oda-input-text-name="mail"
+                oda-input-text-type="mail"
+                oda-input-text-label="oda-main.contact-mail"
+                oda-input-text-tips="oda-main.contact-mail-tips"
+                oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+                oda-input-text-check="Oda.Regexs:mail">
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <p>
                 <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Forgot.recupCompte();" disabled>oda-main.bt-submit</oda-btn>
@@ -32,9 +41,9 @@
             try {
                 $.Oda.Scope.Gardian.add({
                     id : "gardianForgot",
-                    listElt : ["login", "email"],
+                    listElt : ["login", "mail"],
                     function : function(params){
-                        if( ($("#login").data("isOk")) || ($("#email").data("isOk")) ){
+                        if( ($("#login").data("isOk")) || ($("#mail").data("isOk")) ){
                             $("#submit").btEnable();
                         }else{
                             $("#submit").btDisable();
@@ -53,9 +62,9 @@
         recupCompte: function () {
             try {
                 var p_identifiant = $("#login").val();
-                var p_email = $("#email").val();
+                var p_mail = $("#mail").val();
 
-                var tabInput = { identifiant : p_identifiant, email : p_email};
+                var tabInput = { identifiant : p_identifiant, email : p_mail};
                 var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getRecupUtilisateur.php", {callback : function(results){
                     if(results.data.resultat.data.length === 0){
                         $.Oda.Display.Notification.warningI8n("oda-forgot.unknown");
@@ -91,12 +100,12 @@
                             },
                             callback: function(strHtml){
                                 var paramsMail = {
-                                    email_mails_dest: compte["mail"]+",",
-                                    email_mail_ori: contact_mail_administrateur,
-                                    email_labelle_ori: "Service Mail ODA",
-                                    email_mail_reply: contact_mail_administrateur,
-                                    email_labelle_reply: "Service Mail ODA",
-                                    email_mails_cache: contact_mail_administrateur,
+                                    mail_mails_dest: compte["mail"]+",",
+                                    mail_mail_ori: contact_mail_administrateur,
+                                    mail_labelle_ori: "Service Mail ODA",
+                                    mail_mail_reply: contact_mail_administrateur,
+                                    mail_labelle_reply: "Service Mail ODA",
+                                    mail_mails_cache: contact_mail_administrateur,
                                     message_html: strHtml,
                                     sujet : $.Oda.I8n.get("oda-forgot","mailSubjet"),
                                 };
