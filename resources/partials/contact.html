@@ -2,23 +2,41 @@
     <h2 oda-label="oda-main.contact">oda-main.contact</h2>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="name" oda-label="oda-main.contact-name">oda-main.contact-name</label>
-                <input type="text" class="form-control" id="name" oda-input-text="name" oda-input-text-tips="oda-main.contact-name-tips" oda-input-text-placeholder="oda-main.contact-name-placeholder" oda-input-text-check="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{3,}$">
-            </div>
+            <oda-input-text
+                oda-input-text-name="name"
+                oda-input-text-type="text"
+                oda-input-text-label="oda-main.contact-name"
+                oda-input-text-tips="oda-main.contact-name-tips"
+                oda-input-text-placeholder="oda-main.contact-name-placeholder"
+                oda-input-text-check="Oda.Regexs:firstName"
+                required>
+            </oda-input-text>
         </div>
         <div class="col-md-6">
+            <oda-input-text
+                oda-input-text-name="mail"
+                oda-input-text-type="mail"
+                oda-input-text-label="oda-main.contact-mail"
+                oda-input-text-tips="oda-main.contact-mail-tips"
+                oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+                oda-input-text-check="Oda.Regexs:mail"
+                required>
+            </oda-input-text>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="form-group">
-                <label for="mail" oda-label="oda-main.contact-mail">oda-main.contact-mail</label>
-                <input type="text" class="form-control" id="mail" oda-input-text="mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b">
+                <label for="msg" oda-label="oda-main.contact-msg">oda-main.contact-msg</label>
+                <textarea class="form-control" rows="3" id="msg" oda-input-text="msg" oda-input-text-tips="oda-main.contact-msg-tips" oda-input-text-placeholder="oda-main.contact-msg-placeholder" oda-input-text-check=".{25,}"></textarea>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <label for="msg" oda-label="oda-main.contact-msg">oda-main.contact-msg</label>
-        <textarea class="form-control" rows="3" id="msg" oda-input-text="msg" oda-input-text-tips="oda-main.contact-msg-tips" oda-input-text-placeholder="oda-main.contact-msg-placeholder" oda-input-text-check=".{25,}"></textarea>
+    <div class="row">
+        <div class="col-md-12">
+            <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Contact.contact();" disabled>oda-main.bt-submit</oda-btn>
+        </div>
     </div>
-    <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Contact.contact();" disabled>oda-main.bt-submit</oda-btn>
 </div>
 
 <script>
