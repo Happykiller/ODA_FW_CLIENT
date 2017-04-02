@@ -3022,8 +3022,12 @@ var $;
                                     throw new Error("Name:'"+name+"' already exist");
                                 }
 
-
                                 var type = elt.attr("oda-input-text-type");
+
+                                var value = elt.attr("oda-input-text-value");
+                                if(!value){
+                                    value = "";
+                                }
 
                                 var label = elt.attr("oda-input-text-label");
                                 var labelDisplayHtml = "";
@@ -3073,7 +3077,8 @@ var $;
                                         labelDisplay: labelDisplayHtml,
                                         tipsDisplay: tipsDisplayHtml,
                                         adviceDisplayInput: adviceDisplayInputHtml,
-                                        adviceDisplay: adviceDisplayHtml
+                                        adviceDisplay: adviceDisplayHtml,
+                                        value: value
                                     }
                                 });
 
@@ -3081,8 +3086,14 @@ var $;
                             },
                             attributeChangedCallback: function(attrName, oldValue, newValue){
                                 var elt = $(this);
+                                var name = elt.attr("oda-input-text-name");
+                                var $inputText = $('#'+name);
                                 switch(attrName) {
+                                    case "oda-input-text-value":
+                                        $inputText.val(newValue);
+                                        break;
                                     default:
+                                        break;
                                 }
                             },
                             attachedCallback: function(){
