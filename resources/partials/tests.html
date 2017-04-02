@@ -11,25 +11,30 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" oda-label="oda-tests.tabMail"></a></li>
             </ul>
+            <!-- end Nav tabs -->
 
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="home">
-                    <br><br>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <input required type="text" class="form-control" oda-input-text="mail" oda-input-text-tips="oda-tests.mail-tips" oda-input-text-placeholder="oda-tests.mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
-                            </div>
+                            <oda-input-text
+                                oda-input-text-name="mail"
+                                oda-input-text-type="mail"
+                                oda-input-text-label="oda-main.contact-mail"
+                                oda-input-text-tips="oda-main.contact-mail-tips"
+                                oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+                                oda-input-text-check="Oda.Regexs:mail"
+                                required>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Tests.sendMail();" disabled>oda-main.bt-submit</oda-btn>
-                            </div>
+                            <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Tests.sendMail();" disabled>oda-main.bt-submit</oda-btn>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- end Tab panes -->
         </div>
     </div>
 </div>
