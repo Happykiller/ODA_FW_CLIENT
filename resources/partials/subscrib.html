@@ -31,7 +31,8 @@
                 oda-input-text-label="oda-main.contact-mail"
                 oda-input-text-tips="oda-main.contact-mail-tips"
                 oda-input-text-placeholder="oda-main.contact-mail-placeholder"
-                oda-input-text-check="Oda.Regexs:mail">
+                oda-input-text-check="Oda.Regexs:mail"
+                required>
         </div>
         <div class="col-md-6">
             <oda-input-text 
@@ -49,7 +50,7 @@
     <div class="row">
         <div class="col-md-12">
             <p>
-                <span oda-label="oda-main.login">login</span>&nbsp;<span id="login" style="font-weight: bold;"></span>
+                <span oda-label="oda-main.login">login</span>&nbsp;:&nbsp;<span id="login" style="font-weight: bold;"></span>
             </p>
         </div>
         <div class="col-md-12">
@@ -72,15 +73,19 @@
                     id : "gardianSubscrib",
                     listElt : ["firstName", "lastName", "email", "mdp"],
                     function : function(params){
-                        if(($("#firstName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
+                        var login;
+                        if(($("#firstName").data("isOk")) && ($("#lastName").data("isOk")) ){
                             var first = $("#firstName").val().replace(/[^\w\s]/gi, '');
                             var last = $("#lastName").val().replace(/[^\w\s]/gi, '');
 
-                            var login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
+                            login = (first.substring(0,2) + last.substring(0,2)).toUpperCase();
                             $("#login").text(login);
+                        }else{
+                            $("#login").text("...");
+                        }
+                        if(($("#firstName").data("isOk")) && ($("#lastName").data("isOk")) && ($("#email").data("isOk")) && ($("#mdp").data("isOk"))){
                             $("#submit").btEnable();
                         }else{
-                            $("#login").text("");
                             $("#submit").btDisable();
                         }
                     }

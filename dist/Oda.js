@@ -3163,7 +3163,6 @@ var $;
                                             parseInt(throttle)
                                         );
                                     }else{
-                                        console.log("normale");
                                         $.Oda.Scope.Gardian.findByElt({id: e.target.id});
                                     }
                                 });
