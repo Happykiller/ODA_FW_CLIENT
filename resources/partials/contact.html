@@ -24,10 +24,15 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="form-group">
-                <label for="msg" oda-label="oda-main.contact-msg">oda-main.contact-msg</label>
-                <textarea class="form-control" rows="3" id="msg" oda-input-text="msg" oda-input-text-tips="oda-main.contact-msg-tips" oda-input-text-placeholder="oda-main.contact-msg-placeholder" oda-input-text-check=".{25,}"></textarea>
-            </div>
+            <oda-input-area
+                oda-input-area-name="msg"
+                oda-input-area-label="oda-main.contact-msg"
+                oda-input-area-tips="oda-main.contact-msg-tips"
+                oda-input-area-placeholder="oda-main.contact-msg-placeholder"
+                oda-input-area-hight="10"
+                oda-input-area-paste="false"
+                oda-input-area-check=".{25,}"
+                required/>
         </div>
     </div>
     <div class="row">

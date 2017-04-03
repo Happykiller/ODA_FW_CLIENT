@@ -2838,6 +2838,7 @@ var $;
                     try {
                         $.Oda.Display.Widget.loadBtn();
                         $.Oda.Display.Widget.loadTextInput();
+                        $.Oda.Display.Widget.loadAreaInput();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3071,8 +3072,8 @@ var $;
                                 }
 
                                 var html  = $.Oda.Display.TemplateHtml.create({
-                                    template : "oda-widget-input-text-tpl",
-                                    scope : {
+                                    template: "oda-widget-input-text-tpl",
+                                    scope: {
                                         id: name,
                                         name: name,
                                         label: labelTrad,
@@ -3179,6 +3180,162 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadTextInput: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadTextInput
+                 */
+                loadAreaInput: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-input-area",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-area-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name))){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                    throw new Error("Name:'"+name+"' already exist");
+                                }
+
+                                var hight = elt.attr("oda-input-area-hight");
+                                if(!hight){
+                                    hight = "3";
+                                }
+
+                                var value = elt.attr("oda-input-area-value");
+                                if(!value){
+                                    value = "";
+                                }
+
+                                var label = elt.attr("oda-input-area-label");
+                                var labelTrad = "";
+                                var labelDisplayHtml = "";
+                                if(!label){
+                                    labelDisplayHtml = "display:none;";
+                                }else{
+                                    labelTrad = $.Oda.I8n.getByString(label);
+                                }
+
+                                var tips = elt.attr("oda-input-area-tips");
+                                var tipsHtml = "";
+                                var tipsDisplayHtml = "";
+                                if(tips){
+                                    tipsHtml = $.Oda.I8n.getByString(tips);
+                                }else{
+                                    tipsDisplayHtml = "display:none;";
+                                }
+
+                                var required = elt.attr("required");
+                                var requiredStart = "";
+                                var requiredBalise = "";
+                                if(required){
+                                    requiredStart = '<span style="color:red;">*</span>';
+                                    requiredBalise = 'required';
+                                }
+
+                                var html  = $.Oda.Display.TemplateHtml.create({
+                                    template: "oda-widget-input-area-tpl",
+                                    scope: {
+                                        id: name,
+                                        name: name,
+                                        label: labelTrad,
+                                        requiredStart: requiredStart,
+                                        requiredBalise: requiredBalise,
+                                        hight: hight,
+                                        tips: tipsHtml,
+                                        labelDisplay: labelDisplayHtml,
+                                        tipsDisplay: tipsDisplayHtml,
+                                        value: value
+                                    }
+                                });
+
+                                $(this).html(html);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-area-name");
+                                var $inputArea = $('#'+name);
+                                switch(attrName) {
+                                    case "oda-input-area-value":
+                                        $inputArea.val(newValue);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            },
+                            attachedCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-area-name");
+                                var tips = elt.attr("oda-input-area-tips");
+                                var placeholder = elt.attr("oda-input-area-placeholder");
+                                var check = elt.attr("oda-input-area-check");
+                                var required = elt.attr("required");
+                                var paste = elt.attr("oda-input-area-paste");
+                                var debounce = elt.attr("oda-input-area-debounce");
+                                var throttle = elt.attr("oda-input-area-throttle");
+
+                                var $inputArea = $('#'+name);
+
+                                if(tips){
+                                    var tipsText = $.Oda.I8n.getByString(tips);
+                                    var $spanTips = $inputArea.parent().parent().find('span:last');
+                                    $inputArea.focus(function() {
+                                        $spanTips.html(tipsText);
+                                    });
+                                    $inputArea.focusout(function() {
+                                        $spanTips.html("&nbsp;");
+                                    });
+                                }
+
+                                if(placeholder){
+                                    $inputArea.attr("placeholder",$.Oda.I8n.getByString(placeholder));
+                                }
+
+                                if(paste && paste === "false"){
+                                    $inputArea.bind("paste",function(e) {
+                                        e.preventDefault();
+                                    });
+                                }
+
+                                $.Oda.Display.Widget.checkInputText({
+                                    elt: $inputArea.get(0),
+                                    required: required,
+                                    check: check
+                                });
+
+                                $inputArea.bind("keyup mouseup change",function(e){
+                                    $.Oda.Display.Widget.checkInputText({
+                                        elt: e.target,
+                                        required: required,
+                                        check: check
+                                    });
+                                    if(debounce){
+                                        $.Oda.Tooling.debounce(function(){
+                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                            },
+                                            parseInt(debounce)
+                                        );
+                                    }else if(throttle){
+                                        $.Oda.Tooling.throttle(function(){
+                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                            },
+                                            parseInt(throttle)
+                                        );
+                                    }else{
+                                        $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                    }
+                                });
+                            },
+                            detachedCallback: function(){
+                            }
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadAreaInput: " + er.message);
                         return null;
                     }
                 },
