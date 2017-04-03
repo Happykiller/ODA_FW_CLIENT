@@ -3409,18 +3409,19 @@ var $;
             replaceAll: function(p_params) {
                 try {
                     if(p_params.str === undefined){
-                        $.Oda.Log.warning('str is missing in params of $.Oda.Tooling.replaceAll');
-                        return null;
+                        throw new Error('Parameter "str" for find: "'+p_params.find+'" is missing in params of $.Oda.Tooling.replaceAll');
                     }
 
-                    if(p_params.find === undefined){
-                        $.Oda.Log.warning('find is missing in params of $.Oda.Tooling.replaceAll');
-                        return null;
+                    if((p_params.find === undefined)||(p_params.find === '')){
+                        throw new Error('Parameter "find" for by:"'+p_params.by+'" is missing in params of $.Oda.Tooling.replaceAll');
                     }
 
                     if(p_params.by === undefined){
-                        $.Oda.Log.warning('by is missing in params of $.Oda.Tooling.replaceAll');
-                        return null;
+                        throw new Error('Parameter "by" for find: "'+p_params.find+'" is missing in params of $.Oda.Tooling.replaceAll');
+                    }
+
+                    if(p_params.str === ''){
+                        return p_params.str;
                     }
 
                     if(p_params.find === ''){
