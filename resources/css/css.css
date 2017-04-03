@@ -157,3 +157,7 @@ a:hover {
 .btn-listenEnter{
     border-color: green;
 }
+
+.popover {
+    z-index: 9999; /* A value higher than 1010 that solves the problem */
+}

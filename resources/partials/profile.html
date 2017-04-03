@@ -49,12 +49,24 @@
 </div>
 
 <script id="tplUpdateField" type="text/template">
-    <div data-role="fieldcontain">
-        <label for="input_old_password" oda-label="oda-profile.passwordActual">oda-profile.passwordActual</label>
-        <input class="form-control" type="password" oda-input-text="input_old_password" oda-input-text-tips="oda-main.io-pass-tips" oda-input-text-placeholder="oda-main.io-pass" oda-input-text-check="Oda.Regexs:pass" />
+    <div class="row">
+        <div class="col-md-12">
+            <oda-input-text 
+                oda-input-text-name="input_old_password" 
+                oda-input-text-type="password" 
+                oda-input-text-label="oda-main.password" 
+                oda-input-text-tips="oda-main.io-pass-tips" 
+                oda-input-text-advice="oda-main.io-pass-advice"
+                oda-input-text-placeholder="oda-main.io-pass-placeholder" 
+                oda-input-text-paste="false" 
+                oda-input-text-check="Oda.Regexs:password"
+                required/>
+        </div>
     </div>
-    <div data-role="fieldcontain">
-        {{content}}
+    <div class="row">
+        <div class="col-md-12">
+            {{content}}
+        </div>
     </div>
 </script>
 
@@ -105,12 +117,12 @@
          */
         loadingInfos: function(){
             try {
-                var tabSetting = { callback : function(p_retour){
-                    var mail = p_retour["data"]["detailsUser"]["mail"];
-                    var code_user = p_retour["data"]["detailsUser"]["code_user"];
-                    var nom = p_retour["data"]["detailsUser"]["nom"];
-                    var prenom = p_retour["data"]["detailsUser"]["prenom"];
-                    var langue = p_retour["data"]["detailsUser"]["langue"];
+                var tabSetting = { callback: function(p_retour){
+                    var mail = p_retour.data.detailsUser.mail;
+                    var code_user = p_retour.data.detailsUser.code_user;
+                    var nom = p_retour.data.detailsUser.nom;
+                    var prenom = p_retour.data.detailsUser.prenom;
+                    var langue = p_retour.data.detailsUser.langue;
                     var rankLabel;
 
                     for(var index in p_retour.data.lesRangs.data){
@@ -126,7 +138,9 @@
                     $('#lab_langue').html(langue);
                     $('#rank').html(rankLabel);
 
-                    $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');}});
+                    $.Oda.Display.Scene.Avatar.avatar({callback: function(data){
+                        $("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');
+                    }});
                 } };
                 var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
                 var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
@@ -151,20 +165,17 @@
                 switch (p){
                     case "lastName":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'lastName');
-                        details += '<label for="input_nom" oda-label="oda-profile.lastName">oda-profile.lastName</label>';
-                        details += '<input class="form-control" type="text" value="'+$.Oda.Session.userInfo.lastName+'" oda-input-text="input_nom" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName" />';
+                        details += '<oda-input-text oda-input-text-name="input_nom" oda-input-text-type="text" oda-input-text-label="oda-main.subscrib-lastName" oda-input-text-tips="oda-main.subscrib-lastName-tips" oda-input-text-placeholder="oda-main.subscrib-lastName-placeholder" oda-input-text-check="Oda.Regexs:lastName" oda-input-text-value="'+$.Oda.Session.userInfo.lastName+'" required/>';
                         footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'nom\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                     case "firstName":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'firstName');
-                        details += '<label for="input_prenom" oda-label="oda-profile.firstName">oda-profile.firstName</label>';
-                        details += '<input class="form-control" type="text" value="'+$.Oda.Session.userInfo.firstName+'" oda-input-text="input_prenom" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName" />';
+                        details += '<oda-input-text oda-input-text-name="input_prenom" oda-input-text-type="text" oda-input-text-label="oda-main.subscrib-firstName" oda-input-text-tips="oda-main.subscrib-firstName-tips" oda-input-text-placeholder="oda-main.subscrib-firstName-placeholder" oda-input-text-check="Oda.Regexs:firstName" oda-input-text-value="'+$.Oda.Session.userInfo.firstName+'" required/>';
                         footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'prenom\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                     case "email":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'email');
-                        details += '<label for="input_mail" oda-label="oda-profile.email">oda-profile.email</label>';
-                        details += '<input class="form-control" type="email" value="'+$.Oda.Session.userInfo.email+'" oda-input-text="input_mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail" />';
+                        details += '<oda-input-text oda-input-text-name="input_mail" oda-input-text-type="email" oda-input-text-label="oda-main.contact-mail" oda-input-text-tips="oda-main.contact-mail-tips" oda-input-text-placeholder="oda-main.contact-mail-placeholder" oda-input-text-check="Oda.Regexs:mail" oda-input-text-value="'+$.Oda.Session.userInfo.mail+'" required/>';
                         footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'mail\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                     case "language":
@@ -178,7 +189,6 @@
                         footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'langue\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                 }
-
 
                 var content = $.Oda.Display.TemplateHtml.create({
                     template : "tplUpdateField",

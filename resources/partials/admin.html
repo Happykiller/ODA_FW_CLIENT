@@ -468,20 +468,26 @@
 <script id="edit-templte" type="text/template">
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="edit_mail" oda-label="oda-admin.edit_mail">edit_mail</label>sdfsfsdfdsfsdf
-            <input required value="{{edit_mail}}" type="text" class="form-control" oda-input-text="edit_mail" oda-input-text-tips="oda-admin.edit_mail-tips"
-                    oda-input-text-placeholder="oda-admin.edit_mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
-        </div>
+        <oda-input-text
+            oda-input-text-name="edit_mail"
+            oda-input-text-type="mail"
+            oda-input-text-label="oda-admin.edit_mail"
+            oda-input-text-tips="oda-main.oda-admin.edit_mail-tips"
+            oda-input-text-placeholder="oda-main.oda-admin.edit_mail-placeholder"
+            oda-input-text-check="Oda.Regexs:login" 
+            oda-input-text-value="{{edit_mail}}"
+            required/>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="edit_desc" oda-label="oda-admin.edit_desc">edit_desc</label>
-            <input value="{{edit_desc}}" type="text" class="form-control" oda-input-text="edit_desc"
-                    oda-input-text-tips="oda-admi.edit_desc-tips"
-                    oda-input-text-placeholder="oda-admi.edit_desc-placeholder"
-                    oda-input-text-check="Oda.Regexs:noInjection">
-        </div>
+        <oda-input-text
+            oda-input-text-name="edit_desc"
+            oda-input-text-type="text"
+            oda-input-text-label="oda-admin.edit_desc"
+            oda-input-text-tips="oda-main.oda-admin.edit_desc-tips"
+            oda-input-text-placeholder="oda-main.oda-admin.edit_desc-placeholder"
+            oda-input-text-check="Oda.Regexs:noInjection" 
+            oda-input-text-value="{{edit_desc}}"
+            required/>
     </div>
 </div>
 <div class="row">
@@ -541,10 +547,12 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="input_date_expiration" oda-label="oda-admin.messageCreateDelay">oda-admin.messageCreateDelay</label>
-            <input type="date" oda-input-text="input_date_expiration" class="form-control"/>
-        </div>
+        <oda-input-text
+            oda-input-text-name="input_date_expiration"
+            oda-input-text-type="date"
+            oda-input-text-label="oda-admin.messageCreateDelay"
+            oda-input-text-check="Oda.Regexs:noInjection" 
+            required/>
     </div>
     <div class="col-md-6">
     </div>
