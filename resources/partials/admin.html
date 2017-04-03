@@ -191,32 +191,31 @@
         userEdit : function (p_code_user) {
             try {
                 $.Oda.Controller.Admin.currentUser = p_code_user;
-                var tabInput = { code_user : p_code_user, profile : $.Oda.Session.userInfo.profile };
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", { callback : function(datas) {
+                var tabInput = { code_user: p_code_user, profile: $.Oda.Session.userInfo.profile };
+                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", { callback: function(datas) {
                     var label = "Editer : "  + $.Oda.Controller.Admin.currentUser;
 
                     var strRangs = "";
-                    var rangs = datas["data"]["lesRangs"]["data"];
+                    var rangs = datas.data.lesRangs.data;
                     for (var indice in rangs) {
-                        if(datas["data"]["detailsUser"]["id_rang"] === rangs[indice]["id"]){
-                            strRangs += '<option selected value="'+rangs[indice]["id"]+'">'+rangs[indice]["labelle"]+'</option>';
+                        if(datas.data.detailsUser.id_rang === rangs[indice].id){
+                            strRangs += '<option selected value="'+rangs[indice].id+'">'+rangs[indice].labelle+'</option>';
                         }else{
-                            strRangs += '<option value="'+rangs[indice]["id"]+'">'+rangs[indice]["labelle"]+'</option>';
+                            strRangs += '<option value="'+rangs[indice].id+'">'+rangs[indice].labelle+'</option>';
                         }
                     }
 
                     var strHtml = $.Oda.Display.TemplateHtml.create({
-                        template : "edit-templte"
-                        , scope : {
-                            edit_mail : datas["data"]["detailsUser"]["mail"]
-                            , edit_desc : datas["data"]["detailsUser"]["description"]
-                            , edit_actif_selected : datas["data"]["detailsUser"]["actif"]
-                            , rangs : strRangs
+                        template: "edit-templte",
+                        scope: {
+                            edit_mail: datas.data.detailsUser.mail,
+                            edit_desc: datas.data.detailsUser.description,
+                            edit_actif_selected: datas.data.detailsUser.actif,
+                            rangs: strRangs
                         }
                     });
 
                     var strHtmlFooter = '';
-
                     strHtmlFooter += '<oda-btn oda-btn-name="bt_validerEdit" oda-btn-enter="1" oda-btn-style="primary" oda-btn-icon-before="ok" oda-btn-click="$.Oda.Controller.Admin.userEditionValidate();" disabled>oda-main.bt-submit</oda-btn>';
                     strHtmlFooter += '<oda-btn oda-btn-style="default" oda-btn-click="$.Oda.Display.Popup.close();">oda-main.bt-cancel</oda-btn>';
 
@@ -229,7 +228,6 @@
                                 id : "gardianEdit",
                                 listElt : ["edit_mail", "edit_desc","edit_actif", "input_rang"],
                                 function : function(params){
-                                    console.log($("#edit_mail").data("isOk"), $("#edit_desc").data("isOk"), $("#edit_actif").data("isOk"), $("#input_rang").data("isOk"))
                                     if(($("#edit_mail").data("isOk")) && ($("#edit_desc").data("isOk")) && ($("#edit_actif").data("isOk")) && ($("#input_rang").data("isOk"))){
                                         $("#bt_validerEdit").btEnable();
                                     }else{
@@ -242,7 +240,7 @@
                 }}, tabInput);
                 return this;
             } catch (er) {
-                $.Oda.Log.error("$.Oda.Controller.Admin.userEdit : " + er.message);
+                $.Oda.Log.error("$.Oda.Controller.Admin.userEdit: " + er.message);
                 return null;
             }
         },
@@ -468,19 +466,26 @@
 </script>
 
 <script id="edit-templte" type="text/template">
-    <form>
+<div class="row">
+    <div class="col-md-6">
         <div class="form-group">
-            <label for="edit_mail" oda-label="oda-admin.edit_mail">edit_mail</label>
+            <label for="edit_mail" oda-label="oda-admin.edit_mail">edit_mail</label>sdfsfsdfdsfsdf
             <input required value="{{edit_mail}}" type="text" class="form-control" oda-input-text="edit_mail" oda-input-text-tips="oda-admin.edit_mail-tips"
-                   oda-input-text-placeholder="oda-admin.edit_mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
+                    oda-input-text-placeholder="oda-admin.edit_mail-placeholder" oda-input-text-check="Oda.Regexs:mail">
         </div>
+    </div>
+    <div class="col-md-6">
         <div class="form-group">
             <label for="edit_desc" oda-label="oda-admin.edit_desc">edit_desc</label>
             <input value="{{edit_desc}}" type="text" class="form-control" oda-input-text="edit_desc"
-                   oda-input-text-tips="oda-admi.edit_desc-tips"
-                   oda-input-text-placeholder="oda-admi.edit_desc-placeholder"
-                   oda-input-text-check="Oda.Regexs:noInjection">
+                    oda-input-text-tips="oda-admi.edit_desc-tips"
+                    oda-input-text-placeholder="oda-admi.edit_desc-placeholder"
+                    oda-input-text-check="Oda.Regexs:noInjection">
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
         <div class="form-group">
             <label for="edit_actif" oda-label="oda-admin.edit_actif">edit_actif</label>
             <select class="form-control" oda-input-select="edit_actif" required>
@@ -489,6 +494,8 @@
                 <option value="1" {{ ((edit_actif_selected==='1')?'selected':'') }}>On</option>
             </select>
         </div>
+    </div>
+    <div class="col-md-6">
         <div class="form-group">
             <label for="input_rang" oda-label="oda-admin.input_rang">input_rang</label>
             <select class="form-control" oda-input-select="input_rang" required>
@@ -496,33 +503,50 @@
                 {{rangs}}
             </select>
         </div>
-    </form>
+    </div>
+</div>
 </script>
 
 <script id="tplNewMessage" type="text/template">
-    <div class="form-group">
-        <label for="input_message" oda-label="oda-admin.messageCreateMessage">oda-admin.messageCreateMessage</label>
-        <textarea oda-input-text="input_message" rows="10" cols="80"></textarea>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="input_message" oda-label="oda-admin.messageCreateMessage">oda-admin.messageCreateMessage</label>
+            <textarea oda-input-text="input_message" rows="10" cols="80"></textarea>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="input_niveau" oda-label="oda-admin.messageCreateAlertLevel">oda-admin.messageCreateAlertLevel</label>
-        <select oda-input-select="input_niveau" class="form-control" required>
-            <option value="" oda-label="oda-main.select-default"></option>
-            <option value="info" oda-label="oda-admin.messageCreateAlertLevelInfo">oda-admin.messageCreateAlertLevelInfo</option>
-            <option value="danger" oda-label="oda-admin.messageCreateAlertLevelDanger">oda-admin.messageCreateAlertLevelDanger</option>
-            <option value="warning" oda-label="oda-admin.messageCreateAlertLevelWarning">oda-admin.messageCreateAlertLevelWarning</option>
-            <option value="success" oda-label="oda-admin.messageCreateAlertLevelSuccess">oda-admin.messageCreateAlertLevelSuccess</option>
-        </select>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="input_niveau" oda-label="oda-admin.messageCreateAlertLevel">oda-admin.messageCreateAlertLevel</label>
+            <select oda-input-select="input_niveau" class="form-control" required>
+                <option value="" oda-label="oda-main.select-default"></option>
+                <option value="info" oda-label="oda-admin.messageCreateAlertLevelInfo">oda-admin.messageCreateAlertLevelInfo</option>
+                <option value="danger" oda-label="oda-admin.messageCreateAlertLevelDanger">oda-admin.messageCreateAlertLevelDanger</option>
+                <option value="warning" oda-label="oda-admin.messageCreateAlertLevelWarning">oda-admin.messageCreateAlertLevelWarning</option>
+                <option value="success" oda-label="oda-admin.messageCreateAlertLevelSuccess">oda-admin.messageCreateAlertLevelSuccess</option>
+            </select>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="input_profile" oda-label="oda-admin.messageCreateProfileLevel">oda-admin.messageCreateProfileLevel</label>
-        <select oda-input-select="input_profile" class="form-control" required>
-            <option value="" oda-label="oda-main.select-default"></option>
-            {{profileList}}
-        </select>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="input_profile" oda-label="oda-admin.messageCreateProfileLevel">oda-admin.messageCreateProfileLevel</label>
+            <select oda-input-select="input_profile" class="form-control" required>
+                <option value="" oda-label="oda-main.select-default"></option>
+                {{profileList}}
+            </select>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="input_date_expiration" oda-label="oda-admin.messageCreateDelay">oda-admin.messageCreateDelay</label>
-        <input type="date" oda-input-text="input_date_expiration" class="form-control"/>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="input_date_expiration" oda-label="oda-admin.messageCreateDelay">oda-admin.messageCreateDelay</label>
+            <input type="date" oda-input-text="input_date_expiration" class="form-control"/>
+        </div>
     </div>
+    <div class="col-md-6">
+    </div>
+</div>
 </script>

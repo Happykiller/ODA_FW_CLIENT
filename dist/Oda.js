@@ -2221,10 +2221,10 @@ var $;
                         } else {
                             var strHtml = "";
                             strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName.substr(0,9) +" "+ $.Oda.Session.userInfo.lastName.substr(0,9) + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});" oda-label="oda-main.profile">oda-main.profile</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});" oda-label="oda-main.contact">oda-main.contact</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Security.logout();" oda-label="oda-main.logout">oda-main.logout</a></li>';
-                            strHtml = $.Oda.Scope.transform({"str":strHtml});
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','profile') + '</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Security.logout();">' + $.Oda.I8n.get('oda-main','logout') + '</a></li>';
+                            //strHtml = $.Oda.Scope.transform({"str":strHtml});
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -2239,7 +2239,7 @@ var $;
                     try {
                         $("#wrapper").removeClass("toggled");
                         var strHtml = '<li class="sidebar-brand" id="profileDisplay">' + $.Oda.I8n.get('oda-project','userLabel') + '</li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
-                        strHtml = $.Oda.Scope.transform({"str":strHtml});
+                        //strHtml = $.Oda.Scope.transform({"str":strHtml});
                         $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {
@@ -2476,13 +2476,14 @@ var $;
                  */
                 create: function(p_params) {
                     try {
+                        $.Oda.Log.debug("$.Oda.Display.TemplateHtml.create: " + p_params.template);
                         var $template = $('#'+p_params.template);
                         if(p_params.hasOwnProperty("callback")){
                         
                             if($template.html() === undefined){
                                 if($.Oda.Display.TemplateHtml.iterateLoadTemplate < 10){
                                     $.Oda.Display.TemplateHtml.iterateLoadTemplate++;
-                                    $.Oda.Log.debug("$.Oda.Display.TemplateHtml.create: template load problem, retry.");
+                                    $.Oda.Log.error("$.Oda.Display.TemplateHtml.create: template load problem, retry.");
                                     setTimeout(function(){ 
                                         $.Oda.Display.TemplateHtml.create(p_params);
                                     }, 200);
@@ -2498,7 +2499,7 @@ var $;
                                     }
                                 }
 
-                                strHtml = $.Oda.Scope.transform({str:strHtml});
+                                //strHtml = $.Oda.Scope.transform({str:strHtml});
 
                                 p_params.callback(strHtml);
                             }
@@ -2517,7 +2518,7 @@ var $;
                                 }
                             }
 
-                            strHtml = $.Oda.Scope.transform({str:strHtml});
+                            //strHtml = $.Oda.Scope.transform({str:strHtml});
 
                             return strHtml;
                         }
@@ -3023,6 +3024,9 @@ var $;
                                 }
 
                                 var type = elt.attr("oda-input-text-type");
+                                if(!type){
+                                    type = "text";
+                                }
 
                                 var value = elt.attr("oda-input-text-value");
                                 if(!value){
@@ -3030,9 +3034,12 @@ var $;
                                 }
 
                                 var label = elt.attr("oda-input-text-label");
+                                var labelTrad = "";
                                 var labelDisplayHtml = "";
                                 if(!label){
                                     labelDisplayHtml = "display:none;";
+                                }else{
+                                    labelTrad = $.Oda.I8n.getByString(label);
                                 }
 
                                 var tips = elt.attr("oda-input-text-tips");
@@ -3068,7 +3075,7 @@ var $;
                                     scope : {
                                         id: name,
                                         name: name,
-                                        label: $.Oda.I8n.getByString(label),
+                                        label: labelTrad,
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
                                         type: type,
