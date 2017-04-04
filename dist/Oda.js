@@ -2840,6 +2840,7 @@ var $;
                         $.Oda.Display.Widget.loadTextInput();
                         $.Oda.Display.Widget.loadAreaInput();
                         $.Oda.Display.Widget.loadCheckboxInput();
+                        $.Oda.Display.Widget.loadSelectInput();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3518,6 +3519,253 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadCheckboxInput: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.checkInputText
+                 * @param {Object} p
+                 * @param p.elt
+                 * @returns {$.Oda.Display.Widget}
+                 */
+                refreshAvailablesOfSelect: function(p){
+                    try {
+                        var elt = $(p.elt);
+                        var name = elt.attr("oda-input-select-name");
+                        var order = elt.attr("oda-input-select-order");
+                        var $select = $('#' + name);
+                        $select.find('option').remove();
+
+                        var value = elt.attr("oda-input-select-value");
+                        if(!value){
+                            value = "";
+                        }
+
+                        var availablesString = elt.attr("oda-input-select-availables");
+                        var funct = new Function("return " + availablesString);
+                        var availables = funct();
+                        if(!Array.isArray(availables)){
+                            throw new Error("availables is not an array for:'"+name+"'.");
+                        }
+                        if(availables.length > 0){
+                            if(typeof availables[0] === "object"){
+                                var display = elt.attr("oda-input-select-display");
+                                if(!display){
+                                    throw new Error("display is not define for:'"+name+"' event availables are object.");
+                                }
+                                var functDisplay = new Function('elt',"return " + display);
+
+                                var response = elt.attr("oda-input-select-response");
+                                if(!response){
+                                    throw new Error("response is not define for:'"+name+"' event availables are object.");
+                                }
+                                var functResponse = new Function('elt',"return " + response);
+
+                                for(var index in availables){
+                                    var currentValue = availables[index];
+                                    var displayCalc = functDisplay(currentValue);
+                                    currentValue["valueTrad"] = $.Oda.I8n.getByString(displayCalc);
+                                }
+
+                                if(order === "desc"){
+                                    listWavailablesithTrad = $.Oda.Tooling.order({
+                                        collection: availables, compare: function(elt1, elt2){
+                                            if(elt1.valueTrad < elt2.valueTrad){
+                                                return 1;
+                                            }else if(elt1.valueTrad > elt2.valueTrad){
+                                                return -1;
+                                            }else{
+                                                return 0;
+                                            }
+                                        }
+                                    });
+                                }else if(order === "asc"){
+                                    availables = $.Oda.Tooling.order({
+                                        collection: availables, compare: function(elt1, elt2){
+                                            if(elt1.valueTrad > elt2.valueTrad){
+                                                return 1;
+                                            }else if(elt1.valueTrad < elt2.valueTrad){
+                                                return -1;
+                                            }else{
+                                                return 0;
+                                            }
+                                        }
+                                    });
+                                }
+
+                                $select.append($('<option>').text($.Oda.I8n.get('oda-main','select-default')).val(''));
+                                for(var index in availables){
+                                    var currentValue = availables[index];
+                                    var responseCalc = functResponse(currentValue);
+                                    $select.append($('<option>').text(currentValue.valueTrad).val(responseCalc));
+                                }
+                                $select.val(value);
+                            }else{
+                                var listWithTrad = [];
+                                for(var index in availables){
+                                    var currentValue = availables[index];
+                                    listWithTrad.push({
+                                        value: currentValue,
+                                        valueTrad : $.Oda.I8n.getByString(currentValue)
+                                    });
+                                }
+
+                                if(order === "desc"){
+                                    listWithTrad = $.Oda.Tooling.order({
+                                        collection: listWithTrad, compare: function(elt1, elt2){
+                                            if(elt1.valueTrad < elt2.valueTrad){
+                                                return 1;
+                                            }else if(elt1.valueTrad > elt2.valueTrad){
+                                                return -1;
+                                            }else{
+                                                return 0;
+                                            }
+                                        }
+                                    });
+                                }else if(order === "asc"){
+                                    listWithTrad = $.Oda.Tooling.order({
+                                        collection: listWithTrad, compare: function(elt1, elt2){
+                                            if(elt1.valueTrad > elt2.valueTrad){
+                                                return 1;
+                                            }else if(elt1.valueTrad < elt2.valueTrad){
+                                                return -1;
+                                            }else{
+                                                return 0;
+                                            }
+                                        }
+                                    });
+                                }
+
+                                $select.append($('<option>').text($.Oda.I8n.get('oda-main','select-default')).val(''));
+                                for(var index in listWithTrad){
+                                    var currentValue = listWithTrad[index];
+                                    $select.append($('<option>').text(currentValue.valueTrad).val(currentValue.value));
+                                }
+                                $select.val(value);
+                            }
+                        }
+                        $.Oda.Scope.Gardian.findByElt({id: name});
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.refreshAvailablesOfSelect: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadSelectInput
+                 */
+                loadSelectInput: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-input-select",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-select-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name))){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                    throw new Error("Name:'"+name+"' already exist");
+                                }
+
+                                var label = elt.attr("oda-input-select-label");
+                                var labelTrad = "";
+                                var labelDisplayHtml = "";
+                                if(!label){
+                                    labelDisplayHtml = "display:none;";
+                                }else{
+                                    labelTrad = $.Oda.I8n.getByString(label);
+                                }
+
+                                var required = elt.attr("required");
+                                var requiredStart = "";
+                                var requiredBalise = "";
+                                if(required){
+                                    requiredStart = '<span style="color:red;">*</span>';
+                                    requiredBalise = 'required';
+                                }
+
+                                var tips = elt.attr("oda-input-select-tips");
+                                var tipsHtml = "";
+                                if(tips){
+                                    tipsHtml = $.Oda.I8n.getByString(tips);
+                                }
+
+                                var html  = $.Oda.Display.TemplateHtml.create({
+                                    template: "oda-widget-input-select-tpl",
+                                    scope: {
+                                        id: name,
+                                        name: name,
+                                        label: labelTrad,
+                                        labelDisplay: labelDisplayHtml,
+                                        requiredStart: requiredStart,
+                                        requiredBalise: requiredBalise,
+                                        tips: tipsHtml
+                                    }
+                                });
+
+                                $(this).html(html);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-select-name");
+                                var $select = $('#' + name);
+                                var value = elt.attr("oda-input-select-value");
+                                if(!value){
+                                    value = "";
+                                }
+                                switch(attrName) {
+                                    case "oda-input-select-availables":
+                                        $.Oda.Display.Widget.refreshAvailablesOfSelect({elt:this});
+                                        break;
+                                    case "oda-input-select-value":
+                                        $select.val(value);
+                                        break;
+                                    default:
+                                }
+                            },
+                            attachedCallback: function(){
+                                $.Oda.Display.Widget.refreshAvailablesOfSelect({elt:this});
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-select-name");
+                                var required = elt.attr("required");
+                                var $inputSelect = $('#'+name);
+
+                                if(!required){
+                                    $inputSelect.data("isOk", true);
+                                    $inputSelect.css("border-color","#04B404");
+                                }else{
+                                    if($inputSelect.val()!==""){
+                                        $inputSelect.data("isOk", true);
+                                        $inputSelect.css("border-color","#04B404");
+                                    }else{
+                                        $inputSelect.data("isOk", false);
+                                        $inputSelect.css("border-color","#FF0000");
+                                    }
+                                }
+                                $inputSelect.change(function(e){
+                                    var $elt = $(this);
+                                    if(!required){
+                                        $elt.data("isOk", true);
+                                        $elt.css("border-color","#04B404");
+                                    }else{
+                                        if($elt.val()!==""){
+                                            $elt.data("isOk", true);
+                                            $elt.css("border-color","#04B404");
+                                        }else{
+                                            $elt.data("isOk", false);
+                                            $elt.css("border-color","#FF0000");
+                                        }
+                                        }
+                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                });
+                            },
+                            detachedCallback: function(){
+                            }
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadSelectInput: " + er.message);
                         return null;
                     }
                 },
@@ -5219,6 +5467,7 @@ var $;
                             listElt : p_params.listElt,
                             function : p_params.function
                         };
+                        p_params.function();
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Scope.Gardian.add : " + er.message);
