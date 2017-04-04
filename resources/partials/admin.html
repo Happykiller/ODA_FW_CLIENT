@@ -403,13 +403,11 @@
                     details : strHtml,
                     footer : strHtmlFooter,
                     callback : function(){
-                        CKEDITOR.replace( 'input_message' );
-
                         $.Oda.Scope.Gardian.add({
                             id : "gardianNewMsg",
-                            listElt : ["input_niveau","input_profile"],
-                            function : function(e){
-                                if((CKEDITOR.instances['input_message'].getData() !== "") && ($("#input_niveau").data("isOk")) && ($("#input_profile").data("isOk"))){
+                            listElt : ["input_message", "input_niveau", "input_profile"],
+                            function : function(){
+                                if(($("#input_message").data("isOk")) && ($("#input_niveau").data("isOk")) && ($("#input_profile").data("isOk"))){
                                     $("#bt_validerCreerMsg").btEnable();
                                 }else{
                                     $("#bt_validerCreerMsg").btDisable();
@@ -516,10 +514,14 @@
 <script id="tplNewMessage" type="text/template">
 <div class="row">
     <div class="col-md-12">
-        <div class="form-group">
-            <label for="input_message" oda-label="oda-admin.messageCreateMessage">oda-admin.messageCreateMessage</label>
-            <textarea oda-input-text="input_message" rows="10" cols="80"></textarea>
-        </div>
+        <oda-input-area
+            oda-input-area-name="input_message"
+            oda-input-area-label="oda-admin.messageCreateMessage"
+            oda-input-area-hight="10"
+            oda-input-area-paste="false"
+            oda-input-area-check=".{25,}"
+            oda-input-area-rich="true"
+            required/>
     </div>
 </div>
 <div class="row">
@@ -551,8 +553,7 @@
             oda-input-text-name="input_date_expiration"
             oda-input-text-type="date"
             oda-input-text-label="oda-admin.messageCreateDelay"
-            oda-input-text-check="Oda.Regexs:noInjection" 
-            required/>
+            oda-input-text-check="Oda.Regexs:noInjection"/>
     </div>
     <div class="col-md-6">
     </div>

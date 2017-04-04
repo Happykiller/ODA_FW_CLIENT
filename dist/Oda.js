@@ -3006,6 +3006,45 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Widget.checkTextValue
+                 * @param {Object} p
+                 * @param p.elt
+                 * @param p.text
+                 * @param p.required
+                 * @param p.check
+                 * @returns {$.Oda.Display.Widget}
+                 */
+                checkTextValue: function(p) {
+                    try {
+                        var $elt = $(p.elt);
+                        if(p.required && ((p.text === undefined) || (p.text === ""))){
+                            $elt.data("isOk", false);
+                            $elt.css("border-color","#FF0000");
+                        }else{
+                            if(p.check){
+                                if(p.check.startsWith("Oda.Regexs:")){
+                                    p.check = p.check.replace("Oda.Regexs:", '');
+                                    p.check = $.Oda.Regexs[p.check];
+                                }
+
+                                var patt = new RegExp(p.check, "g");
+                                var res = patt.test(p.text);
+                                if(res){
+                                    $elt.data("isOk", true);
+                                    $elt.css("border-color","#04B404");
+                                }else{
+                                    $elt.data("isOk", false);
+                                    $elt.css("border-color","#FF0000");
+                                }
+                            }
+                        }
+                        return this;
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.checkTextValue: " + er.message);
+                        return null;
+                    }
+                },
+                /**
                  * @name $.Oda.Display.Widget.loadTextInput
                  */
                 loadTextInput: function(){
@@ -3278,6 +3317,16 @@ var $;
                                 var paste = elt.attr("oda-input-area-paste");
                                 var debounce = elt.attr("oda-input-area-debounce");
                                 var throttle = elt.attr("oda-input-area-throttle");
+                                var rich = elt.attr("oda-input-area-rich");
+
+                                if(rich){
+                                    try{
+                                        CKEDITOR.replace(name);
+                                    }catch(e){
+                                        $.Oda.Log.error('Rich area demand for widget:"'+name+'" but CKEDITOR not loaded');
+                                        rich = false;
+                                    }
+                                }
 
                                 var $inputArea = $('#'+name);
 
@@ -3302,34 +3351,67 @@ var $;
                                     });
                                 }
 
-                                $.Oda.Display.Widget.checkInputText({
-                                    elt: $inputArea.get(0),
-                                    required: required,
-                                    check: check
-                                });
-
-                                $inputArea.bind("keyup mouseup change",function(e){
-                                    $.Oda.Display.Widget.checkInputText({
-                                        elt: e.target,
+                                if(rich){
+                                    $.Oda.Display.Widget.checkTextValue({
+                                        elt: $inputArea.get(0),
+                                        text: CKEDITOR.instances[name].getData(),
                                         required: required,
                                         check: check
                                     });
-                                    if(debounce){
-                                        $.Oda.Tooling.debounce(function(){
-                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
-                                            },
-                                            parseInt(debounce)
-                                        );
-                                    }else if(throttle){
-                                        $.Oda.Tooling.throttle(function(){
-                                                $.Oda.Scope.Gardian.findByElt({id: e.target.id});
-                                            },
-                                            parseInt(throttle)
-                                        );
-                                    }else{
-                                        $.Oda.Scope.Gardian.findByElt({id: e.target.id});
-                                    }
-                                });
+
+                                    CKEDITOR.instances[name].on('change', function() {
+                                        $.Oda.Display.Widget.checkTextValue({
+                                            elt: $inputArea.get(0),
+                                            text: CKEDITOR.instances[name].getData(),
+                                            required: required,
+                                            check: check
+                                        });
+                                        if(debounce){
+                                            $.Oda.Tooling.debounce(function(){
+                                                    $.Oda.Scope.Gardian.findByElt({id: name});
+                                                },
+                                                parseInt(debounce)
+                                            );
+                                        }else if(throttle){
+                                            $.Oda.Tooling.throttle(function(){
+                                                    $.Oda.Scope.Gardian.findByElt({id: name});
+                                                },
+                                                parseInt(throttle)
+                                            );
+                                        }else{
+                                            $.Oda.Scope.Gardian.findByElt({id: name});
+                                        }
+                                    });
+                                }else{
+                                    $.Oda.Display.Widget.checkInputText({
+                                        elt: $inputArea.get(0),
+                                        required: required,
+                                        check: check
+                                    });
+
+                                    $inputArea.bind("keyup mouseup change",function(e){
+                                        $.Oda.Display.Widget.checkInputText({
+                                            elt: e.target,
+                                            required: required,
+                                            check: check
+                                        });
+                                        if(debounce){
+                                            $.Oda.Tooling.debounce(function(){
+                                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                                },
+                                                parseInt(debounce)
+                                            );
+                                        }else if(throttle){
+                                            $.Oda.Tooling.throttle(function(){
+                                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                                },
+                                                parseInt(throttle)
+                                            );
+                                        }else{
+                                            $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                        }
+                                    });
+                                }
                             },
                             detachedCallback: function(){
                             }
