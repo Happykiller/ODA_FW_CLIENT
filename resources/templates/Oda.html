@@ -63,3 +63,13 @@
     <span style="color:#a1a1a1;{{tipsDisplay}}">&nbsp;</span>
 </div>
 </script>
+
+<script id="oda-widget-input-checkbox-tpl" type="text/template">
+<div class="form-group">
+    <label for="{{name}}" style="{{labelDisplay}}">{{label}}&nbsp;{{requiredStart}}</label>
+    <div class="checkbox">
+        <input type="checkbox" name="{{name}}" id="{{id}}" {{requiredBalise}} title="{{tips}}" {{(value==='1'||value==='true')?'checked':''}}>
+        <label>{{tips}}</label>
+    </div>
+</div>
+</script>

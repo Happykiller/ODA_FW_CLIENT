@@ -2839,6 +2839,7 @@ var $;
                         $.Oda.Display.Widget.loadBtn();
                         $.Oda.Display.Widget.loadTextInput();
                         $.Oda.Display.Widget.loadAreaInput();
+                        $.Oda.Display.Widget.loadCheckboxInput();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3418,6 +3419,105 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadAreaInput: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadCheckboxInput
+                 */
+                loadCheckboxInput: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-input-checkbox",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-checkbox-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name))){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                    throw new Error("Name:'"+name+"' already exist");
+                                }
+
+                                var value = elt.attr("oda-input-checkbox-value");
+                                if(!value){
+                                    value = "";
+                                }
+
+                                var label = elt.attr("oda-input-checkbox-label");
+                                var labelTrad = "";
+                                var labelDisplayHtml = "";
+                                if(!label){
+                                    labelDisplayHtml = "display:none;";
+                                }else{
+                                    labelTrad = $.Oda.I8n.getByString(label);
+                                }
+
+                                var required = elt.attr("required");
+                                var requiredStart = "";
+                                var requiredBalise = "";
+                                if(required){
+                                    requiredStart = '<span style="color:red;">*</span>';
+                                    requiredBalise = 'required';
+                                }
+
+                                var tips = elt.attr("oda-input-checkbox-tips");
+                                var tipsHtml = "";
+                                if(tips){
+                                    tipsHtml = $.Oda.I8n.getByString(tips);
+                                }
+
+                                var html  = $.Oda.Display.TemplateHtml.create({
+                                    template: "oda-widget-input-checkbox-tpl",
+                                    scope: {
+                                        id: name,
+                                        name: name,
+                                        label: labelTrad,
+                                        labelDisplay: labelDisplayHtml,
+                                        requiredStart: requiredStart,
+                                        requiredBalise: requiredBalise,
+                                        tips: tipsHtml,
+                                        value: value
+                                    }
+                                });
+
+                                $(this).html(html);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var elt = $(this);
+                                switch(attrName) {
+                                    default:
+                                }
+                            },
+                            attachedCallback: function(){
+                                var elt = $(this);
+                                var name = elt.attr("oda-input-checkbox-name");
+                                var required = elt.attr("required");
+                                var $inputCheckbox = $('#'+name);
+                                if(!required){
+                                    $inputCheckbox.data("isOk", true);
+                                }else{
+                                    $inputCheckbox.data("isOk", $inputCheckbox.is(":checked"));
+                                }
+                                $inputCheckbox.val($inputCheckbox.is(":checked"));
+                                $inputCheckbox.change(function(e){
+                                    var $elt = $(this);
+                                    $elt.val($elt.is(":checked"));
+                                    if(!required){
+                                        $elt.data("isOk", true);
+                                    }else{
+                                        $elt.data("isOk", $elt.is(":checked"));
+                                    }
+                                    $.Oda.Scope.Gardian.findByElt({id: e.target.id});
+                                });
+                            },
+                            detachedCallback: function(){
+                            }
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadCheckboxInput: " + er.message);
                         return null;
                     }
                 },
