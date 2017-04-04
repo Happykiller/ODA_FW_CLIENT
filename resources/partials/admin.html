@@ -194,16 +194,8 @@
                 var tabInput = { code_user: p_code_user, profile: $.Oda.Session.userInfo.profile };
                 var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", { callback: function(datas) {
                     var label = "Editer : "  + $.Oda.Controller.Admin.currentUser;
-
-                    var strRangs = "";
-                    var rangs = datas.data.lesRangs.data;
-                    for (var indice in rangs) {
-                        if(datas.data.detailsUser.id_rang === rangs[indice].id){
-                            strRangs += '<option selected value="'+rangs[indice].id+'">'+rangs[indice].labelle+'</option>';
-                        }else{
-                            strRangs += '<option value="'+rangs[indice].id+'">'+rangs[indice].labelle+'</option>';
-                        }
-                    }
+                    var ranks = datas.data.lesRangs.data;
+                    var strRanks = $.Oda.Tooling.jsonToStringHtml({json:ranks});
 
                     var strHtml = $.Oda.Display.TemplateHtml.create({
                         template: "edit-templte",
@@ -211,7 +203,8 @@
                             edit_mail: datas.data.detailsUser.mail,
                             edit_desc: datas.data.detailsUser.description,
                             edit_actif_selected: datas.data.detailsUser.actif,
-                            rangs: strRangs
+                            ranks: strRanks,
+                            selectedRank: datas.data.detailsUser.id_rang
                         }
                     });
 
@@ -470,9 +463,9 @@
             oda-input-text-name="edit_mail"
             oda-input-text-type="mail"
             oda-input-text-label="oda-admin.edit_mail"
-            oda-input-text-tips="oda-main.oda-admin.edit_mail-tips"
-            oda-input-text-placeholder="oda-main.oda-admin.edit_mail-placeholder"
-            oda-input-text-check="Oda.Regexs:login" 
+            oda-input-text-tips="oda-main.contact-mail-tips"
+            oda-input-text-placeholder="oda-main.contact-mail-placeholder"
+            oda-input-text-check="Oda.Regexs:mail" 
             oda-input-text-value="{{edit_mail}}"
             required/>
     </div>
@@ -481,32 +474,31 @@
             oda-input-text-name="edit_desc"
             oda-input-text-type="text"
             oda-input-text-label="oda-admin.edit_desc"
-            oda-input-text-tips="oda-main.oda-admin.edit_desc-tips"
-            oda-input-text-placeholder="oda-main.oda-admin.edit_desc-placeholder"
             oda-input-text-check="Oda.Regexs:noInjection" 
-            oda-input-text-value="{{edit_desc}}"
-            required/>
+            oda-input-text-value="{{edit_desc}}"/>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="edit_actif" oda-label="oda-admin.edit_actif">edit_actif</label>
-            <select class="form-control" oda-input-select="edit_actif" required>
-                <option value="" oda-label="oda-main.select-default"></option>
-                <option value="0" {{ ((edit_actif_selected==='0')?'selected':'') }}>Off</option>
-                <option value="1" {{ ((edit_actif_selected==='1')?'selected':'') }}>On</option>
-            </select>
-        </div>
+        <oda-input-select 
+            oda-input-select-name="edit_actif" 
+            oda-input-select-label="oda-admin.edit_actif"
+            oda-input-select-value="{{edit_actif_selected}}"
+            oda-input-select-availables="[{id:0,label:'Off'},{id:1,label:'On'}]"
+            oda-input-select-display="elt.label"
+            oda-input-select-response="elt.id"
+            required/>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="input_rang" oda-label="oda-admin.input_rang">input_rang</label>
-            <select class="form-control" oda-input-select="input_rang" required>
-                <option value="" oda-label="oda-main.select-default"></option>
-                {{rangs}}
-            </select>
-        </div>
+        <oda-input-select 
+            oda-input-select-name="input_rang" 
+            oda-input-select-label="oda-admin.input_rang"
+            oda-input-select-value="{{selectedRank}}"
+            oda-input-select-availables="{{ranks}}"
+            oda-input-select-display="elt.labelle"
+            oda-input-select-response="elt.id"
+            oda-input-select-order="asc"
+            required/>
     </div>
 </div>
 </script>

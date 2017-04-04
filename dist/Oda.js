@@ -4701,6 +4701,27 @@ var $;
                     $.Oda.Log.error("$.Oda.Tooling.filter : " + er.message);
                     return null;
                 }
+            },
+            /**
+             * @name $.Oda.Tooling.jsonToStringHtml
+             * @param {Object} p
+             * @param {Object} p.json
+             * @example $.Oda.Tooling.jsonToStringHtml({json:[{"coucou":"value"}]});
+             * @returns {String}
+             */
+            jsonToStringHtml: function(p){
+                try {
+                    var str = JSON.stringify(p.json);
+                    str = $.Oda.Tooling.replaceAll({
+                        str: str,
+                        find: '"',
+                        by: "'"
+                    });
+                    return str;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.jsonToStringHtml: " + er.message);
+                    return null;
+                }
             }
         },
 
