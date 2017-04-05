@@ -26,13 +26,10 @@ QUnit.test( "$.Oda.Tooling.pad2", function(){
 });
 
 QUnit.test( "$.Oda.Tooling.replaceAll", function(){
-    var strOri = '';
-    var strWait = '';
-    QUnit.assert.equal( $.Oda.Tooling.replaceAll({
-        str: strOri,
-        find: "",
-        by: ""
-    }), strWait, "Test OK : Passed!" );
+    QUnit.assert.throws(
+        $.Oda.Tooling.replaceAll({str: "str",find: "",by: "by"}),
+        'Parameter "find" for by:"by" is missing in params of $.Oda.Tooling.replaceAll'
+    );
 
     var strOri = 'ceci est un test pour un test pour faire un test';
     var strWait = 'ceci est deux test pour deux test pour faire deux test';
@@ -766,4 +763,9 @@ QUnit.test( "$.Oda.Tooling.objDataTableFromJsonArray", function() {
         ]
     };
     QUnit.assert.deepEqual(receive, attemps, "Test 1" );
+});
+
+QUnit.test( "$.Oda.Tooling.jsonToStringHtml", function() {
+    QUnit.assert.equal($.Oda.Tooling.jsonToStringHtml({json:[{"coucou":"value"}]}), "[{'coucou':'value'}]", "Test 1 " );
+    QUnit.assert.equal($.Oda.Tooling.jsonToStringHtml({json:[{"coucou":"ner'zhul"}]}), "[{'coucou':'ner\'zhul'}]", "Test 1 " );
 });

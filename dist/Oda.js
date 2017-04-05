@@ -1895,13 +1895,15 @@ var $;
                 }
             },
             /**
-             * @name $.Oda.Display.jsonToStringSingleQuote
+             * @deprecated 
+             * @name $.Oda.Display.jsonToStringHtml
              * @param {Object} p_params
              * @param p_params.json
              * @returns {String}
              */
             jsonToStringSingleQuote: function(p_params) {
                 try {
+                    $.Oda.Log.warning("$.Oda.Display.jsonToStringSingleQuote is deprecated. Remove soon.");
                     var str = JSON.stringify(p_params.json);
                     str = $.Oda.Tooling.replaceAll({"str":str, "find":'"', "by":"'"});
                     return str;
@@ -2224,7 +2226,6 @@ var $;
                             strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','profile') + '</a></li>';
                             strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
                             strHtml += '<li><a onclick="$.Oda.Security.logout();">' + $.Oda.I8n.get('oda-main','logout') + '</a></li>';
-                            //strHtml = $.Oda.Scope.transform({"str":strHtml});
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -2239,7 +2240,6 @@ var $;
                     try {
                         $("#wrapper").removeClass("toggled");
                         var strHtml = '<li class="sidebar-brand" id="profileDisplay">' + $.Oda.I8n.get('oda-project','userLabel') + '</li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
-                        //strHtml = $.Oda.Scope.transform({"str":strHtml});
                         $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {
@@ -2499,8 +2499,6 @@ var $;
                                     }
                                 }
 
-                                //strHtml = $.Oda.Scope.transform({str:strHtml});
-
                                 p_params.callback(strHtml);
                             }
                         }else{
@@ -2517,8 +2515,6 @@ var $;
                                     strHtml = $.Oda.Tooling.replaceAll({str: strHtml, find: '{{'+listExpression[indice]+'}}', by: resultEval});
                                 }
                             }
-
-                            //strHtml = $.Oda.Scope.transform({str:strHtml});
 
                             return strHtml;
                         }
@@ -4714,6 +4710,11 @@ var $;
                     var str = JSON.stringify(p.json);
                     str = $.Oda.Tooling.replaceAll({
                         str: str,
+                        find: "'",
+                        by: "\'"
+                    });
+                    str = $.Oda.Tooling.replaceAll({
+                        str: str,
                         find: '"',
                         by: "'"
                     });
@@ -5276,6 +5277,7 @@ var $;
 
         Scope: {
             /**
+             * @deprecated
              * @name $.Oda.Scope.transform
              * @param {Object} p_params
              * @param p_params.str
@@ -5284,6 +5286,7 @@ var $;
              */
             transform: function(p_params) {
                 try {
+                    $.Oda.Log.warning("$.Oda.Scope.transform is deprecated. Remove soon.");
                     var strReturn = '';
 
                     $(" body ").append('<div id="tmp_scopeTransform" style="display: none;"></div>');
