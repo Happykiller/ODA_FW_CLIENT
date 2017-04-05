@@ -1930,6 +1930,7 @@ var $;
                 }
             },
             /**
+             * @deprecated
              * @name $.Oda.Display.loading
              * @param {Object} p_params
              * @param p_params.elt
@@ -1937,6 +1938,7 @@ var $;
              */
             loading: function(p_params) {
                 try {
+                    $.Oda.Log.warning("$.Oda.Display.loading is deprecated. Remove soon.");
                     p_params.elt.html('<div class="oda-loader-container"><div class="oda-loader"><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-dot"></div><div class="oda-loader-text"></div></div></div>');
                     return this;
                 } catch (er) {
@@ -2837,6 +2839,7 @@ var $;
                         $.Oda.Display.Widget.loadAreaInput();
                         $.Oda.Display.Widget.loadCheckboxInput();
                         $.Oda.Display.Widget.loadSelectInput();
+                        $.Oda.Display.Widget.loadLoading();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3762,6 +3765,29 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadSelectInput: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadLoading
+                 */
+                loadLoading: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-loading",
+                            createdCallback: function(){
+                                var elt = $(this);
+                                var html  = $.Oda.Display.TemplateHtml.create({
+                                    template: "oda-loading-tpl"
+                                });
+                                $(this).html(html);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){},
+                            attachedCallback: function(){},
+                            detachedCallback: function(){}
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadLoading: " + er.message);
                         return null;
                     }
                 },
@@ -5316,11 +5342,6 @@ var $;
                         divTarget = '#'+p_params.id+' ';
                     }
 
-                    //oda-loading
-                    $(divTarget+'oda-loading').each(function(index, value){
-                        $.Oda.Display.loading({elt : $(value)});
-                    });
-
                     //oda-input-text
                     $(divTarget+'[oda-input-text]').each(function(index, value){
                         var id = $(value).attr("oda-input-text");
@@ -5973,7 +5994,7 @@ var $;
                 try {
                     $.Oda.Log.debug("RouterGo : " + p_params.routeDef.path);
 
-                    $.Oda.Display.loading({elt:$('#' + $.Oda.Context.mainDiv)});
+                    $('#' + $.Oda.Context.mainDiv).html('<oda-loading/>')
 
                     //HASH
                     if (!p_params.routeDef.system) {
