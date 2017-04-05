@@ -180,12 +180,7 @@
                         break;
                     case "language":
                         label = $.Oda.I8n.get('oda-profile', 'update') + $.Oda.I8n.get('oda-profile', 'language');
-                        details += '<label for="input_langue" oda-label="oda-profile.language">oda-profile.language</label>';
-                        details += '<select oda-input-select="input_langue" class="form-control">';
-                        details += '<option value="fr" '+(($.Oda.Session.userInfo.locale === 'fr')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'fr')+' ('+$.Oda.I8n.get('oda-profile', 'fr', {forced: 'fr'})+')</option>';
-                        details += '<option value="en" '+(($.Oda.Session.userInfo.locale === 'en')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'en')+' ('+$.Oda.I8n.get('oda-profile', 'en', {forced: 'en'})+')</option>';
-                        details += '<option value="es" '+(($.Oda.Session.userInfo.locale === 'es')?'selected':'')+'>'+$.Oda.I8n.get('oda-profile', 'es')+' ('+$.Oda.I8n.get('oda-profile', 'es', {forced: 'es'})+')</option>';
-                        details += '</select>';
+                        details += '<oda-input-select oda-input-select-name="input_langue" oda-input-select-label="oda-profile.language" oda-input-select-value="'+$.Oda.Session.userInfo.locale+'" oda-input-select-availables="[{id:\'fr\',\'label\':\'oda-profile.fr\'},{id:\'en\',\'label\':\'oda-profile.en\'},{id:\'es\',\'label\':\'oda-profile.es\'}]" oda-input-select-display="elt.label" oda-input-select-response="elt.id" oda-input-select-order="asc" required/>';
                         footer += '<oda-btn oda-btn-name="submit" oda-btn-enter="1" oda-btn-style="info" oda-btn-click="$.Oda.Controller.Profile.submitChange(\'langue\');" disabled>oda-main.bt-submit</oda-btn>';
                         break;
                 }

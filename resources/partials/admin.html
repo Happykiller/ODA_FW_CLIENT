@@ -374,15 +374,11 @@
         messageNew : function (p_params) {
             try {
                 var rangs = $.Oda.Interface.getRangs();
-                var strProfileList = "";
-                for(var index in rangs){
-                    strProfileList += '<option value="'+rangs[index].indice+'">'+rangs[index].labelle+'</option>';
-                }
 
                 var strHtml = $.Oda.Display.TemplateHtml.create({
                     template: "tplNewMessage",
                     scope: {
-                        profileList : strProfileList
+                        profileList : $.Oda.Tooling.jsonToStringHtml({json:rangs})
                     }
                 });
 
@@ -510,33 +506,33 @@
             oda-input-area-name="input_message"
             oda-input-area-label="oda-admin.messageCreateMessage"
             oda-input-area-hight="10"
-            oda-input-area-paste="false"
-            oda-input-area-check=".{25,}"
+            oda-input-area-check="Oda.Regexs:noInjection"
             oda-input-area-rich="true"
             required/>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="input_niveau" oda-label="oda-admin.messageCreateAlertLevel">oda-admin.messageCreateAlertLevel</label>
-            <select oda-input-select="input_niveau" class="form-control" required>
-                <option value="" oda-label="oda-main.select-default"></option>
-                <option value="info" oda-label="oda-admin.messageCreateAlertLevelInfo">oda-admin.messageCreateAlertLevelInfo</option>
-                <option value="danger" oda-label="oda-admin.messageCreateAlertLevelDanger">oda-admin.messageCreateAlertLevelDanger</option>
-                <option value="warning" oda-label="oda-admin.messageCreateAlertLevelWarning">oda-admin.messageCreateAlertLevelWarning</option>
-                <option value="success" oda-label="oda-admin.messageCreateAlertLevelSuccess">oda-admin.messageCreateAlertLevelSuccess</option>
-            </select>
-        </div>
+        <oda-input-select 
+            oda-input-select-name="input_niveau" 
+            oda-input-select-label="oda-admin.messageCreateAlertLevel"
+            oda-input-select-value=""
+            oda-input-select-availables="[{id:'info','label':'oda-admin.messageCreateAlertLevelInfo'},{id:'danger','label':'oda-admin.messageCreateAlertLevelDanger'},{id:'warning','label':'oda-admin.messageCreateAlertLevelWarning'},{id:'success','label':'oda-admin.messageCreateAlertLevelSuccess'}]"
+            oda-input-select-display="elt.label"
+            oda-input-select-response="elt.id"
+            oda-input-select-order="asc"
+            required/>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="input_profile" oda-label="oda-admin.messageCreateProfileLevel">oda-admin.messageCreateProfileLevel</label>
-            <select oda-input-select="input_profile" class="form-control" required>
-                <option value="" oda-label="oda-main.select-default"></option>
-                {{profileList}}
-            </select>
-        </div>
+        <oda-input-select 
+            oda-input-select-name="input_profile" 
+            oda-input-select-label="oda-admin.messageCreateProfileLevel"
+            oda-input-select-value=""
+            oda-input-select-availables="{{profileList}}"
+            oda-input-select-display="elt.labelle"
+            oda-input-select-response="elt.indice"
+            oda-input-select-order="asc"
+            required/>
     </div>
 </div>
 <div class="row">
