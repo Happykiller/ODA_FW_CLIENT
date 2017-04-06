@@ -14,18 +14,18 @@ $.Oda.I8n.datas = [{
 
 $.Oda.Session.userInfo.locale = "fr";
 
-QUnit.test( "$.Oda.I8n.get", function() {
-    QUnit.assert.equal($.Oda.I8n.get("test", "test"), "un test", "Test OK : Passed!" );
+QUnit.test( "$.Oda.I8n.get", function(assert) {
+    assert.equal($.Oda.I8n.get("test", "test"), "un test", "Test OK : Passed!" );
 
     $.Oda.Session.userInfo.locale = "jp";
-    QUnit.assert.equal($.Oda.I8n.get("test", "test", {defaultLang: "en"}), "a test", "Test OK : Passed!" );
+    assert.equal($.Oda.I8n.get("test", "test", {defaultLang: "en"}), "a test", "Test OK : Passed!" );
 
     $.Oda.Session.userInfo.locale = "en";
-    QUnit.assert.equal($.Oda.I8n.get("test", "testVar", {variables: {var1 : "coucou", var2: "hello"}}), "a test coucou hello", "Test OK : Passed!" );
+    assert.equal($.Oda.I8n.get("test", "testVar", {variables: {var1 : "coucou", var2: "hello"}}), "a test coucou hello", "Test OK : Passed!" );
 
     $.Oda.Session.userInfo.locale = "jp";
-    QUnit.assert.equal($.Oda.I8n.get("test", "testVar", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"}}), "a test coucou hello", "Test OK : Passed!" );
+    assert.equal($.Oda.I8n.get("test", "testVar", {defaultLang: "en", variables: {var1 : "coucou", var2: "hello"}}), "a test coucou hello", "Test OK : Passed!" );
 
     $.Oda.Session.userInfo.locale = "fr";
-    QUnit.assert.equal($.Oda.I8n.get("test", "test", {forced: "en"}), "a test", "Test forced" );
+    assert.equal($.Oda.I8n.get("test", "test", {forced: "en"}), "a test", "Test forced" );
 });
