@@ -3,41 +3,41 @@
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading" oda-label="oda-profile.infos">oda-profile.infos</div>
+                <div class="panel-heading"><oda-label oda-label-value="oda-profile.infos"/></div>
                 <div id="div_infos" class="panel-body">
                     <table class="table table-hover">
                         <tr>
-                            <td oda-label="oda-profile.codeUser">oda-profile.codeUser</td>
+                            <td><oda-label oda-label-value="oda-profile.codeUser"/></td>
                             <td><label id="code_user"></label></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.rank">oda-profile.rank</td>
+                            <td><oda-label oda-label-value="oda-profile.rank"/></td>
                             <td><label id="rank"></label></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.lastName">oda-profile.lastName</td>
+                            <td><oda-label oda-label-value="oda-profile.lastName"/></td>
                             <td><label id="lab_nom"></label></td>
                             <td><oda-btn title="Mise &agrave; jour du nom" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('lastName');"></oda-btn></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.firstName">oda-profile.firstName</td>
+                            <td><oda-label oda-label-value="oda-profile.firstName"/></td>
                             <td><label id="lab_prenom"></label></td>
                             <td><oda-btn title="Mise &agrave; jour du pr&eacute;nom" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('firstName');"></oda-btn></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.email">oda-profile.email</td>
+                            <td><oda-label oda-label-value="oda-profile.email"/></td>
                             <td><label id="lab_mail"></label></td>
                             <td><oda-btn title="Mise &agrave; jour de l\'eMail" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('email');"></oda-btn></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.language">oda-profile.language</td>
+                            <td><oda-label oda-label-value="oda-profile.language"/></td>
                             <td><label id="lab_langue"></label></td>
                             <td><oda-btn title="Mise &agrave; jour de la langue" oda-btn-style="default" oda-btn-icon-before="edit" oda-btn-click="$.Oda.Controller.Profile.updateChamps('language');"></oda-btn></td>
                         </tr>
                         <tr>
-                            <td oda-label="oda-profile.avatar">oda-profile.avatar</td>
+                            <td><oda-label oda-label-value="oda-profile.avatar"/></td>
                             <td><div id="img_avatar"></div></td>
                             <td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controller.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>
                         </tr>

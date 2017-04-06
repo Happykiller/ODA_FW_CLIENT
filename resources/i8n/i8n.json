@@ -28,17 +28,17 @@
         "bt-forgot": "Un Oublie ?",
         "bt-subscrib": "S'inscrire",
         "bt-google": "Entrer avec Google",
-        "forgot-title": "Oubli&eacute; ?",
-        "404-title": "Pas trouv&eacute;.",
+        "forgot-title": "Oublié ?",
+        "404-title": "Pas trouvé.",
         "home-title": "Accueil",
         "bt-back": "Retour",
         "forgot-intro": "Veuiller remplir les champs possibles pour vous retrouver :",
-        "subscrib-title": "Cr&eacute;er un compte",
-        "subscrib-intro": "Afin de cr&eacute;er un compte merci de fournir les informations utilies.",
+        "subscrib-title": "Créer un compte",
+        "subscrib-intro": "Afin de créer un compte merci de fournir les informations utilies.",
         "subscrib-firstName": "Nom :",
         "subscrib-firstName-tips": "Au moins 3 lettres",
         "subscrib-firstName-placeholder": "Votre nom ici",
-        "subscrib-lastName": "Pr&eacute;nom :",
+        "subscrib-lastName": "Prénom :",
         "subscrib-lastName-tips": "Au moins 3 lettres",
         "subscrib-lastName-placeholder": "Votre nom ici",
         "profile-title": "Mon Profil",
@@ -53,7 +53,8 @@
         "all": "Tous",
         "tuto-read": "Lu",
         "tuto-label-avatar": "For display system menu, click.",
-        "tuto-label-brand": "To go home click."
+        "tuto-label-brand": "To go home click.",
+        "test": "Ceci est un test => var1:{{var1}}, var2:{{var2}}."
     },
     "en": {
         "authentication": "Authentication",
@@ -107,7 +108,8 @@
         "all": "All",
         "tuto-read" : "Check",
         "tuto-label-avatar": "Pour affichier le menu, cliquer",
-        "tuto-label-brand": "Pour rejoindre l'accueil"
+        "tuto-label-brand": "Pour rejoindre l'accueil",
+        "test": "This is a test => var1:{{var1}}, var2:{{var2}}."
     },
     "es": {
         "authentication": "Autenticación",
@@ -161,7 +163,8 @@
         "all": "All",
         "tuto-read" : "Leer",
         "tuto-label-avatar": "Para el menú sistema de visualización, clic.",
-        "tuto-label-brand": "Para volver a casa clic."
+        "tuto-label-brand": "Para volver a casa clic.",
+        "test": "Esto es una prueba => var1:{{var1}}, var2:{{var2}}."
     }
 }, {
     "groupName": "oda-project",
@@ -181,8 +184,8 @@
     "groupName": "oda-stats",
     "fr": {
         "title": "Les statistiques",
-        "activityByPage": "R&eacute;partition de l'activit&eacute; par page",
-        "activityByUser": "R&eacute;partition de l'activit&eacute; par utilisateur"
+        "activityByPage": "Répartition de l'activité par page",
+        "activityByUser": "Répartition de l'activité par utilisateur"
     },
     "en": {
         "title": "Statistics",
@@ -205,9 +208,9 @@
         "edit_desc": "Description : ",
         "edit_actif": "Actif : ",
         "input_rang": "Rang : ",
-        "bt-create-new-message": "Cr&eacute;er un message",
+        "bt-create-new-message": "Créer un message",
         "userUpdateOk": "Modification ok.",
-        "messageCreateOk": "Message bien enregistr&eacute;.",
+        "messageCreateOk": "Message bien enregistré.",
         "messageCreateMessage": "Message",
         "messageCreateAlertLevel": "Niveau d'alerte",
         "messageCreateAlertLevelInfo": "Information",
@@ -327,7 +330,7 @@
     "groupName": "oda-forgot",
     "fr": {
         "unknown": "Aucune correspondance trouvée.",
-        "mailSend": "Un email pour r&eacute;initialiser votre mot de passe a &eacute;t&eacute; envoy&eacute;",
+        "mailSend": "Un email pour réinitialiser votre mot de passe a été envoyé",
         "mailSubjet": "[ODA]Récupération de votre compte."
     },
     "en": {
@@ -375,7 +378,7 @@
         "fr": "Français",
         "en": "Anglais",
         "es": "Espagnole",
-        "updateSuccess": "Mise &agrave; jour r&eacute;ussi",
+        "updateSuccess": "Mise à jour réussi",
         "rank": "Rang"
     },
     "en": {
@@ -419,7 +422,7 @@
 },{
     "groupName": "oda-auth",
     "fr": {
-        "noAccount": "Pas de compte rattach&eacute; à l'email : ",
+        "noAccount": "Pas de compte rattaché à l'email : ",
         "chooseAccount": "Choisir le compte."
     },
     "en": {
@@ -427,7 +430,7 @@
         "chooseAccount": "Choose an account"
     },
     "es": {
-        "noAccount": "No se cuenta para este correo electr&oacute;nico: ",
+        "noAccount": "No se cuenta para este correo electrénico: ",
         "chooseAccount": "Seleccione cuenta."
     }
 },{
@@ -467,7 +470,7 @@
     "tabMail": "Mails",
     "mail-tips": "mail@dom.com",
     "mail-placeholder": "mail@dom.com",
-    "mailSend": "Le mail a &eacute;t&eacute; envoy&eacute;",
+    "mailSend": "Le mail a été envoyé",
     "mailSubjet": "[ODA]Test mail."
   },
   "en": {

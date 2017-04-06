@@ -2402,7 +2402,7 @@ var $;
                         if(p_params.hasOwnProperty("footer")){
                             $('#'+p_params.name+'_footer').html(p_params.footer);
                         }else{
-                            $('#'+p_params.name+'_footer').html('<button type="button" class="btn btn-default" data-dismiss="modal" oda-label="oda-main.bt-close"></button>');
+                            $('#'+p_params.name+'_footer').html('<button type="button" class="btn btn-default" data-dismiss="modal"><oda-label oda-label-value="oda-main.bt-close"/></button>');
                         }
                         $.Oda.Scope.init({id:p_params.name+'_footer'});
 
@@ -2840,6 +2840,7 @@ var $;
                         $.Oda.Display.Widget.loadCheckboxInput();
                         $.Oda.Display.Widget.loadSelectInput();
                         $.Oda.Display.Widget.loadLoading();
+                        $.Oda.Display.Widget.loadLabel();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3788,6 +3789,90 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadLoading: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadLabel
+                 */
+                loadLabel: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-label",
+                            createdCallback: function(){
+                                var $elt = $(this);
+                                var value = $elt.attr("oda-label-value");
+                                var group = $elt.attr("oda-label-group");
+                                var lang = $elt.attr("oda-label-lang");
+                                var defaultLang = $elt.attr("oda-label-default-lang");
+                                var variables = $elt.attr("oda-label-variables");
+                                if(group){
+                                    if(variables){
+                                        try{
+                                            var funct = new Function("return " + variables);
+                                            variables = funct();
+                                        }catch(e){
+                                            throw new Error("Widget oda-label for value:'"+value+"' => Syntaxe of variables not correct JSON");
+                                        }
+                                    }
+
+                                    var inputs = {
+                                        defaultLang: defaultLang,
+                                        forced: lang,
+                                        variables: variables
+                                    }
+
+                                    var labelTrad = $.Oda.I8n.get(group, value, inputs);
+                                    $elt.text(labelTrad);
+                                }else{
+                                    var labelTrad = $.Oda.I8n.getByString(value);
+                                    $elt.text(labelTrad);
+                                }
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var $elt = $(this);
+                                switch(attrName) {
+                                    case "oda-label-value":
+                                    case "oda-label-group":
+                                    case "oda-label-lang":
+                                    case "oda-label-default-lang":
+                                    case "oda-label-variables":
+                                        var value = $elt.attr("oda-label-value");
+                                        var group = $elt.attr("oda-label-group");
+                                        var lang = $elt.attr("oda-label-lang");
+                                        var defaultLang = $elt.attr("oda-label-default-lang");
+                                        var variables = $elt.attr("oda-label-variables");
+                                        if(group){
+                                            if(variables){
+                                                try{
+                                                    var funct = new Function("return " + variables);
+                                                    variables = funct();
+                                                }catch(e){
+                                                    throw new Error("Widget oda-label for value:'"+value+"' => Syntaxe of variables not correct JSON");
+                                                }
+                                            }
+
+                                            var inputs = {
+                                                defaultLang: defaultLang,
+                                                forced: lang,
+                                                variables: variables
+                                            }
+
+                                            var labelTrad = $.Oda.I8n.get(group, value, inputs);
+                                            $elt.text(labelTrad);
+                                        }else{
+                                            var labelTrad = $.Oda.I8n.getByString(value);
+                                            $elt.text(labelTrad);
+                                        }
+                                        break;
+                                    default:
+                                }
+                            },
+                            attachedCallback: function(){},
+                            detachedCallback: function(){}
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadLabel: " + er.message);
                         return null;
                     }
                 },
@@ -5345,6 +5430,7 @@ var $;
                     //oda-input-text
                     $(divTarget+'[oda-input-text]').each(function(index, value){
                         var id = $(value).attr("oda-input-text");
+                        $.Oda.Log.warning("Attribute oda-input-text for id:'"+id+"' is deprecated. Please use widget Remove soon.");
 
                         $(value).attr("id",id);
                         $(value).attr("name",id);
@@ -5383,6 +5469,7 @@ var $;
                     //oda-input-checkbox
                     $(divTarget+'[oda-input-checkbox]').each(function(index, value){
                         var id = $(value).attr("oda-input-checkbox");
+                        $.Oda.Log.warning("Attribute oda-input-checkbox for id:'"+id+"' is deprecated. Please use widget Remove soon.");
 
                         $(value).attr("id",id);
                         $(value).attr("name",id);
@@ -5395,6 +5482,7 @@ var $;
                     //oda-input-select
                     $(divTarget+'[oda-input-select]').each(function(index, value){
                         var id = $(value).attr("oda-input-select");
+                        $.Oda.Log.warning("Attribute oda-input-select for id:'"+id+"' is deprecated. Please use widget Remove soon.");
 
                         $(value).attr("id",id);
                         $(value).attr("name",id);
@@ -5409,6 +5497,7 @@ var $;
                     //oda-label
                     $(divTarget+'[oda-label]').each(function(index, value){
                         var labelName = $(value).attr("oda-label");
+                        $.Oda.Log.warning("Attribute oda-label for label:'"+labelName+"' is deprecated. Please use widget Remove soon.");
                         var tab = labelName.split(".");
                         $(value).html($.Oda.I8n.get(tab[0], tab[1]));
                     });
@@ -5416,6 +5505,7 @@ var $;
                     //oda-submit
                     $(divTarget+'[oda-submit]').each(function(index, value){
                         var id = $(value).attr("oda-submit");
+                        $.Oda.Log.warning("Attribute oda-submit for id:'"+id+"' is deprecated. Please use widget Remove soon.");
 
                         $(value).attr("id",id);
 

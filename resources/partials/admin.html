@@ -1,10 +1,10 @@
 <div class="container">
-    <h2 oda-label="oda-admin.title"></h2>
+    <h2><oda-label oda-label-value="oda-admin.title"/></h2>
 
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><span oda-label="oda-admin.users"></span></div>
+                <div class="panel-heading"><oda-label oda-label-value="oda-admin.users"/></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12" id="div_listUtilisateurs">
@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><span oda-label="oda-admin.messages"></span></div>
+                <div class="panel-heading"><oda-label oda-label-value="oda-admin.messages"/></span></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12" id="div_messages">
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><span oda-label="oda-admin.list"></span></div>
+                <div class="panel-heading"><oda-label oda-label-value="oda-admin.list"/></span></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12" id="div_listDiffusion">
@@ -285,7 +285,7 @@
          */
         messagesDisplay : function () {
             try {
-                $.Oda.Display.loading({elt : $('#div_messages')});
+                $('#div_messages').html('<oda-loading/>')
                 $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessages.php", {callback : function(response){
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_messages"></table>';
                     strhtml += '<oda-btn oda-btn-name="bt_validerRetourMsg" oda-btn-style="primary" oda-btn-icon-before="new" oda-btn-click="$.Oda.Controller.Admin.messageNew();">oda-admin.bt-create-new-message</oda-btn>';
