@@ -3112,6 +3112,12 @@ var $;
                                     requiredBalise = 'required';
                                 }
 
+                                var disabled = elt.attr("disabled");
+                                var disabledBalise = "";
+                                if(disabled){
+                                    disabledBalise = 'disabled';
+                                }
+
                                 var html  = $.Oda.Display.TemplateHtml.create({
                                     template: "oda-widget-input-text-tpl",
                                     scope: {
@@ -3120,6 +3126,7 @@ var $;
                                         label: labelTrad,
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
+                                        disabledBalise: disabledBalise,
                                         type: type,
                                         tips: tipsHtml,
                                         advice: adviceHtml,
