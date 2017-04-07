@@ -3643,6 +3643,9 @@ var $;
                                 }
                                 $select.val(value);
                             }
+                        }else{
+                            $select.append($('<option>').text($.Oda.I8n.get('oda-main','select-default')).val(''));
+                            $select.val(value);
                         }
                         $.Oda.Scope.Gardian.findByElt({id: name});
                     } catch (er) {
