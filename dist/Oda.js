@@ -5415,6 +5415,7 @@ var $;
                 }
             },
             /**
+             * @deprecated
              * @name $.Oda.Scope.init
              * @param {Object} p_params
              * @param p_params.id
@@ -5422,6 +5423,8 @@ var $;
              */
             init: function(p_params){
                 try {
+                    $.Oda.Log.warning("$.Oda.Scope.init is deprecated. Please use widget Remove soon.");
+
                     var divTarget = "";
                     if(!$.Oda.Tooling.isUndefined(p_params)){
                         divTarget = '#'+p_params.id+' ';
@@ -5526,6 +5529,7 @@ var $;
                 }
             },
             /**
+             * @deprecated
              * @name $.Oda.Scope.checkInputText
              * @param {Object} p_params
              * @param p_params.elt
@@ -5533,6 +5537,7 @@ var $;
              */
             checkInputText: function(p_params) {
                 try {
+                    $.Oda.Log.warning("$.Oda.Scope.checkInputText is deprecated. Please use widget Remove soon.");
                     var $elt = $(p_params.elt);
                     var required = !$.Oda.Tooling.isUndefined($elt.attr("required"));
                     if(required && (($elt.val() === undefined) || ($elt.val() === ""))){
@@ -5564,13 +5569,15 @@ var $;
                 }
             },
             /**
+             * @deprecated
              * @name $.Oda.Scope.checkInputSelect
              * @param {Object} p_params
              * @param p_params.elt
-             * @returns {$.Oda.Scope.checkInputSelect}
+             * @returns {$.Oda.Scope}
              */
             checkInputSelect : function(p_params) {
                 try {
+                    $.Oda.Log.warning("$.Oda.Scope.checkInputSelect is deprecated. Please use widget Remove soon.");
                     var $elt = $(p_params.elt);
                     var required = !$.Oda.Tooling.isUndefined($elt.attr("required"));
                     if(required && (($elt.val() === undefined) || ($elt.val() === ""))){
