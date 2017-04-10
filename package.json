@@ -11,6 +11,10 @@
     "gulp-plumber": "*",
     "gulp-uglify": "*",
     "gulp-rename": "*",
-    "jshint-stylish" : "*"
+    "jshint-stylish": "*"
+  },
+  "devDependencies": {
+    "gulp-jshint": "^2.0.4",
+    "jshint": "^2.9.4"
   }
 }

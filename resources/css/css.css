@@ -58,6 +58,7 @@ a:hover {
 
 /* Loading - begin */
 .oda-loader-container {
+    min-height: 75px;
     text-align: center;
     font-family: Helvetica;
 }
