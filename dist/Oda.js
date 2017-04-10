@@ -314,7 +314,7 @@ var $;
                     $.Oda.Router.addDependencies("ckeditor", {
                         ordered : false,
                         "list" : [
-                            { "elt" : "//cdn.ckeditor.com/4.4.7/standard/ckeditor.js", "type" : "script"}
+                            { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "ckeditor/ckeditor.js", "type" : "script"}
                         ]
                     });
 
