@@ -84,20 +84,14 @@
                             };
 
                             var data = JSON.stringify(token);
-                            var compressToken = LZString.compress(data);
-                            var tokenUri;
-                            try{
-                                tokenUri = encodeURI(compressToken);
-                            }catch (er) {
-                                tokenUri = escape(compressToken);
-                            }
+                            var token = $.Oda.Tooling.stringToOdaCrypt(data);
 
                             $.Oda.Display.TemplateHtml.create({
                                 template: "mailForgot",
                                 scope: {
                                     "userName": compte.prenom + " " + compte.nom,
                                     "siteUrl": $.Oda.Context.host,
-                                    "urlReset": $.Oda.Context.host+"#resetPwd?token="+tokenUri
+                                    "urlReset": $.Oda.Context.host+"#resetPwd?token="+token
                                 },
                                 callback: function(strHtml){
                                     var paramsMail = {

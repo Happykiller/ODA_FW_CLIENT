@@ -59,26 +59,19 @@
          */
         start: function () {
             try {
-                var tokenUri;
-                try{
-                    tokenUri = decodeURI($.Oda.Context.window.location);
-                }catch (er) {
-                    tokenUri = unescape($.Oda.Context.window.location);
-                }
-                var compressToken = $.Oda.Tooling.getParameterGet({url: tokenUri});
-                var data = LZString.decompress(compressToken.token);
-                var token = JSON.parse(data);
-                if(!token.hasOwnProperty("userCode") || !token.hasOwnProperty("valideDate")){
+                var params = $.Oda.Tooling.getParameterGet({url: $.Oda.Context.window.location});
+                var data = $.Oda.Tooling.odaCryptToString(params.token);
+                data = JSON.parse(data);
+                if(!data.hasOwnProperty("userCode") || !data.hasOwnProperty("valideDate")){
                     $.Oda.Log.error("Token for reset password not valid");
                     $.Oda.Router.routes["404"].go();
-                }else if((token.userCode !== undefined) && (token.userCode !== "") && (token.valideDate !== undefined) && (token.valideDate < new Date())){
-                    $('#userCode').html(token.userCode);
-                    $.Oda.Controller.ResetPwd.userCode = token.userCode;
+                }else if((data.userCode !== undefined) && (data.userCode !== "") && (data.valideDate !== undefined) && (data.valideDate < new Date())){
+                    $('#userCode').html(data.userCode);
+                    $.Oda.Controller.ResetPwd.userCode = data.userCode;
                     $.Oda.Scope.Gardian.add({
                         id : "resetPwd",
                         listElt : ["email","pwd", "pwd2"],
                         function : function(params){
-                            console.log($("#email").val(),$("#pwd").val(),$("#pwd2").val() )
                             if( ($("#email").data("isOk")) && ($("#pwd").data("isOk")) && ($("#pwd2").data("isOk")) && ($("#pwd").val() === $("#pwd2").val()) ){
                                 $("#submit").btEnable();
                             }else{

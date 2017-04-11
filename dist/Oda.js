@@ -4302,14 +4302,15 @@ var $;
             },
             /**
              * @name $.Oda.Tooling.getParameterGet
-             * @param {Object} p_params
-             * @param p_params.url
+             * @param {Object} p
+             * @param p.url
+             * @example $.Oda.Tooling.getParameterGet({url:'http://localhost/how/#page?attr=1'});
              * @returns {Object}
              */
-            getParameterGet: function(p_params) {
+            getParameterGet: function(p) {
                 try {
                     var result = {};
-                    var tableau = decodeURI(p_params.url).split("?");
+                    var tableau = decodeURI(p.url).split("?");
                     if(tableau.length > 1){
                         tableau = tableau[1];
                         tableau = tableau.split("&");
