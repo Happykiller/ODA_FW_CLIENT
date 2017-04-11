@@ -69,53 +69,54 @@
                 var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getRecupUtilisateur.php", {callback : function(results){
                     if(results.data.resultat.data.length === 0){
                         $.Oda.Display.Notification.warningI8n("oda-forgot.unknown");
-                    }
-                    for(var indice in results.data.resultat.data){
-                        var compte = results.data.resultat.data[indice];
+                    }else{
+                        for(var indice in results.data.resultat.data){
+                            var compte = results.data.resultat.data[indice];
 
-                        var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
+                            var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
 
-                        var valideDate = new Date(new Date() + 30*60000);
-                        valideDate = valideDate.getTime();
+                            var valideDate = new Date(new Date() + 30*60000);
+                            valideDate = valideDate.getTime();
 
-                        var token = {
-                            "userCode": compte.code_user,
-                            "valideDate": valideDate
-                        };
+                            var token = {
+                                "userCode": compte.code_user,
+                                "valideDate": valideDate
+                            };
 
-                        var data = JSON.stringify(token);
-                        var compressToken = LZString.compress(data);
-                        var tokenUri;
-                        try{
-                            tokenUri = encodeURI(compressToken);
-                        }catch (er) {
-                            tokenUri = escape(compressToken);
-                        }
-
-                        $.Oda.Display.TemplateHtml.create({
-                            template: "mailForgot",
-                            scope: {
-                                "userName": compte.prenom + " " + compte.nom,
-                                "siteUrl": $.Oda.Context.host,
-                                "urlReset": $.Oda.Context.host+"#resetPwd?token="+tokenUri
-                            },
-                            callback: function(strHtml){
-                                var paramsMail = {
-                                    mail_mails_dest: compte["mail"]+",",
-                                    mail_mail_ori: contact_mail_administrateur,
-                                    mail_labelle_ori: "Service Mail ODA",
-                                    mail_mail_reply: contact_mail_administrateur,
-                                    mail_labelle_reply: "Service Mail ODA",
-                                    mail_mails_cache: contact_mail_administrateur,
-                                    message_html: strHtml,
-                                    sujet : $.Oda.I8n.get("oda-forgot","mailSubjet"),
-                                };
-
-                                $.Oda.Interface.sendMail(paramsMail);
-
-                                $.Oda.Display.Notification.successI8n("oda-forgot.mailSend");
+                            var data = JSON.stringify(token);
+                            var compressToken = LZString.compress(data);
+                            var tokenUri;
+                            try{
+                                tokenUri = encodeURI(compressToken);
+                            }catch (er) {
+                                tokenUri = escape(compressToken);
                             }
-                        });
+
+                            $.Oda.Display.TemplateHtml.create({
+                                template: "mailForgot",
+                                scope: {
+                                    "userName": compte.prenom + " " + compte.nom,
+                                    "siteUrl": $.Oda.Context.host,
+                                    "urlReset": $.Oda.Context.host+"#resetPwd?token="+tokenUri
+                                },
+                                callback: function(strHtml){
+                                    var paramsMail = {
+                                        email_mails_dest: compte.mail+",",
+                                        email_mail_ori: contact_mail_administrateur,
+                                        email_labelle_ori: "Service Mail ODA",
+                                        email_mail_reply: contact_mail_administrateur,
+                                        email_labelle_reply: "Service Mail ODA",
+                                        email_mails_cache: contact_mail_administrateur,
+                                        message_html: strHtml,
+                                        sujet : $.Oda.I8n.get("oda-forgot","mailSubjet"),
+                                    };
+                                    
+                                    $.Oda.Interface.sendMail(paramsMail);
+
+                                    $.Oda.Display.Notification.successI8n("oda-forgot.mailSend");
+                                }
+                            });
+                        }
                     }
                 }}, tabInput);
                 $.Oda.Router.navigateTo();

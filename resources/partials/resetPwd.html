@@ -28,7 +28,7 @@
                 oda-input-text-check="Oda.Regexs:password"
                 required>
         </div>
-        <div class="col-md-6"/>
+        <div class="col-md-6">
             <oda-input-text 
                 oda-input-text-name="pwd2" 
                 oda-input-text-type="password" 
@@ -78,10 +78,11 @@
                         id : "resetPwd",
                         listElt : ["email","pwd", "pwd2"],
                         function : function(params){
+                            console.log($("#email").val(),$("#pwd").val(),$("#pwd2").val() )
                             if( ($("#email").data("isOk")) && ($("#pwd").data("isOk")) && ($("#pwd2").data("isOk")) && ($("#pwd").val() === $("#pwd2").val()) ){
-                                $("#submit").btDisable();
-                            }else{
                                 $("#submit").btEnable();
+                            }else{
+                                $("#submit").btDisable();
                             }
                         }
                     });
