@@ -56,8 +56,8 @@
         "add": "Ajouter",
         "all": "Tous",
         "tuto-read": "Lu",
-        "tuto-label-avatar": "For display system menu, click.",
-        "tuto-label-brand": "To go home click.",
+        "tuto-label-avatar": "Pour affichier le menu, cliquer",
+        "tuto-label-brand": "Pour rejoindre l'accueil",
         "test": "Ceci est un test => var1:{{var1}}, var2:{{var2}}."
     },
     "en": {
@@ -115,8 +115,8 @@
         "add": "Add",
         "all": "All",
         "tuto-read" : "Check",
-        "tuto-label-avatar": "Pour affichier le menu, cliquer",
-        "tuto-label-brand": "Pour rejoindre l'accueil",
+        "tuto-label-avatar": "For display system menu, click.",
+        "tuto-label-brand": "To go home click.",
         "test": "This is a test => var1:{{var1}}, var2:{{var2}}."
     },
     "es": {
