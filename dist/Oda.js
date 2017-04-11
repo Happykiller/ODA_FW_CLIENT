@@ -1896,7 +1896,7 @@ var $;
             },
             /**
              * @deprecated 
-             * @name $.Oda.Display.jsonToStringHtml
+             * @name $.Oda.Display.jsonToStringSingleQuote
              * @param {Object} p_params
              * @param p_params.json
              * @returns {String}
@@ -4842,6 +4842,43 @@ var $;
                     return str;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.jsonToStringHtml: " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @name $.Oda.Tooling.stringToOdaCrypt
+             * @param {String} str
+             * @example $.Oda.Tooling.stringToCrypt('{"userCode":"ILRO","valideDate":1491902766000}');
+             * @returns {String}
+             */
+            stringToOdaCrypt: function(str){
+                try {
+                    var strOdaCrypt = '';
+                    for(var i=0;i<str.length;i++) {
+                        strOdaCrypt += ''+str.charCodeAt(i).toString(16);
+                    }
+                    return strOdaCrypt;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.stringToOdaCrypt: " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @name $.Oda.Tooling.odaCryptToString
+             * @param {String} strOdaCrypt
+             * @example $.Oda.Tooling.stringToCrypt('{"userCode":"ILRO","valideDate":1491902766000}');
+             * @returns {String}
+             */
+            odaCryptToString: function(strOdaCrypt){
+                try {
+                    var hex = strOdaCrypt.toString();//force conversion
+                    var str = '';
+                    for (var i = 0; i < hex.length; i += 2){
+                        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+                    }
+                    return str;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Tooling.odaCryptToString: " + er.message);
                     return null;
                 }
             }
