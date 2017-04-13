@@ -2933,6 +2933,12 @@ var $;
                                     $.Oda.Display.Widget.checkBtnEnter();
                                 }
 
+                                var odaBtnTips = elt.attr("oda-btn-tips");
+                                if(odaBtnTips){
+                                    var tipsTrad = $.Oda.I8n.getByString(odaBtnTips);
+                                    elt.attr("title", tipsTrad);
+                                }
+
                                 elt.click(function( event ) {
                                     event.preventDefault();
                                     var disabled = elt.attr("disabled");
@@ -3295,8 +3301,8 @@ var $;
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
                                         hight: hight,
-                                        tips: tipsHtml,
                                         labelDisplay: labelDisplayHtml,
+                                        tips: tipsHtml,
                                         tipsDisplay: tipsDisplayHtml,
                                         value: value
                                     }
@@ -3342,12 +3348,21 @@ var $;
                                 if(tips){
                                     var tipsText = $.Oda.I8n.getByString(tips);
                                     var $spanTips = $inputArea.parent().parent().find('span:last');
-                                    $inputArea.focus(function() {
-                                        $spanTips.html(tipsText);
-                                    });
-                                    $inputArea.focusout(function() {
-                                        $spanTips.html("&nbsp;");
-                                    });
+                                    if(rich){
+                                        CKEDITOR.instances[name].on('focus', function() {
+                                            $spanTips.html(tipsText);
+                                        });
+                                        CKEDITOR.instances[name].on('blur', function() {
+                                            $spanTips.html("&nbsp;");
+                                        });
+                                    }else{
+                                        $inputArea.focus(function() {
+                                            $spanTips.html(tipsText);
+                                        });
+                                        $inputArea.focusout(function() {
+                                            $spanTips.html("&nbsp;");
+                                        });
+                                    }
                                 }
 
                                 if(placeholder){
