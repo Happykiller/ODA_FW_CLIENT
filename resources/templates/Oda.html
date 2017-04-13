@@ -59,7 +59,7 @@
 <script id="oda-widget-input-area-tpl" type="text/template">
 <div class="form-group">
     <label for="{{name}}" style="{{labelDisplay}}">{{label}}&nbsp;{{requiredStart}}</label>
-    <textarea rows={{hight}} class="form-control" name="{{name}}" id="{{id}}" {{requiredBalise}} title="{{tips}}">{{value}}</textarea>
+    <textarea rows={{hight}} class="form-control" name="{{name}}" id="{{id}}" {{requiredBalise}} {{disabledBalise}} title="{{tips}}">{{value}}</textarea>
     <span style="color:#a1a1a1;{{tipsDisplay}}">&nbsp;</span>
 </div>
 </script>
@@ -68,7 +68,7 @@
 <div class="form-group">
     <label for="{{name}}" style="{{labelDisplay}}">{{label}}&nbsp;{{requiredStart}}</label>
     <div class="checkbox">
-        <input type="checkbox" name="{{name}}" id="{{id}}" {{requiredBalise}} title="{{tips}}" {{(value==='1'||value==='true')?'checked':''}}>
+        <input type="checkbox" name="{{name}}" id="{{id}}" {{requiredBalise}} {{disabledBalise}} title="{{tips}}" {{(value==='1'||value==='true')?'checked':''}}>
         <label>{{tips}}</label>
     </div>
 </div>
@@ -77,7 +77,7 @@
 <script id="oda-widget-input-select-tpl" type="text/template">
 <div class="form-group">
     <label for="{{name}}" style="{{labelDisplay}}">{{label}}&nbsp;{{requiredStart}}</label>
-    <select name="{{name}}" id="{{id}}" {{requiredBalise}} title="{{tips}}" class="form-control"></select>
+    <select name="{{name}}" id="{{id}}" {{requiredBalise}} {{disabledBalise}} title="{{tips}}" class="form-control"></select>
 </div>
 </script>
 

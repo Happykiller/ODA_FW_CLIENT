@@ -3154,6 +3154,13 @@ var $;
                                     case "oda-input-text-value":
                                         $inputText.val(newValue);
                                         break;
+                                    case "disabled":
+                                        if(oldValue === null){
+                                            $inputText.attr("disabled","");
+                                        }else{
+                                            $inputText.removeAttr("disabled");
+                                        }
+                                        break;
                                     default:
                                         break;
                                 }
@@ -3292,6 +3299,12 @@ var $;
                                     requiredBalise = 'required';
                                 }
 
+                                var disabled = elt.attr("disabled");
+                                var disabledBalise = "";
+                                if(disabled){
+                                    disabledBalise = 'disabled';
+                                }
+
                                 var html  = $.Oda.Display.TemplateHtml.create({
                                     template: "oda-widget-input-area-tpl",
                                     scope: {
@@ -3304,6 +3317,7 @@ var $;
                                         labelDisplay: labelDisplayHtml,
                                         tips: tipsHtml,
                                         tipsDisplay: tipsDisplayHtml,
+                                        disabledBalise: disabledBalise,
                                         value: value
                                     }
                                 });
@@ -3313,10 +3327,26 @@ var $;
                             attributeChangedCallback: function(attrName, oldValue, newValue){
                                 var elt = $(this);
                                 var name = elt.attr("oda-input-area-name");
+                                var rich = elt.attr("oda-input-area-rich");
                                 var $inputArea = $('#'+name);
                                 switch(attrName) {
                                     case "oda-input-area-value":
                                         $inputArea.val(newValue);
+                                        break;
+                                    case "disabled":
+                                        if(rich){
+                                            if(oldValue === null){
+                                                CKEDITOR.instances[name].setReadOnly(true);
+                                            }else{
+                                                CKEDITOR.instances[name].setReadOnly(false);
+                                            }
+                                        }else{
+                                            if(oldValue === null){
+                                                $inputArea.attr("disabled","");
+                                            }else{
+                                                $inputArea.removeAttr("disabled");
+                                            }
+                                        }
                                         break;
                                     default:
                                         break;
@@ -3492,6 +3522,12 @@ var $;
                                     tipsHtml = $.Oda.I8n.getByString(tips);
                                 }
 
+                                var disabled = elt.attr("disabled");
+                                var disabledBalise = "";
+                                if(disabled){
+                                    disabledBalise = 'disabled';
+                                }
+
                                 var html  = $.Oda.Display.TemplateHtml.create({
                                     template: "oda-widget-input-checkbox-tpl",
                                     scope: {
@@ -3501,6 +3537,7 @@ var $;
                                         labelDisplay: labelDisplayHtml,
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
+                                        disabledBalise: disabledBalise,
                                         tips: tipsHtml,
                                         value: value
                                     }
@@ -3510,8 +3547,18 @@ var $;
                             },
                             attributeChangedCallback: function(attrName, oldValue, newValue){
                                 var elt = $(this);
+                                var name = elt.attr("oda-input-checkbox-name");
+                                var $inputCheckbox = $('#'+name);
                                 switch(attrName) {
+                                    case "disabled":
+                                        if(oldValue === null){
+                                            $inputCheckbox.attr("disabled","");
+                                        }else{
+                                            $inputCheckbox.removeAttr("disabled");
+                                        }
+                                        break;
                                     default:
+                                        break;
                                 }
                             },
                             attachedCallback: function(){
@@ -3717,6 +3764,12 @@ var $;
                                     tipsHtml = $.Oda.I8n.getByString(tips);
                                 }
 
+                                var disabled = elt.attr("disabled");
+                                var disabledBalise = "";
+                                if(disabled){
+                                    disabledBalise = 'disabled';
+                                }
+
                                 var html  = $.Oda.Display.TemplateHtml.create({
                                     template: "oda-widget-input-select-tpl",
                                     scope: {
@@ -3726,6 +3779,7 @@ var $;
                                         labelDisplay: labelDisplayHtml,
                                         requiredStart: requiredStart,
                                         requiredBalise: requiredBalise,
+                                        disabledBalise: disabledBalise,
                                         tips: tipsHtml
                                     }
                                 });
@@ -3747,7 +3801,15 @@ var $;
                                     case "oda-input-select-value":
                                         $select.val(value);
                                         break;
+                                    case "disabled":
+                                        if(oldValue === null){
+                                            $select.attr("disabled","");
+                                        }else{
+                                            $select.removeAttr("disabled");
+                                        }
+                                        break;
                                     default:
+                                        break;
                                 }
                             },
                             attachedCallback: function(){
