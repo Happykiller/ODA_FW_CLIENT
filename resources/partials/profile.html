@@ -38,7 +38,7 @@
                         </tr>
                         <tr>
                             <td><oda-label oda-label-value="oda-profile.avatar"/></td>
-                            <td><div id="img_avatar"></div></td>
+                            <td><oda-avatar oda-avatar-user="" oda-avatar-name="avatarProfile" oda-avatar-height="45" oda-avatar-width="45" /></td>
                             <td><div class="fileUpload btn btn-primary"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><input type="file" class="upload" onchange="$.Oda.Controller.Profile.setAvatar({elt : this});" id="bt_avatar" /></div></td>
                         </tr>
                     </table>
@@ -77,6 +77,7 @@
          */
         start: function () {
             try {
+                $("[oda-avatar-name=avatarProfile]").attr('oda-avatar-user',$.Oda.Session.code_user);
                 $.Oda.Controller.Profile.loadingInfos();
                 return this;
             } catch (er) {
@@ -92,17 +93,17 @@
          */
         setAvatar: function (p_params) {
             try {
+                $("[oda-avatar-name=avatar]").attr('oda-avatar-user','');
+                $("[oda-avatar-name=avatarProfile]").attr('oda-avatar-user','');
                 $.Oda.Tooling.postResources({idInput : p_params.elt.id, folder : "avatars/", names : [$.Oda.Session.code_user], callback: function(response){
                     var response = response[$.Oda.Session.code_user];
                     if(response.status === "TRANS_STATUS_SUCCESS"){
                         $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'uploadSuccess'));
-                        $.Oda.Display.Scene.Avatar.avatar({callback : function(data){
-                            $.Oda.Display.Scene.Avatar.getElt().attr('src',data.src);
-                            $("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');
-                        }});
                     }else{
                         $.Oda.Display.Notification.error($.Oda.I8n.get('oda-profile', 'uploadError', {variables: {msg : response.msg}}));
                     }
+                    $("[oda-avatar-name=avatar]").attr('oda-avatar-user',$.Oda.Session.code_user);
+                    $("[oda-avatar-name=avatarProfile]").attr('oda-avatar-user',$.Oda.Session.code_user);
                 }});
                 return this;
             } catch (er) {
@@ -137,10 +138,6 @@
                     $('#lab_mail').html(mail);
                     $('#lab_langue').html(langue);
                     $('#rank').html(rankLabel);
-
-                    $.Oda.Display.Scene.Avatar.avatar({callback: function(data){
-                        $("#img_avatar").html('<img src="'+data.src+'" title="'+$.Oda.I8n.get('oda-profile', 'avatar')+'" height="42" width="42">');
-                    }});
                 } };
                 var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
                 var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);

@@ -2105,16 +2105,14 @@ var $;
                         var htmlScene = $.Oda.Display.TemplateHtml.create({
                             template : "oda-scene-tpl"
                         });
-                        $( "body" ).append(htmlScene);
+                        $("body").append(htmlScene);
 
                         var htmlTudo = $.Oda.Display.TemplateHtml.create({
                             template : "oda-tuto-tpl"
                         });
-                        $( "body" ).append(htmlTudo);
+                        $("body").append(htmlTudo);
 
-                        $.Oda.Display.Scene.Avatar.getElt().attr('src',$.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
-
-                        $("#avatar").click(function(e) {
+                        $("[oda-avatar-name=avatar]").click(function(e) {
                             e.preventDefault();
                             $("#wrapper").toggleClass("toggled");
                         });
@@ -2123,94 +2121,6 @@ var $;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Scene.load : " + er.message);
                         return null;
-                    }
-                },
-                Avatar: {
-                    loaded: false,
-                    $elt: null,
-                    /**
-                     * @name $.Oda.Display.Scene.Avatar.getElt
-                     * @returns {$.Oda.Display.Scene.Avatar.$elt}
-                     */
-                    getElt: function() {
-                        try {
-                            if(this.$elt === null){
-                                var $avatar = $("#avatar");
-                                if($avatar !== undefined){
-                                    this.$elt = $("#avatar");
-                                }
-                            }
-                            return this.$elt;
-                        } catch (er) {
-                            $.Oda.Log.error("$.Oda.Display.Scene.Avatar.getElt : " + er.message);
-                            return null;
-                        }
-                    },
-                    /**
-                     * @name $.Oda.Display.Scene.Avatar.load
-                     * @returns {$.Oda.Display.Scene.Avatar}
-                     */
-                    load: function() {
-                        try {
-                            if(!$.Oda.Display.Scene.Avatar.loaded){
-                                $.Oda.Display.Scene.Avatar.avatar({callback : function(data){$.Oda.Display.Scene.Avatar.getElt().attr('src',data.src);}});
-                                $.Oda.Display.Scene.Avatar.loaded = true;
-                            }
-                            return this;
-                        } catch (er) {
-                            $.Oda.Log.error("$.Oda.Display.Scene.Avatar.load : " + er.message);
-                            return null;
-                        }
-                    },
-                    /**
-                     * @name $.Oda.Display.Scene.Avatar.unLoad
-                     * @returns {$.Oda.Display.Scene.Avatar}
-                     */
-                    unLoad: function() {
-                        try {
-                            $.Oda.Display.Scene.Avatar.getElt().attr('src',$.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png");
-                            $.Oda.Display.Scene.Avatar.loaded = false;
-                            return this;
-                        } catch (er) {
-                            $.Oda.Log.error("$.Oda.Display.Scene.Avatar.unLoad : " + er.message);
-                            return null;
-                        }
-                    },
-                    /**
-                     * @name $.Oda.Display.Scene.Avatar.avatar
-                     * @param {Object} p_params
-                     * @param {string} p_params.code_user
-                     * @param {function} p_params.callback
-                     * @returns {$.Oda.Display.Scene.avatar}
-                     */
-                    avatar: function(p_params) {
-                        try {
-                            var targetUser = $.Oda.Session.code_user;
-                            if(p_params.hasOwnProperty("code_user") && p_params.code_user !== ""){
-                                targetUser = p_params.code_user;
-                            }
-
-                            if(targetUser !== ""){
-                                var url = $.Oda.Context.rest + "vendor/happykiller/oda/resources/script/getResources.php?mili=" + $.Oda.Tooling.getMilise() + "&fic=avatars/" + $.Oda.Session.code_user + ".png";
-                                $.ajax({
-                                    url: url,
-                                    type:'GET',
-                                    error: function(){
-                                        p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
-                                    },
-                                    success: function(){
-                                        p_params.callback({src : $.Oda.Context.resources + 'avatars/' + $.Oda.Session.code_user + ".png?mili=" + $.Oda.Tooling.getMilise()});
-                                    }
-                                });
-                            }else{
-                                p_params.callback({src : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/img/no_avatar.png"});
-                            }
-
-                            return this;
-                        } catch (er) {
-                            $.Oda.Log.error("$.Oda.Display.Scene.avatar : " + er.message);
-                            return null;
-                        }
                     }
                 },
             },
@@ -2841,6 +2751,7 @@ var $;
                         $.Oda.Display.Widget.loadSelectInput();
                         $.Oda.Display.Widget.loadLoading();
                         $.Oda.Display.Widget.loadLabel();
+                        $.Oda.Display.Widget.loadAvatar();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3960,6 +3871,107 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadLabel: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.loadAvatar
+                 */
+                loadAvatar: function(){
+                    try {
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-avatar",
+                            createdCallback: function(){
+                                var $elt = $(this);
+                                var name = $elt.attr("oda-avatar-name");
+
+                                if(($.Oda.Context.window.document.getElementById(name)) || !name){
+                                    throw new Error("Id:'"+name+"' already exist");
+                                }
+
+                                $.Oda.Display.Widget.setImageAvatar($elt);
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var $elt = $(this);
+                                switch(attrName) {
+                                    case "oda-avatar-user":
+                                        $.Oda.Display.Widget.setImageAvatar($elt);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            },
+                            attachedCallback: function(){},
+                            detachedCallback: function(){}
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadAvatar: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.setImageAvatar
+                 */
+                setImageAvatar: function($elt){
+                    try {
+                        var name = $elt.attr("oda-avatar-name");
+                        var user = $elt.attr("oda-avatar-user");
+                        var height = $elt.attr("oda-avatar-height");
+                        var width = $elt.attr("oda-avatar-width");
+
+                        var codeUser = ($.Oda.Session.code_user==="")?"noUser":$.Oda.Session.code_user;
+
+                        if(user && user !== ""){
+                            codeUser = user;
+                        }
+                        
+                        var src = $.Oda.Context.rest+'vendor/happykiller/oda/resources/api/rest/avatar/'+codeUser+'?mili'+$.Oda.Tooling.getMilise();
+
+                        var divHeight;
+                        var imgHeight;
+                        var imgHeightDec;
+                        if(height){
+                            divHeight = height;
+                            imgHeight = $.Oda.Tooling.arrondir(height/1.5,0);
+                            imgHeightDec = $.Oda.Tooling.arrondir(imgHeight/2,0);
+                        }else{
+                            divHeight = 100;
+                            imgHeight = 67;
+                            imgHeightDec = 34;
+                        }
+                        src+='&h='+ imgHeight;
+
+                        var divWidth;
+                        var imgWidth;
+                        var imgWidthDec;
+                        if(width){
+                            divWidth = width;
+                            imgWidth = $.Oda.Tooling.arrondir(width/1.5,0);
+                            imgWidthDec = $.Oda.Tooling.arrondir(imgWidth/2,0);
+                        }else{
+                            divWidth = 100;
+                            imgWidth = 67;
+                            imgWidthDec = 34;
+                        }
+                        src+='&w='+ imgWidth;
+
+                        var html  = $.Oda.Display.TemplateHtml.create({
+                            template: "oda-avatar-tpl",
+                            scope: {
+                                src: src,
+                                name: name,
+                                height: divHeight,
+                                imgHeight: imgHeight,
+                                imgHeightDec: imgHeightDec,
+                                width: divWidth,
+                                imgWidth: imgWidth,
+                                imgWidthDec: imgWidthDec
+                            }
+                        });
+
+                        $elt.html(html);
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.setImageAvatar: " + er.message);
                         return null;
                     }
                 },
@@ -6158,14 +6170,15 @@ var $;
                 try {
                     $.get(p_params.routeDef.path, function(data) {
                         $('#'+$.Oda.Context.mainDiv).html(data);
+                        $("[oda-avatar-name=avatar]").attr('oda-avatar-user',$.Oda.Session.code_user);
                         $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
                         if($.Oda.Session.code_user !== ""){
                             $.Oda.Tuto.start();
                         }
                     })
-                        .fail(function(){
-                            $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
-                        });
+                    .fail(function(){
+                        $.Oda.Log.error("$.Oda.Router.loadPartial : " + p_params.routeDef.path + " not found.");
+                    });
                     return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Router.loadPartial : " + er.message);
@@ -6261,7 +6274,6 @@ var $;
                         if (($.Oda.Context.ModeExecution.scene) && ($.Oda.Session.code_user !== "")) {
                             $.Oda.Display.MenuSlide.show();
                             $.Oda.Display.Menu.show();
-                            $.Oda.Display.Scene.Avatar.load();
                         }
 
                         //show message
