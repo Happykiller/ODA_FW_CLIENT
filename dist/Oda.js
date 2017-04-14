@@ -5195,7 +5195,6 @@ var $;
                         $.Oda.Display.MenuSlide.remove();
                         $.Oda.Display.Menu.remove();
                         $.Oda.Router.routes.auth.go();
-                        $.Oda.Display.Scene.Avatar.unLoad();
                     }}, {
                         "key" : $.Oda.Session.key
                     });
