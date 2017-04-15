@@ -2251,18 +2251,15 @@ var $;
                         }
 
                         $('#'+p_params.name+'_label').html("<b>"+p_params.label+"</b>");
-                        $.Oda.Scope.init({id:p_params.name+'_label'});
 
                         var contentPopup = p_params.details;
                         $('#'+p_params.name+'_content').html(contentPopup);
-                        $.Oda.Scope.init({id:p_params.name+'_content'});
 
                         if(p_params.hasOwnProperty("footer")){
                             $('#'+p_params.name+'_footer').html(p_params.footer);
                         }else{
                             $('#'+p_params.name+'_footer').html('<button type="button" class="btn btn-default" data-dismiss="modal"><oda-label oda-label-value="oda-main.bt-close"/></button>');
                         }
-                        $.Oda.Scope.init({id:p_params.name+'_footer'});
 
                         if(p_params.hasOwnProperty("callback")) {
                             $('#'+p_params.name).on('shown.bs.modal', function(e) {
@@ -5912,7 +5909,6 @@ var $;
                     $.get(p_params.routeDef.path, function(data) {
                         $('#'+$.Oda.Context.mainDiv).html(data);
                         $("[oda-avatar-name=avatar]").attr('oda-avatar-user',$.Oda.Session.code_user);
-                        $.Oda.Scope.init({id:$.Oda.Context.mainDiv});
                         if($.Oda.Session.code_user !== ""){
                             $.Oda.Tuto.start();
                         }
