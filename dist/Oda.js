@@ -3884,7 +3884,7 @@ var $;
                             imgHeight = 67;
                             imgHeightDec = 34;
                         }
-                        src+='&h='+ imgHeight;
+                        src+='&h='+ divHeight;
 
                         var divWidth;
                         var imgWidth;
@@ -3898,7 +3898,7 @@ var $;
                             imgWidth = 67;
                             imgWidthDec = 34;
                         }
-                        src+='&w='+ imgWidth;
+                        src+='&w='+ divWidth;
 
                         var html  = $.Oda.Display.TemplateHtml.create({
                             template: "oda-avatar-tpl",
