@@ -3920,10 +3920,6 @@ var $;
                  */
                 loadGuidance: function(){
                     try {
-                        $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user, {
-                            currentId: "",
-                            ids:{}
-                        });
                         $(document).on("click", ".popover .close" , function(){
                             $(this).parents(".popover").popover('hide');
                         });
@@ -3932,62 +3928,26 @@ var $;
                             var id = $elt.data('id');
                             $elt.parents(".popover").popover('hide');
                             var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
-                            guidanceStorage.ids[id].status = 'read';
-                            $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            if(guidanceStorage){
+                                guidanceStorage[id].status = 'read';
+                                $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            }
                             $.Oda.Guidance.run();
                         });
                         $(document).on("click", ".popover .guidance-read" , function(){
                             var $elt = $(this);
                             var id = $elt.data('id');
                             var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
-                            guidanceStorage.ids[id].status = 'read';
-                            $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            if(guidanceStorage){
+                                guidanceStorage[id].status = 'read';
+                                $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            }
                             $elt.parents(".popover").popover('hide');
                         });
                         $.Oda.Display.Polyfill.createHtmlElement({
                             name: "oda-guidance",
                             createdCallback: function(){
                                 var $elt = $(this);
-                                var id = $elt.attr("oda-guidance-id");
-                                var location = $elt.attr("oda-guidance-location");
-                                var next = $elt.attr("oda-guidance-next");
-                                var title = $elt.attr("oda-guidance-title");
-                                $elt.attr("class","oda-guidance");
-
-                                var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
-                                if(guidanceStorage.ids[id] === undefined){
-                                    guidanceStorage.ids[id] = {
-                                        status: (next)?'next':'show'
-                                    };
-                                }
-                                $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
-                                
-                                if(guidanceStorage.ids[id].status !== "read"){
-                                    var $target = $('#'+id);
-
-                                    var strHtml = $elt.html();
-                                    if(strHtml.indexOf('<') === -1){
-                                        strHtml = $.Oda.I8n.getByString(strHtml);
-                                    }
-                                    strHtml += '<p style="text-align:center;"><a href="#" class="btn btn-info btn-xs guidance-'+((next)?'next':'read')+'" data-id="'+id+'">'+$.Oda.I8n.get('oda-main','guidance-read')+'</a></p>';
-                                    
-
-                                    var strTitle = "";
-                                    if(title){
-                                        strTitle = $.Oda.I8n.getByString(title);
-                                    }else{
-                                        strTitle = $.Oda.I8n.get("oda-main","guidance");
-                                    }
-                                    strTitle += '<a href="#" class="close" data-dismiss="alert">×</a>';
-
-                                    $target.popover({
-                                        trigger: "manual",
-                                        placement : location,
-                                        html : true,
-                                        title : strTitle,
-                                        content : strHtml
-                                    });
-                                }
                             },
                             attributeChangedCallback: function(attrName, oldValue, newValue){
                                 var $elt = $(this);
@@ -3998,7 +3958,41 @@ var $;
                                         break;
                                 }
                             },
-                            attachedCallback: function(){},
+                            attachedCallback: function(){
+                                var $elt = $(this);
+                                var id = $elt.attr("oda-guidance-id");
+                                var location = $elt.attr("oda-guidance-location");
+                                if(!location){
+                                    location = "auto"
+                                }
+                                var next = $elt.attr("oda-guidance-next");
+                                var title = $elt.attr("oda-guidance-title");
+                                $elt.attr("class","oda-guidance");
+                                
+                                var $target = $('#'+id);
+
+                                var strHtml = $elt.html();
+                                if(strHtml.indexOf('<') === -1){
+                                    strHtml = $.Oda.I8n.getByString(strHtml);
+                                }
+                                strHtml += '<p style="text-align:center;"><a href="#" class="btn btn-info btn-xs guidance-'+((next)?'next':'read')+'" data-id="'+id+'">'+$.Oda.I8n.get('oda-main','guidance-read')+'</a></p>';
+                                
+                                var strTitle = "";
+                                if(title){
+                                    strTitle = $.Oda.I8n.getByString(title);
+                                }else{
+                                    strTitle = $.Oda.I8n.get("oda-main","guidance");
+                                }
+                                strTitle += '<a href="#" class="close" data-dismiss="alert">×</a>';
+
+                                $target.popover({
+                                    trigger: "manual",
+                                    placement : location,
+                                    html : true,
+                                    title : strTitle,
+                                    content : strHtml
+                                });
+                            },
                             detachedCallback: function(){}
                         });
                     } catch (er) {
@@ -5460,20 +5454,36 @@ var $;
              */
             run: function(){
                 try {
-                    var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
+                    var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user); 
+                    if(!guidanceStorage){
+                        guidanceStorage = {};
+                        $('oda-guidance').each(function(){
+                            $elt = $(this);
+                            var id = $elt.attr("oda-guidance-id");
+                            var next = $elt.attr("oda-guidance-next");
+                            guidanceStorage[id] = {
+                                status: (next)?'next':'show'
+                            };
+                        });
+                        $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                    }
                     var gardianNext = false;
-                    for(var key in guidanceStorage.ids){
-                        var elt = guidanceStorage.ids[key];
+                    for(var key in guidanceStorage){
+                        var elt = guidanceStorage[key];
                         if(elt.status === "show"){
                             var $elt = $('#'+key);
                             if(!$elt.next('div.popover:visible').length){
-                                $('#'+key).popover('show');
+                                $elt.popover('show');
                             }
                         }else if((elt.status === 'next')&&(!gardianNext)){
                             gardianNext = true;
-                            $('#'+key).popover('show');
+                            var $elt = $('#'+key);
+                            if(!$elt.next('div.popover:visible').length){
+                                $elt.popover('show');
+                            }
                         }
                     }
+                    return this;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Guidance.run : " + er.message);
                 }
