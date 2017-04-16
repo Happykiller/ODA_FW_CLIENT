@@ -162,3 +162,7 @@ a:hover {
 .popover {
     z-index: 9999; /* A value higher than 1010 that solves the problem */
 }
+
+.oda-guidance {
+    display: none;
+}

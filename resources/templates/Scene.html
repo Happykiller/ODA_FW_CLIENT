@@ -22,10 +22,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#" style="margin-top:-13px;">
-                        <oda-avatar oda-avatar-user="" oda-avatar-name="avatar" oda-avatar-height="45" oda-avatar-width="45" oda-tuto="id:oda-avatar;location:bottom;bt-next:true;" />
+                    <a class="navbar-brand" href="#" style="margin-top:-13px;" id="linkAvatar">
+                        <oda-avatar oda-avatar-user="" oda-avatar-name="avatar" oda-avatar-height="45" oda-avatar-width="45"/>
                     </a>
-                    <a class="navbar-brand" onclick="$.Oda.Router.navigateTo({'route':'home','args':{}});" id="projectLabel" oda-tuto="id:oda-brand;location:bottom;bt-next:true;">Project</a>
+                    <oda-guidance oda-guidance-id="linkAvatar" oda-guidance-location="bottom" oda-guidance-next="true">oda-main.guidance-label-avatar</oda-guidance>
+                    <a class="navbar-brand" onclick="$.Oda.Router.navigateTo({'route':'home','args':{}});" id="projectLabel">Project</a>
+                    <oda-guidance oda-guidance-id="projectLabel" oda-guidance-location="bottom" oda-guidance-next="true">oda-main.guidance-label-band</oda-guidance>
                 </div>
 
                 <div class="collapse navbar-collapse" id="collapsable-menu">

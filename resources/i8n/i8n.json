@@ -55,9 +55,10 @@
         "new": "Nouveau",
         "add": "Ajouter",
         "all": "Tous",
-        "tuto-read": "Lu",
-        "tuto-label-avatar": "Pour affichier le menu, cliquer",
-        "tuto-label-brand": "Pour rejoindre l'accueil",
+        "guidance": "Aide",
+        "guidance-read": "Lu",
+        "guidance-label-avatar": "Pour affichier le menu, cliquer",
+        "guidance-label-brand": "Pour rejoindre l'accueil",
         "test": "Ceci est un test => var1:{{var1}}, var2:{{var2}}."
     },
     "en": {
@@ -114,9 +115,10 @@
         "new": "New",
         "add": "Add",
         "all": "All",
-        "tuto-read" : "Check",
-        "tuto-label-avatar": "For display system menu, click.",
-        "tuto-label-brand": "To go home click.",
+        "guidance": "Guidance",
+        "guidance-read": "Check",
+        "guidance-label-avatar": "For display system menu, click.",
+        "guidance-label-brand": "To go home click.",
         "test": "This is a test => var1:{{var1}}, var2:{{var2}}."
     },
     "es": {
@@ -173,9 +175,10 @@
         "new": "New",
         "add": "Add",
         "all": "All",
-        "tuto-read" : "Leer",
-        "tuto-label-avatar": "Para el menú sistema de visualización, clic.",
-        "tuto-label-brand": "Para volver a casa clic.",
+        "guidance": "Ayuda",
+        "guidance-read": "Leer",
+        "guidance-label-avatar": "Para el menú sistema de visualización, clic.",
+        "guidance-label-brand": "Para volver a casa clic.",
         "test": "Esto es una prueba => var1:{{var1}}, var2:{{var2}}."
     }
 }, {

@@ -2055,11 +2055,6 @@ var $;
                         });
                         $("body").append(htmlScene);
 
-                        var htmlTudo = $.Oda.Display.TemplateHtml.create({
-                            template : "oda-tuto-tpl"
-                        });
-                        $("body").append(htmlTudo);
-
                         $("[oda-avatar-name=avatar]").click(function(e) {
                             e.preventDefault();
                             $("#wrapper").toggleClass("toggled");
@@ -2675,7 +2670,6 @@ var $;
                 createI8n: function(params) {
                     try {
                         params.message = $.Oda.I8n.getByString(params.message);
-
                         return this.create(params);
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Push.createI8n : " + er.message);
@@ -2697,6 +2691,7 @@ var $;
                         $.Oda.Display.Widget.loadLoading();
                         $.Oda.Display.Widget.loadLabel();
                         $.Oda.Display.Widget.loadAvatar();
+                        $.Oda.Display.Widget.loadGuidance();
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.load: " + er.message);
                         return null;
@@ -3920,6 +3915,97 @@ var $;
                         return null;
                     }
                 },
+                /**
+                 * @name $.Oda.Display.Widget.loadGuidance
+                 */
+                loadGuidance: function(){
+                    try {
+                        $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user, {
+                            currentId: "",
+                            ids:{}
+                        });
+                        $(document).on("click", ".popover .close" , function(){
+                            $(this).parents(".popover").popover('hide');
+                        });
+                        $(document).on("click", ".popover .guidance-next" , function(){
+                            var $elt = $(this);
+                            var id = $elt.data('id');
+                            $elt.parents(".popover").popover('hide');
+                            var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
+                            guidanceStorage.ids[id].status = 'read';
+                            $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            $.Oda.Guidance.run();
+                        });
+                        $(document).on("click", ".popover .guidance-read" , function(){
+                            var $elt = $(this);
+                            var id = $elt.data('id');
+                            var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
+                            guidanceStorage.ids[id].status = 'read';
+                            $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                            $elt.parents(".popover").popover('hide');
+                        });
+                        $.Oda.Display.Polyfill.createHtmlElement({
+                            name: "oda-guidance",
+                            createdCallback: function(){
+                                var $elt = $(this);
+                                var id = $elt.attr("oda-guidance-id");
+                                var location = $elt.attr("oda-guidance-location");
+                                var next = $elt.attr("oda-guidance-next");
+                                var title = $elt.attr("oda-guidance-title");
+                                $elt.attr("class","oda-guidance");
+
+                                var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
+                                if(guidanceStorage.ids[id] === undefined){
+                                    guidanceStorage.ids[id] = {
+                                        status: (next)?'next':'show'
+                                    };
+                                }
+                                $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
+                                
+                                if(guidanceStorage.ids[id].status !== "read"){
+                                    var $target = $('#'+id);
+
+                                    var strHtml = $elt.html();
+                                    if(strHtml.indexOf('<') === -1){
+                                        strHtml = $.Oda.I8n.getByString(strHtml);
+                                    }
+                                    strHtml += '<p style="text-align:center;"><a href="#" class="btn btn-info btn-xs guidance-'+((next)?'next':'read')+'" data-id="'+id+'">'+$.Oda.I8n.get('oda-main','guidance-read')+'</a></p>';
+                                    
+
+                                    var strTitle = "";
+                                    if(title){
+                                        strTitle = $.Oda.I8n.getByString(title);
+                                    }else{
+                                        strTitle = $.Oda.I8n.get("oda-main","guidance");
+                                    }
+                                    strTitle += '<a href="#" class="close" data-dismiss="alert">×</a>';
+
+                                    $target.popover({
+                                        trigger: "manual",
+                                        placement : location,
+                                        html : true,
+                                        title : strTitle,
+                                        content : strHtml
+                                    });
+                                }
+                            },
+                            attributeChangedCallback: function(attrName, oldValue, newValue){
+                                var $elt = $(this);
+                                switch(attrName) {
+                                    case "attr":
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            },
+                            attachedCallback: function(){},
+                            detachedCallback: function(){}
+                        });
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.loadGuidance: " + er.message);
+                        return null;
+                    }
+                }
             }
         },
 
@@ -5368,101 +5454,28 @@ var $;
             }
         },
 
-        Tuto: {
-            enable: true,
-            currentElt: "",
-            listElt: [],
+        Guidance: {
             /**
-             * @name $.Oda.Tuto.start
+             * @name $.Oda.Guidance.run
              */
-            start: function(){
+            run: function(){
                 try {
-                    if($.Oda.Tuto.enable){
-                        $('[oda-tuto]').each(function(index, value){
-                            var theTuto = {};
-                            var def = $(value).attr("oda-tuto");
-                            var tabDef = def.split(";");
-                            for(var indice in tabDef){
-                                var elt = tabDef[indice];
-                                var prop = elt.split(":");
-                                if(prop[1] !== undefined){
-                                    theTuto[prop[0]] = prop[1];
-                                }
+                    var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user);
+                    var gardianNext = false;
+                    for(var key in guidanceStorage.ids){
+                        var elt = guidanceStorage.ids[key];
+                        if(elt.status === "show"){
+                            var $elt = $('#'+key);
+                            if(!$elt.next('div.popover:visible').length){
+                                $('#'+key).popover('show');
                             }
-
-                            if(!$.Oda.Tuto.listElt.hasOwnProperty(theTuto.id)){
-                                $.Oda.Tuto.listElt[theTuto.id] = {"id" : theTuto.id, "enable" : true, "props" : theTuto};
-                            }
-
-                            var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user, {});
-                            if(sessionTuto.hasOwnProperty(theTuto.id)){
-                                $.Oda.Tuto.listElt[theTuto.id].enable = sessionTuto[theTuto.id];
-                            }else{
-                                sessionTuto[theTuto.id] = true;
-                                $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
-                            }
-
-                            if(($.Oda.Tuto.listElt[theTuto.id].enable)&&($.Oda.Tuto.currentElt === "")){
-                                $.Oda.Tuto.show(theTuto.id);
-                            }
-                        });
-                    }
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.start : " + er.message);
-                }
-            },
-            /**
-             * @name $.Oda.Tuto.read
-             * @param id
-             */
-            read: function(id){
-                try {
-                    $.Oda.Tuto.listElt[id].enable = false;
-
-                    var sessionTuto = $.Oda.Storage.get("ODA-TUTO-"+$.Oda.Session.code_user);
-                    sessionTuto[id] = false;
-                    $.Oda.Storage.set("ODA-TUTO-"+$.Oda.Session.code_user, sessionTuto);
-
-                    $("[oda-tuto^='id:"+id+"']").tooltip('destroy');
-
-                    for(var elt in $.Oda.Tuto.listElt){
-                        if($.Oda.Tuto.listElt[elt].enable){
-                            this.show(elt);
-                            break;
+                        }else if((elt.status === 'next')&&(!gardianNext)){
+                            gardianNext = true;
+                            $('#'+key).popover('show');
                         }
                     }
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.read : " + er.message);
-                }
-            },
-            /**
-             * @name $.Oda.Tuto.show
-             * @param id
-             */
-            show: function(id){
-                try {
-                    var elt = $("[oda-tuto^='id:"+id+"']");
-
-                    $.Oda.Tuto.currentElt = id;
-
-                    elt.attr("data-toggle","tooltip");
-                    if($.Oda.Tuto.listElt[id].props.hasOwnProperty("location")){
-                        elt.attr("data-placement",$.Oda.Tuto.listElt[id].props.location);
-                    }
-                    elt.attr("data-html",true);
-
-                    var strHtml = $('[oda-tuto-content='+id+']').html();
-                    strHtml += '<br><button type="button" onclick="$.Oda.Tuto.read(\''+id+'\');" class="btn btn-info btn-xs">'+$.Oda.I8n.get('oda-main','tuto-read')+'</button >';
-                    
-                    elt.attr("title",strHtml);
-                    elt.on('hidden.bs.tooltip', function() {
-                        $.Oda.Tuto.enable = false;
-                        elt.tooltip('destroy');
-                    });
-
-                    elt.tooltip('show');
-                } catch (er) {
-                    $.Oda.Log.error("$.Oda.Tuto.show : " + er.message);
+                    $.Oda.Log.error("$.Oda.Guidance.run : " + er.message);
                 }
             }
         },
@@ -5910,7 +5923,7 @@ var $;
                         $('#'+$.Oda.Context.mainDiv).html(data);
                         $("[oda-avatar-name=avatar]").attr('oda-avatar-user',$.Oda.Session.code_user);
                         if($.Oda.Session.code_user !== ""){
-                            $.Oda.Tuto.start();
+                            $.Oda.Guidance.run();
                         }
                     })
                     .fail(function(){
