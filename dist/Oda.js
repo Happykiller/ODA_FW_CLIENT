@@ -35,7 +35,7 @@ var $;
     };
     //END EXTEND JQUERY
 
-    //BEGIN IE STUFF
+    //BEGIN POLYFILL
     if (typeof CustomEvent !== 'function') {
         var CustomEvent;
 
@@ -68,7 +68,61 @@ var $;
             return this.indexOf(searchString, position) >= 0;
         };
     }
-    //END IE STUFF
+
+    /*
+     * object.watch polyfill
+     *
+     * 2012-04-03
+     *
+     * By Eli Grey, http://eligrey.com
+     * Public Domain.
+     * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+     */
+    // object.watch
+    if (!Object.prototype.watch) {
+        Object.defineProperty(Object.prototype, "watch", {
+            enumerable: false
+            , configurable: true
+            , writable: false
+            , value: function (prop, handler) {
+                var
+                oldval = this[prop]
+                , newval = oldval
+                , getter = function () {
+                    return newval;
+                }
+                , setter = function (val) {
+                    oldval = newval;
+                    return newval = handler.call(this, prop, oldval, val);
+                }
+                ;
+                
+                if (delete this[prop]) { // can't watch constants
+                    Object.defineProperty(this, prop, {
+                        get: getter
+                        , set: setter
+                        , enumerable: true
+                        , configurable: true
+                    });
+                }
+            }
+        });
+    }
+
+    // object.unwatch
+    if (!Object.prototype.unwatch) {
+        Object.defineProperty(Object.prototype, "unwatch", {
+            enumerable: false
+            , configurable: true
+            , writable: false
+            , value: function (prop) {
+                var val = this[prop];
+                delete this[prop]; // remove accessors
+                this[prop] = val;
+            }
+        });
+    }
+    //END POLYFILL
 
     'use strict';
 
@@ -88,7 +142,7 @@ var $;
             "key" : "",
             "id" : 0,
             "userInfo" : {
-                "locale" : "fr",
+                "locale" : "en",
                 "firstName" : "",
                 "lastName" : "",
                 "mail" : "",
@@ -139,6 +193,7 @@ var $;
          */
         init: function(){
             try {
+                $.Oda.I8n.watchLanguage();
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
 
                 var listDepends = [
@@ -3739,33 +3794,30 @@ var $;
                             name: "oda-label",
                             createdCallback: function(){
                                 var $elt = $(this);
-                                var value = $elt.attr("oda-label-value");
-                                var group = $elt.attr("oda-label-group");
-                                var lang = $elt.attr("oda-label-lang");
-                                var defaultLang = $elt.attr("oda-label-default-lang");
-                                var variables = $elt.attr("oda-label-variables");
-                                if(group){
-                                    if(variables){
-                                        try{
-                                            var funct = new Function("return " + variables);
-                                            variables = funct();
-                                        }catch(e){
-                                            throw new Error("Widget oda-label for value:'"+value+"' => Syntaxe of variables not correct JSON");
-                                        }
+                                var name = $elt.attr("oda-label-name");
+
+                                if(name){
+                                    if(($.Oda.Context.window.document.getElementById(name))){
+                                        throw new Error("Id:'"+name+"' already exist");
                                     }
 
-                                    var inputs = {
-                                        defaultLang: defaultLang,
-                                        forced: lang,
-                                        variables: variables
+                                    if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                        throw new Error("Name:'"+name+"' already exist");
                                     }
 
-                                    var labelTrad = $.Oda.I8n.get(group, value, inputs);
-                                    $elt.text(labelTrad);
-                                }else{
-                                    var labelTrad = $.Oda.I8n.getByString(value);
-                                    $elt.text(labelTrad);
+                                    $elt.attr("id", name);
+                                    $elt.attr("name", name);
                                 }
+
+                                //todo event on change language
+                                $.Oda.Display.Widget.calcLabel($elt);
+
+                                $.Oda.Event.addListener({
+                                    name: "oda-language-changed", 
+                                    callback: function(e){
+                                        $.Oda.Display.Widget.calcLabel($elt, e.detail.new);
+                                    }
+                                });
                             },
                             attributeChangedCallback: function(attrName, oldValue, newValue){
                                 var $elt = $(this);
@@ -3775,33 +3827,7 @@ var $;
                                     case "oda-label-lang":
                                     case "oda-label-default-lang":
                                     case "oda-label-variables":
-                                        var value = $elt.attr("oda-label-value");
-                                        var group = $elt.attr("oda-label-group");
-                                        var lang = $elt.attr("oda-label-lang");
-                                        var defaultLang = $elt.attr("oda-label-default-lang");
-                                        var variables = $elt.attr("oda-label-variables");
-                                        if(group){
-                                            if(variables){
-                                                try{
-                                                    var funct = new Function("return " + variables);
-                                                    variables = funct();
-                                                }catch(e){
-                                                    throw new Error("Widget oda-label for value:'"+value+"' => Syntaxe of variables not correct JSON");
-                                                }
-                                            }
-
-                                            var inputs = {
-                                                defaultLang: defaultLang,
-                                                forced: lang,
-                                                variables: variables
-                                            }
-
-                                            var labelTrad = $.Oda.I8n.get(group, value, inputs);
-                                            $elt.text(labelTrad);
-                                        }else{
-                                            var labelTrad = $.Oda.I8n.getByString(value);
-                                            $elt.text(labelTrad);
-                                        }
+                                        $.Oda.Display.Widget.calcLabel($elt);
                                         break;
                                     default:
                                 }
@@ -3811,6 +3837,46 @@ var $;
                         });
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.loadLabel: " + er.message);
+                        return null;
+                    }
+                },
+                /**
+                 * @name $.Oda.Display.Widget.calcLabel
+                 */
+                calcLabel: function($elt, newLanguage){
+                    try {
+                        var value = $elt.attr("oda-label-value");
+                        $.Oda.Log.debug("Oda label calc: "+value);
+                        var group = $elt.attr("oda-label-group");
+                        var lang = $elt.attr("oda-label-lang");
+                        if(!lang && newLanguage){
+                            lang = newLanguage;
+                        }
+                        var defaultLang = $elt.attr("oda-label-default-lang");
+                        var variables = $elt.attr("oda-label-variables");
+                        if(group){
+                            if(variables){
+                                try{
+                                    var funct = new Function("return " + variables);
+                                    variables = funct();
+                                }catch(e){
+                                    throw new Error("Widget oda-label for value:'"+value+"' => Syntaxe of variables not correct JSON");
+                                }
+                            }
+
+                            var inputs = {
+                                defaultLang: defaultLang,
+                                forced: lang,
+                                variables: variables
+                            }
+
+                            var labelTrad = $.Oda.I8n.get(group, value, inputs);
+                        }else{
+                            var labelTrad = $.Oda.I8n.getByString(value, newLanguage);
+                        }
+                        $elt.text(labelTrad);
+                    } catch (er) {
+                        $.Oda.Log.error("$.Oda.Display.Widget.calcLabel: " + er.message);
                         return null;
                     }
                 },
@@ -3961,6 +4027,7 @@ var $;
                             attachedCallback: function(){
                                 var $elt = $(this);
                                 var id = $elt.attr("oda-guidance-id");
+                                $.Oda.Log.debug('Oda-guidance creation: '+ id);
                                 var location = $elt.attr("oda-guidance-location");
                                 if(!location){
                                     location = "auto"
@@ -3970,28 +4037,29 @@ var $;
                                 $elt.attr("class","oda-guidance");
                                 
                                 var $target = $('#'+id);
+                                if($target.exists()){
+                                    var strHtml = $elt.html();
+                                    if(strHtml.indexOf('<') === -1){
+                                        strHtml = '<oda-label oda-label-value="'+strHtml+'"/>';
+                                    }
+                                    strHtml += '<p style="text-align:center;"><a href="#" class="btn btn-info btn-xs guidance-'+((next)?'next':'read')+'" data-id="'+id+'"><oda-label oda-label-value="guidance-read" oda-label-group="oda-main"/></a></p>';
+                                    
+                                    var strTitle = "";
+                                    if(title){
+                                        strTitle = '<oda-label oda-label-value="'+title+'"/>';
+                                    }else{
+                                        strTitle = '<oda-label oda-label-value="guidance" oda-label-group="oda-main"/>';
+                                    }
+                                    strTitle += '<a href="#" class="close" data-dismiss="alert">×</a>';
 
-                                var strHtml = $elt.html();
-                                if(strHtml.indexOf('<') === -1){
-                                    strHtml = $.Oda.I8n.getByString(strHtml);
+                                    $target.popover({
+                                        trigger: "manual",
+                                        placement : location,
+                                        html : true,
+                                        title : strTitle,
+                                        content : strHtml
+                                    });
                                 }
-                                strHtml += '<p style="text-align:center;"><a href="#" class="btn btn-info btn-xs guidance-'+((next)?'next':'read')+'" data-id="'+id+'">'+$.Oda.I8n.get('oda-main','guidance-read')+'</a></p>';
-                                
-                                var strTitle = "";
-                                if(title){
-                                    strTitle = $.Oda.I8n.getByString(title);
-                                }else{
-                                    strTitle = $.Oda.I8n.get("oda-main","guidance");
-                                }
-                                strTitle += '<a href="#" class="close" data-dismiss="alert">×</a>';
-
-                                $target.popover({
-                                    trigger: "manual",
-                                    placement : location,
-                                    html : true,
-                                    title : strTitle,
-                                    content : strHtml
-                                });
                             },
                             detachedCallback: function(){}
                         });
@@ -5073,32 +5141,38 @@ var $;
 
                     return returnvalue;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.I8n.get : " + er.message);
+                    $.Oda.Log.error("$.Oda.I8n.get: " + er.message);
                     return null;
                 }
             },
             /**
              * @name $.Oda.I8n.getByString
-             * @param {string} p_group
+             * @param {string} tag
+             * @param {string} lang
              * @returns {String}
              */
-            getByString: function(p_tag) {
+            getByString: function(tag, lang) {
                 try {
-                    var returnvalue = p_tag;
+                    var returnvalue = tag;
 
-                    var tab = p_tag.split(".");
-                    if((tab.length > 1) && ($.Oda.I8n.get(tab[0], tab[1]) !== "Not define")){
-                        return $.Oda.I8n.get(tab[0], tab[1]);
+                    var tab = tag.split(".");
+                    if((tab.length === 2)){
+                        var tmp = $.Oda.I8n.get(tab[0], tab[1], {
+                            forced: lang
+                        });
+                        if(tmp !== "Not define"){
+                            returnvalue = tmp;
+                        }
                     }
 
                     return returnvalue;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.I8n.getByString : " + er.message);
+                    $.Oda.Log.error("$.Oda.I8n.getByString: " + er.message);
                     return null;
                 }
             },
             /**
-             * @name $.Oda.I8n.getByString
+             * @name $.Oda.I8n.getByGroupName
              * @param {string} p_group
              * @returns {String}
              */
@@ -5116,7 +5190,62 @@ var $;
 
                     return returnvalue;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.I8n.getByString : " + er.message);
+                    $.Oda.Log.error("$.Oda.I8n.getByGroupName: " + er.message);
+                    return null;
+                }
+            },
+            /**
+             * @name $.Oda.I8n.watchLanguage
+             * @returns {$.Oda.I8n}
+             */
+            watchLanguage: function() {
+                try {
+                    $.Oda.Event.addListener({name: "oda-language-changed", callback: function(e){
+                            $.Oda.Log.debug('Language change on '+e.detail.event+' from: '+e.detail.old+ ' for:'+e.detail.new);
+                        }
+                    });
+                    $.Oda.watch('Session', function (id, oldval, newval) {
+                        if(oldval.userInfo.locale !== newval.userInfo.locale){
+                            $.Oda.Event.send({
+                                name:"oda-language-changed",
+                                data:{
+                                    event: "Session",
+                                    old: oldval.userInfo.locale,
+                                    new: newval.userInfo.locale
+                                }
+                            });
+                        }
+                        return newval;
+                    });
+                    $.Oda.Session.watch('userInfo', function (id, oldval, newval) {
+                        if(oldval.locale !== newval.locale){
+                            $.Oda.Event.send({
+                                name:"oda-language-changed",
+                                data:{
+                                    event: "userInfo",
+                                    old: oldval.locale,
+                                    new: newval.locale
+                                }
+                            });
+                        }
+                        return newval;
+                    });
+                    $.Oda.Session.userInfo.watch('locale', function (id, oldval, newval) {
+                        if(oldval !== newval){
+                            $.Oda.Event.send({
+                                name:"oda-language-changed",
+                                data:{
+                                    event: "locale",
+                                    old: oldval,
+                                    new: newval
+                                }
+                            });
+                        }
+                        return newval;
+                    });
+                    return this;
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.I8n.watchLanguage: " + er.message);
                     return null;
                 }
             }
@@ -5454,19 +5583,22 @@ var $;
              */
             run: function(){
                 try {
+                    $.Oda.Log.debug('$.Oda.Guidance.run.')
                     var guidanceStorage = $.Oda.Storage.get("ODA-GUIDANCE-"+$.Oda.Session.code_user); 
                     if(!guidanceStorage){
                         guidanceStorage = {};
-                        $('oda-guidance').each(function(){
-                            $elt = $(this);
-                            var id = $elt.attr("oda-guidance-id");
-                            var next = $elt.attr("oda-guidance-next");
+                    }
+                    $('oda-guidance').each(function(){
+                        $elt = $(this);
+                        var id = $elt.attr("oda-guidance-id");
+                        var next = $elt.attr("oda-guidance-next");
+                        if(guidanceStorage[id] === undefined){
                             guidanceStorage[id] = {
                                 status: (next)?'next':'show'
                             };
-                        });
-                        $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
-                    }
+                        }
+                    });
+                    $.Oda.Storage.set("ODA-GUIDANCE-"+$.Oda.Session.code_user, guidanceStorage);
                     var gardianNext = false;
                     for(var key in guidanceStorage){
                         var elt = guidanceStorage[key];
@@ -5485,7 +5617,7 @@ var $;
                     }
                     return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Guidance.run : " + er.message);
+                    $.Oda.Log.error("$.Oda.Guidance.run: " + er.message);
                 }
             }
         },
