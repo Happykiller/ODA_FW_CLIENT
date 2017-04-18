@@ -2133,9 +2133,9 @@ var $;
                         } else {
                             var strHtml = "";
                             strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName.substr(0,9) +" "+ $.Oda.Session.userInfo.lastName.substr(0,9) + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','profile') + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Security.logout();">' + $.Oda.I8n.get('oda-main','logout') + '</a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});"><oda-label oda-label-value="oda-main.profile"/></a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});"><oda-label oda-label-value="oda-main.contact"/></a></li>';
+                            strHtml += '<li><a onclick="$.Oda.Security.logout();"><oda-label oda-label-value="oda-main.logout"/></a></li>';
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -2149,7 +2149,7 @@ var $;
                 remove: function(){
                     try {
                         $("#wrapper").removeClass("toggled");
-                        var strHtml = '<li class="sidebar-brand" id="profileDisplay">' + $.Oda.I8n.get('oda-project','userLabel') + '</li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
+                        var strHtml = '<li class="sidebar-brand" id="profileDisplay"><oda-label oda-label-value="oda-project.userLabel"/></li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
                         $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {
@@ -2181,13 +2181,13 @@ var $;
                                                     strHTML += "</ul></li>";
                                                 }
 
-                                                strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">' + $.Oda.I8n.getByString(datas[indice].Description_cate) + '<span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
+                                                strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><oda-label oda-label-value="'+datas[indice].Description_cate+'"/><span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
                                             }
                                             var route = datas[indice].Lien;
                                             route = route.replace("api_page_","");
                                             route = route.replace("page_","");
                                             route = route.replace(".html","");
-                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\">" + $.Oda.I8n.getByString(datas[indice].Description_courte) + "</a></li>";
+                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\"><oda-label oda-label-value='"+datas[indice].Description_courte+"'/></a></li>";
                                         }
                                     }
                                     $('#menu').html(strHTML);
@@ -2813,8 +2813,7 @@ var $;
                                 
                                 var text = elt.text();  
                                 if(text !== ""){        
-                                    var textTrad = $.Oda.I8n.getByString(text);
-                                    elt.text(textTrad);
+                                    elt.html('<oda-label oda-label-value="'+text+'"/>');
                                 }  
 
                                 var style = elt.attr("oda-btn-style");
@@ -2993,7 +2992,7 @@ var $;
                                 if(!label){
                                     labelDisplayHtml = "display:none;";
                                 }else{
-                                    labelTrad = $.Oda.I8n.getByString(label);
+                                    labelTrad = '<oda-label oda-label-value="'+label+'"/>';
                                 }
 
                                 var tips = elt.attr("oda-input-text-tips");
@@ -3185,7 +3184,7 @@ var $;
                                 if(!label){
                                     labelDisplayHtml = "display:none;";
                                 }else{
-                                    labelTrad = $.Oda.I8n.getByString(label);
+                                    labelTrad = '<oda-label oda-label-value="'+label+'"/>';
                                 }
 
                                 var tips = elt.attr("oda-input-area-tips");
@@ -3411,7 +3410,7 @@ var $;
                                 if(!label){
                                     labelDisplayHtml = "display:none;";
                                 }else{
-                                    labelTrad = $.Oda.I8n.getByString(label);
+                                    labelTrad = '<oda-label oda-label-value="'+label+'"/>';
                                 }
 
                                 var required = elt.attr("required");
@@ -3653,7 +3652,7 @@ var $;
                                 if(!label){
                                     labelDisplayHtml = "display:none;";
                                 }else{
-                                    labelTrad = $.Oda.I8n.getByString(label);
+                                    labelTrad = '<oda-label oda-label-value="'+label+'"/>';
                                 }
 
                                 var required = elt.attr("required");
