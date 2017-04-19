@@ -182,6 +182,81 @@
         "test": "Esto es una prueba => var1:{{var1}}, var2:{{var2}}."
     }
 }, {
+    "groupName": "oda-menu",
+    "fr": {
+        "home": "Accueil",
+        "contact": "Contact",
+        "faq": "FAQ",
+        "stats": "Statistiques",
+        "admin": "Administration",
+        "supervision": "Supervision",
+        "profile": "Profile"
+    },
+    "en": {
+        "home": "Home",
+        "contact": "Contact",
+        "faq": "FAQ",
+        "stats": "Statistiques",
+        "admin": "Administration",
+        "supervision": "Supervision",
+        "profile": "Profile"
+    },
+    "es": {
+        "home": "Portada",
+        "contact": "Contacto",
+        "faq": "FAQ",
+        "stats": "Estadística",
+        "admin": "Administración",
+        "supervision": "Supervisión",
+        "profile": "Perfil"
+    }
+}, {
+    "groupName": "oda-menu-cate",
+    "fr": {
+        "home": "Accueil",
+        "admin": "Administration",
+        "manage": "Gestion",
+        "reports": "Rapports",
+        "extLink": "Liens externes"
+    },
+    "en": {
+        "home": "Accueil",
+        "admin": "Administration",
+        "manage": "Manage",
+        "reports": "Reports",
+        "extLink": "External links"
+    },
+    "es": {
+        "home": "Portada",
+        "admin": "Administración",
+        "manage": "Dirección",
+        "reports": "Relaciones",
+        "extLink": "Enlaces externos"
+    }
+}, {
+    "groupName": "oda-rank",
+    "fr": {
+        "admin": "Administrateur",
+        "supervisor": "Superviseur",
+        "responsible": "Responsable",
+        "user": "Utilisateur",
+        "visitor": "Visiteur"
+    },
+    "en": {
+        "admin": "Administrator",
+        "supervisor": "Supervisor",
+        "responsible": "Responsible",
+        "user": "User",
+        "visitor": "Visitor"
+    },
+    "es": {
+        "admin": "Administrador",
+        "supervisor": "Supervisor",
+        "responsible": "Responsable",
+        "user": "Usuario",
+        "visitor": "Visitante"
+    }
+}, {
     "groupName": "oda-project",
     "fr": {
         "projectName": "Mon Projet",

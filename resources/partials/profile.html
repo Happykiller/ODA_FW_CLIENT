@@ -137,7 +137,7 @@
                     $('#lab_prenom').html(prenom);
                     $('#lab_mail').html(mail);
                     $('#lab_langue').html(langue);
-                    $('#rank').html(rankLabel);
+                    $('#rank').html('<oda-label oda-label-value="'+rankLabel+'"/>');
                 } };
                 var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
                 var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
