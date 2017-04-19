@@ -2,6 +2,13 @@
     <div style="position:fixed;bottom:10px;width:80%;left:50%;margin-left:-40%;z-index:99999999999999;" id="oda-notification"></div>
 </script>
 
+<script id="oda-notification-message-tpl" type="text/template">
+    <div class="alert alert-{{type}} alert-dismissible" style="text-align:center;" id="oda-notification-{{id}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{message}}
+    </div>
+</script>
+
 <script id="oda-popup-tpl" type="text/template">
     <div class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="{{name}}">
         <div class="modal-dialog">

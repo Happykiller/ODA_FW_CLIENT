@@ -2021,6 +2021,7 @@ var $;
                     $.Oda.Log.error(message);
                 },
                 /**
+                 * @name $.Oda.Display.Notification.load
                  * @returns {$.Oda.Notification}
                  */
                 load: function() {
@@ -2028,7 +2029,7 @@ var $;
                         var html = $.Oda.Display.TemplateHtml.create({
                             template : "oda-notification-tpl"
                         });
-                        $( "body" ).append(html);
+                        $("body").append(html);
                         $.Oda.Event.addListener({name : "oda-notification-flash", callback : function(e){
                             $.Oda.Display.Notification[e.detail.type](e.detail.msg);
                             return this;
@@ -2040,8 +2041,8 @@ var $;
                     }
                 },
                 /**
-                 * notification
-                 * @Desc Show notification
+                 * @name $.Oda.Display.Notification.create
+                 * @desc Show notification
                  * @param {string} p_message
                  * @param {string} p_type
                  * @param {int} p_type
@@ -2050,12 +2051,15 @@ var $;
                 create: function(p_message, p_type, time) {
                     try {
                         $.Oda.Display.Notification.id++;
-                        var strHtml = "";
-                        strHtml += '<div class="alert alert-'+p_type+' alert-dismissible" style="text-align:center;" id="oda-notification-'+$.Oda.Display.Notification.id+'">';
-                        strHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-                        strHtml += p_message;
-                        strHtml += '</div>';
-                        $( "#oda-notification" ).append( strHtml );
+                        var strHtml = $.Oda.Display.TemplateHtml.create({
+                            template : "oda-notification-message-tpl",
+                            scope:{
+                                type: p_type,
+                                id: $.Oda.Display.Notification.id,
+                                message: p_message
+                            }
+                        });
+                        $("#oda-notification").append(strHtml);
 
                         if(!$.Oda.Tooling.isUndefined(time)){
                             $.Oda.Tooling.timeout($.Oda.Display.Notification.remove,time,{id:$.Oda.Display.Notification.id});
@@ -2068,6 +2072,7 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Notification.remove
                  * @param {object} params
                  * @param {int} params.id
                  * @returns {$.Oda.Notification}
@@ -2084,6 +2089,7 @@ var $;
                     }
                 },
                 /**
+                 * @name $.Oda.Display.Notification.removeAll
                  * @returns {$.Oda.Notification}
                  */
                 removeAll: function(){
@@ -2129,13 +2135,14 @@ var $;
                  */
                 show: function(){
                     try {
-                        if (this.display) {
-                        } else {
-                            var strHtml = "";
-                            strHtml += '<li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});">' + $.Oda.Session.userInfo.firstName.substr(0,9) +" "+ $.Oda.Session.userInfo.lastName.substr(0,9) + '</a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'profile\',\'args\':{}});"><oda-label oda-label-value="oda-main.profile"/></a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});"><oda-label oda-label-value="oda-main.contact"/></a></li>';
-                            strHtml += '<li><a onclick="$.Oda.Security.logout();"><oda-label oda-label-value="oda-main.logout"/></a></li>';
+                        if (!this.display) {
+                            var strHtml = $.Oda.Display.TemplateHtml.create({
+                                template: "oda-scene-menuSlide-logged-tpl",
+                                scope: {
+                                    firstName: $.Oda.Session.userInfo.firstName.substr(0,9),
+                                    lastName: $.Oda.Session.userInfo.lastName.substr(0,9)
+                                }
+                            });
                             $('#menuSlide').html(strHtml);
                             this.display = true;
                         }
@@ -2149,7 +2156,9 @@ var $;
                 remove: function(){
                     try {
                         $("#wrapper").removeClass("toggled");
-                        var strHtml = '<li class="sidebar-brand" id="profileDisplay"><oda-label oda-label-value="oda-project.userLabel"/></li><li class="divider"></li><li><a onclick="$.Oda.Router.navigateTo({\'route\':\'contact\',\'args\':{}});">' + $.Oda.I8n.get('oda-main','contact') + '</a></li>';
+                        var strHtml = $.Oda.Display.TemplateHtml.create({
+                            template: "oda-scene-menuSlide-default-tpl"
+                        });
                         $('#menuSlide').html(strHtml);
                         this.display = false;
                     } catch (er) {

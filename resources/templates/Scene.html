@@ -46,3 +46,16 @@
     </div>
     <!-- /wrapper -->
 </script>
+
+<script id="oda-scene-menuSlide-logged-tpl" type="text/template">
+    <li class="sidebar-brand"><a onclick="$.Oda.Router.navigateTo({'route':'profile','args':{}});">{{firstName}} {{lastName}}</a></li>
+    <li><a onclick="$.Oda.Router.navigateTo({'route':'profile','args':{}});"><oda-label oda-label-value="oda-main.profile"/></a></li>
+    <li><a onclick="$.Oda.Router.navigateTo({'route':'contact','args':{}});"><oda-label oda-label-value="oda-main.contact"/></a></li>
+    <li><a onclick="$.Oda.Security.logout();"><oda-label oda-label-value="oda-main.logout"/></a></li>
+</script>
+
+<script id="oda-scene-menuSlide-default-tpl" type="text/template">
+    <li class="sidebar-brand" id="profileDisplay"><oda-label oda-label-value="oda-project.userLabel"/></li>
+    <li class="divider"></li>
+    <li><a onclick="$.Oda.Router.navigateTo({'route':'contact','args':{}});"><oda-label oda-label-value="oda-main.contact"/></a></li>
+</script>
