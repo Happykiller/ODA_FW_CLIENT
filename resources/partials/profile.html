@@ -245,17 +245,14 @@
                             , "showTooltip" : response.data.resultat.montrer_aide_ihm
                         };
                         $.Oda.Session.userInfo = userInfo;
+                        $.Oda.I8n.watchLanguage();
                         $.Oda.Storage.set("ODA-SESSION",$.Oda.Session,43200);
 
                         $.Oda.Display.Popup.close({"name":"popChangeProfile"});
 
-                        $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'updateSuccess'));
+                        $('#lab_'+p_champs).html(value);
 
-                        if(p_champs === "langue"){
-                            $.Oda.Context.window.location.reload();
-                        }else{
-                            $('#lab_'+p_champs).html(value);
-                        }
+                        $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'updateSuccess'));
                     }}, tabInput);
                 }}, tabInput);
             } catch (er) {

@@ -193,7 +193,6 @@ var $;
          */
         init: function(){
             try {
-                $.Oda.I8n.watchLanguage();
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
 
                 var listDepends = [
@@ -307,6 +306,7 @@ var $;
 
                             if (session !== null) {
                                 $.Oda.Session = session;
+                                $.Oda.I8n.watchLanguage();
 
                                 var tabInput = {
                                     "code_user": session.code_user,
@@ -5199,10 +5199,13 @@ var $;
              */
             watchLanguage: function() {
                 try {
-                    $.Oda.Event.addListener({name: "oda-language-changed", callback: function(e){
-                            $.Oda.Log.debug('Language change on '+e.detail.event+' from: '+e.detail.old+ ' for:'+e.detail.new);
-                        }
-                    });
+                    if(!$.Oda.I8n.notifChangeExist){
+                        $.Oda.I8n.notifChangeExist = true;
+                        $.Oda.Event.addListener({name: "oda-language-changed", callback: function(e){
+                                $.Oda.Log.debug('Language change on '+e.detail.event+' from: '+e.detail.old+ ' for:'+e.detail.new);
+                            }
+                        });
+                    }
                     $.Oda.watch('Session', function (id, oldval, newval) {
                         if(oldval.userInfo.locale !== newval.userInfo.locale){
                             $.Oda.Event.send({
@@ -5293,6 +5296,7 @@ var $;
                                     session.id = response.data.resultat.id_user;
                                     $.Oda.Storage.set("ODA-SESSION",session,43200);
                                     $.Oda.Session = session;
+                                    $.Oda.I8n.watchLanguage();
 
                                     $.Oda.Security.loadRight();
                                 }else{
@@ -5344,6 +5348,7 @@ var $;
                     var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/deleteSession.php", {callback:function(response){
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
                         $.Oda.Session = $.Oda.SessionDefault;
+                        $.Oda.I8n.watchLanguage();
                         $.Oda.Storage.remove("ODA-SESSION");
                         $.Oda.Display.MenuSlide.remove();
                         $.Oda.Display.Menu.remove();
@@ -6460,6 +6465,7 @@ var $;
     };
 
     $.Oda.Session = $.Oda.SessionDefault;
+    $.Oda.I8n.watchLanguage();
 
     $.Oda.Context.startDate = new Date();
 
