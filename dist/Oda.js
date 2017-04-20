@@ -3887,7 +3887,7 @@ var $;
                         }else{
                             var labelTrad = $.Oda.I8n.getByString(value, newLanguage);
                         }
-                        $elt.text(labelTrad);
+                        $elt.html(labelTrad);
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Widget.calcLabel: " + er.message);
                         return null;
