@@ -197,11 +197,12 @@ var $;
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
 
                 var listDepends = [
-                    {"name" : "library" , ordered : false, "list" : [
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/css.css", "type" : "css" },
-                        { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Oda.html", "type": "html", target : function(data){ $( "body" ).append(data); }}
-
+                    {"name": "library" , ordered : false, "list" : [
+                        { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/i8n/i8n.json", "type": "json", "target": function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
+                        { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/css.css", "type": "css" },
+                        { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/templates/Oda.html", "type": "html", target: function(data){
+                            $("body").append(data); 
+                        }}
                     ]}
                 ];
 
