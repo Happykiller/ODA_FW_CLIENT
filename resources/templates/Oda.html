@@ -90,7 +90,14 @@
 </script>
 
 <script id="oda-avatar-tpl" type="text/template">
-    <div style="height:{{height}}px;width:{{width}}px;position:relative;">
-        <img src="{{src}}" class="iconProfile img-rounded" name="{{name}}" id="{{name}}" height="{{imgHeight}}" width="{{imgWidth}}" style="position:absolute;top:50%;left:50%;margin-left:-{{imgWidthDec}}px;margin-top:-{{imgHeightDec}}px;">
-    </div>
+<div style="height:{{height}}px;width:{{width}}px;position:relative;">
+    <img src="{{src}}" class="iconProfile img-rounded" name="{{name}}" id="{{name}}" height="{{imgHeight}}" width="{{imgWidth}}" style="position:absolute;top:50%;left:50%;margin-left:-{{imgWidthDec}}px;margin-top:-{{imgHeightDec}}px;">
+</div>
+</script>
+
+<script id="oda-message-tpl" type="text/template">
+<div class="alert alert-{{alertType}} alert-dismissible" id="oda-message-{{id}}" style="width:90%;margin-left:auto;margin-right:auto;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$.Oda.Display.Message.hide({id:{{id}}});"><span aria-hidden="true">&times;</span></button>
+    {{message}}
+</div>
 </script>

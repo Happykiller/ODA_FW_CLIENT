@@ -193,6 +193,7 @@ var $;
          */
         init: function(){
             try {
+                window.CKEDITOR_BASEPATH = $.Oda.Context.rootPath + $.Oda.Context.vendorName + '/ckeditor/';
                 $.Oda.Session.userInfo.locale = $.Oda.Tooling.getLangBrowser();
 
                 var listDepends = [
@@ -369,7 +370,7 @@ var $;
                     $.Oda.Router.addDependencies("ckeditor", {
                         ordered : false,
                         "list" : [
-                            { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "ckeditor/ckeditor.js", "type" : "script"}
+                            { "elt": $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/ckeditor/ckeditor.js", "type" : "script"}
                         ]
                     });
 
@@ -1460,6 +1461,14 @@ var $;
                     }
 
                     var interfaces = $.Oda.Tooling.clone($.Oda.Context.modeInterface);
+                    //remove using cache in debug mode
+                    if($.Oda.Context.debug){
+                        for(var index in interfaces){
+                            if(interfaces[index] === "cache"){
+                                interfaces.splice(index,1);
+                            }
+                        }
+                    }
                     var jsonAjaxParam = {
                         url: p_url,
                         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -2228,26 +2237,24 @@ var $;
                  */
                 show: function() {
                     try {
-                        var tabInput = { code_user : $.Oda.Session.code_user };
-                        var callback = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessagesToDisplay.php", { callback : function(datas) {
-                            if(datas.strErreur === ""){
-                                for(var indice in datas.data.messages.data){
-                                    var message = datas.data.messages.data[indice];
-                                    if ( ! $( "#oda-message-"+message.id ).length ) {
-                                        var strHtml = "";
-                                        strHtml += '';
-                                        strHtml += '<div class="alert alert-'+message.niveau+' alert-dismissible" id="oda-message-'+message.id+'" style="width:90%;margin-left:auto;margin-right:auto;">';
-                                        strHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$.Oda.Display.Message.hide({id:\''+message.id+'\'});"><span aria-hidden="true">&times;</span></button>';
-                                        strHtml += message.message;
-                                        strHtml += '</div>';
-                                        $('#'+$.Oda.Context.mainDiv).before(strHtml);
-                                    }
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessagesToDisplay.php", { callback : function(datas) {
+                            for(var indice in datas.data.messages.data){
+                                var message = datas.data.messages.data[indice];
+                                if ( ! $( "#oda-message-"+message.id ).length ) {
+                                    var strHtml = $.Oda.Display.TemplateHtml.create({
+                                        template: "oda-message-tpl",
+                                        scope: {
+                                            alertType: message.niveau,
+                                            id: message.id,
+                                            message: message.message
+                                        }
+                                    });
+                                    $('#'+$.Oda.Context.mainDiv).before(strHtml);
                                 }
-
-                            } else{
-                                $.Oda.Display.Notification.error(datas.strErreur);
                             }
-                        }}, tabInput);
+                        }}, { 
+                            code_user : $.Oda.Session.code_user
+                         });
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Message.show: " + er.message);
