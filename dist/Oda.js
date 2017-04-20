@@ -2104,7 +2104,10 @@ var $;
                  */
                 removeAll: function(){
                     try {
-                        $("[id^='oda-notification-']").fadeOut( 500, function(){
+                        var $notif = $("[id^='oda-notification-']").filter(function(index){
+                            var $elt = $(this);
+                            return $elt.hasClass("alert");
+                        }).fadeOut( 500, function(){
                             $( this ).remove();
                         });
                         return this;
