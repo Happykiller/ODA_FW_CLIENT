@@ -2269,14 +2269,12 @@ var $;
                  */
                 hide: function(p_params) {
                     try {
-                        var tabInput = { code_user : $.Oda.Session.code_user, id : p_params.id };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setMessagesLus.php", {callback : function(datas) {
-                            if(retour.strErreur === ""){
-                                $('#oda-message-'+p_params.id).remove();
-                            } else{
-                                $.Oda.Display.Notification.error(datas.strErreur);
-                            }
-                        }}, tabInput);
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setMessagesLus.php", {callback : function(datas) {
+                            $('#oda-message-'+p_params.id).remove();
+                        }}, { 
+                            code_user: $.Oda.Session.code_user,
+                            id: p_params.id 
+                        });
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Message.hide  : " + er.message);
