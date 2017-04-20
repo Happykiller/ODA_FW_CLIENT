@@ -120,7 +120,8 @@
                             },
                             {
                                 "mRender": function (data, type, row) {
-                                    return row[objDataTable.entete["labelle"]];
+                                    var strHtml = '<oda-label oda-label-value="'+row[objDataTable.entete["labelle"]]+'"/>';
+                                    return strHtml;
                                 },
                                 "aTargets": [5]
                             },
