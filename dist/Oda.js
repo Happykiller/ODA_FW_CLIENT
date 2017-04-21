@@ -2817,16 +2817,19 @@ var $;
                                 var elt = $(this);
                                 var name = elt.attr("oda-btn-name");
 
-                                if(($.Oda.Context.window.document.getElementById(name))){
-                                    throw new Error("Id:'"+name+"' already exist");
-                                }
+                                if(name){
+                                    if(($.Oda.Context.window.document.getElementById(name))){
+                                        throw new Error("Id:'"+name+"' already exist");
+                                    }
 
-                                if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
-                                    throw new Error("Name:'"+name+"' already exist");
-                                }
+                                    if(($.Oda.Context.window.document.getElementsByName(name).length > 0)){
+                                        throw new Error("Name:'"+name+"' already exist");
+                                    }
 
-                                elt.attr("id", name);
-                                elt.attr("name", name);
+                                    elt.attr("id", name);
+                                    elt.attr("name", name);
+                                }
+                                
                                 elt.attr("type", "button");
                                 
                                 var text = elt.text();  
