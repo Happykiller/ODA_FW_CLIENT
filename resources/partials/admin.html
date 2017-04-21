@@ -79,24 +79,24 @@
                         "aaData": objDataTable.data,
                         "aaSorting": [[4, 'desc'], [1, 'asc']],
                         "aoColumns": [
-                            {"sTitle": "Utilisateur", "sClass": "Left"},
-                            {"sTitle": "Code utilisateur", "sClass": "dataTableColCenter"},
-                            {"sTitle": "Mail", "sClass": "Left"},
-                            {"sTitle": "Description", "sClass": "Left"},
-                            {"sTitle": "Actif", "sClass": "dataTableColCenter"},
-                            {"sTitle": "Rang", "sClass": "Left"},
-                            {"sTitle": "Actions", "sClass": "dataTableColCenter"}
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.userCode'/>", "sClass": "dataTableColCenter"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.user'/>", "sClass": "Left"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.mail'/>", "sClass": "Left"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.desc'/>", "sClass": "Left"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.active'/>", "sClass": "dataTableColCenter"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.rank'/>", "sClass": "Left"},
+                            {"sTitle": "<oda-label oda-label-value='oda-admin.actions'/>", "sClass": "dataTableColCenter"}
                         ],
                         "aoColumnDefs": [
                             {
                                 "mRender": function (data, type, row) {
-                                    return row[objDataTable.entete["nom"]] + ", " + row[objDataTable.entete["prenom"]];
+                                    return row[objDataTable.entete["code_user"]];
                                 },
                                 "aTargets": [0]
                             },
                             {
                                 "mRender": function (data, type, row) {
-                                    return row[objDataTable.entete["code_user"]];
+                                    return row[objDataTable.entete["nom"]] + ", " + row[objDataTable.entete["prenom"]];
                                 },
                                 "aTargets": [1]
                             },
@@ -120,8 +120,10 @@
                             },
                             {
                                 "mRender": function (data, type, row) {
-                                    var strHtml = '<oda-label oda-label-value="'+row[objDataTable.entete["labelle"]]+'"/>';
-                                    return strHtml;
+                                    if(type === 'display') {
+                                        return '<oda-label oda-label-value="'+row[objDataTable.entete["labelle"]]+'"/>';
+                                    }
+                                    return row[objDataTable.entete["rankIndice"]];
                                 },
                                 "aTargets": [5]
                             },
