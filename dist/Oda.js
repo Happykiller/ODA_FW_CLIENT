@@ -470,6 +470,14 @@ var $;
                         "middleWares" : ["support", "auth"]
                     });
 
+                    $.Oda.Router.addRoute("navigation", {
+                        "path" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/partials/navigation.html",
+                        "title" : "oda-navigation.title",
+                        "urls" : ["navigation"],
+                        "middleWares" : ["support", "auth"],
+                        "dependencies" : ["dataTables"]
+                    });
+
                     var listDependsScene = [
                         {"name" : "scene" , ordered : false, "list" : [
                             { "elt" : $.Oda.Context.rootPath + $.Oda.Context.vendorName + "/Oda/resources/css/simple-sidebar.css", "type" : "css" },

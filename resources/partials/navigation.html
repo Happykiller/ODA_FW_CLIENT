@@ -1,0 +1,102 @@
+<div class="container">
+    <h2><oda-label oda-label-value="oda-navigation.title"/></h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <oda-label oda-label-value="oda-navigation.hello"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3><oda-label oda-label-value="oda-navigation.mapping"/></h3>
+        </div>
+    </div>
+    <div class="row" id="rankdiv">
+    </div>
+</div>
+
+<script>
+    $.Oda.Controller.Navigation = {
+        ranks: null,
+        pages: null,
+        /**
+         * @returns {$.Oda.Controller.Navigation}
+         */
+        start: function() {
+            try {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/rank/", {"callback":function(response){
+                    $.Oda.Controller.Navigation.ranks = response.data.data;
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/page/", {"callback":function(response){
+                        $.Oda.Controller.Navigation.pages = response.data.data;
+                        $.Oda.Controller.Navigation.displayMapping();
+                    }});
+                }});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Navigation.start: " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Navigation}
+         */
+        displayMapping: function() {
+            try {
+                for(var index in $.Oda.Controller.Navigation.ranks){
+                    var $rankDiv = $('#rankdiv');
+                    var rank = $.Oda.Controller.Navigation.ranks[index];
+                    if(rank.index !== "1"){
+                        var strHtml = $.Oda.Display.TemplateHtml.create({
+                            template : "rank-tpl",
+                            scope:{
+                                label: rank.label,
+                                index: rank.index
+                            }
+                        });
+                        $rankDiv.append(strHtml);
+                        $.Oda.Display.Table.createDataTable({
+                            target: "mapping_"+rank.index+"_div",
+                            data: $.Oda.Controller.Navigation.pages,
+                            attribute: [
+                                {
+                                    header: '<oda-label oda-label-value="oda-navigation.id"/>',
+                                    size: "50px",
+                                    align: "center",
+                                    value: function(data, type, full, meta, row){
+                                        return row.id;
+                                    }
+                                },
+                                {
+                                    header: '<oda-label oda-label-value="oda-navigation.label"/>',
+                                    value: function(data, type, full, meta, row){
+                                        return '<oda-label oda-label-value="'+row.label+'"/>';
+                                    }
+                                },
+                                {
+                                    header: '<oda-label oda-label-value="oda-navigation.select"/>',
+                                    value: function(data, type, full, meta, row){
+                                        return 'select';
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                }
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Navigation.displayMapping: " + er.message);
+                return null;
+            }
+        }
+    };
+
+    $.Oda.Controller.Navigation.start();
+</script>
+
+<script id="rank-tpl" type="text/template">
+<div class="col-md-6">
+    <h4><oda-label oda-label-value="{{label}}"/></h4>
+    <div id="mapping_{{index}}_div"></div>
+</div>
+</script>

@@ -310,7 +310,7 @@
         "messageCreateProfileLevel": "Profile minimum",
         "messageCreateDelay": "Date d'expiration (7J par defaut)",
         "user": "Utilisateur",
-        "userCode": "Code utilisateur",
+        "codeUser": "Code utilisateur",
         "mail": "Mail",
         "desc": "Description",
         "active": "Actif",
@@ -366,7 +366,7 @@
         "messageCreateProfileLevel": "Perfil",
         "messageCreateDelay": "Fecha de vencimiento (7D por defecto)",
         "user": "Usuarios",
-        "userCode": "Codigo de usuario",
+        "codeUser": "Codigo de usuario",
         "mail": "Mail",
         "desc": "Descripción",
         "active": "Activo",
@@ -601,5 +601,31 @@
     "mail-placeholder": "mail@dom.com",
     "mailSend": "El correo electrónico fue enviado",
     "mailSubjet": "[ODA]Prueba de correo electrónico."
+  }
+},{
+  "groupName": "oda-navigation",
+  "fr": {
+    "title": "Navigation",
+    "hello": "Page pour gérer la navigation. (menu et droits)",
+    "mapping": "Configurer le mapping",
+    "id": "Id",
+    "label": "Label",
+    "select": "Sélectionner"
+  },
+  "en": {
+    "title": "Navigation",
+    "hello": "Page to manage navigation. (Menu and rights)",
+    "mapping": "Configurer the mapping",
+    "id": "Id",
+    "label": "Label",
+    "select": "To select"
+  },
+  "es": {
+    "title": "Navegación",
+    "hello": "Página para gestionar la navegación. (Menú y derechos)",
+    "mapping": "Configurar la asignación",
+    "id": "Id",
+    "label": "Etiqueta",
+    "select": "Seleccionar"
   }
 }]
