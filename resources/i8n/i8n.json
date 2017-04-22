@@ -610,7 +610,8 @@
     "mapping": "Configurer le mapping",
     "id": "Id",
     "label": "Label",
-    "select": "Sélectionner"
+    "select": "Sélectionner",
+    "updateSuccess": "Mise à jour réussi."
   },
   "en": {
     "title": "Navigation",
@@ -618,7 +619,8 @@
     "mapping": "Configurer the mapping",
     "id": "Id",
     "label": "Label",
-    "select": "To select"
+    "select": "To select",
+    "updateSuccess": "Update success."
   },
   "es": {
     "title": "Navegación",
@@ -626,6 +628,7 @@
     "mapping": "Configurar la asignación",
     "id": "Id",
     "label": "Etiqueta",
-    "select": "Seleccionar"
+    "select": "Seleccionar",
+    "updateSuccess": "Actualizar el éxito."
   }
 }]

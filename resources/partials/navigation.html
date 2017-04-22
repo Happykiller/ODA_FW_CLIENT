@@ -20,6 +20,8 @@
     $.Oda.Controller.Navigation = {
         ranks: null,
         pages: null,
+        rights: null,
+        currentRankId: null,
         /**
          * @returns {$.Oda.Controller.Navigation}
          */
@@ -29,12 +31,37 @@
                     $.Oda.Controller.Navigation.ranks = response.data.data;
                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/page/", {"callback":function(response){
                         $.Oda.Controller.Navigation.pages = response.data.data;
-                        $.Oda.Controller.Navigation.displayMapping();
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/rights/", {"callback":function(response){
+                            $.Oda.Controller.Navigation.rights = $.Oda.Controller.Navigation.transformRights(response.data.data);
+                            $.Oda.Controller.Navigation.displayMapping();
+                        }});
                     }});
                 }});
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Navigation.start: " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Navigation}
+         */
+        transformRights: function(datas) {
+            try {
+                var rights = {};
+                for(var index in datas){
+                    var right = datas[index];
+                    var listPageRec = right.menu_ids.split(';');
+                    var listPage = {};
+                    for(var indexPage in $.Oda.Controller.Navigation.pages){
+                        var page = $.Oda.Controller.Navigation.pages[indexPage];
+                        listPage[page.id] = $.Oda.Tooling.isInArray(page.id, listPageRec);
+                    }
+                    rights[right.rank_id] = listPage;
+                }
+                return rights;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Navigation.transformRights: " + er.message);
                 return null;
             }
         },
@@ -55,6 +82,7 @@
                             }
                         });
                         $rankDiv.append(strHtml);
+                        $.Oda.Controller.Navigation.currentRankId = rank.id;
                         $.Oda.Display.Table.createDataTable({
                             target: "mapping_"+rank.index+"_div",
                             data: $.Oda.Controller.Navigation.pages,
@@ -76,16 +104,55 @@
                                 {
                                     header: '<oda-label oda-label-value="oda-navigation.select"/>',
                                     value: function(data, type, full, meta, row){
-                                        return 'select';
+                                        var checkId = 'check_'+$.Oda.Controller.Navigation.currentRankId+'_'+row.id;
+                                        return '<div id="tmp_'+checkId+'"/>';
                                     }
                                 }
                             ]
+                        });
+                        $('[id^="tmp_"]').each(function(index){
+                            var $elt = $(this);
+                            var id = $elt.attr('id');
+                            var checkId = id.substr(4);
+                            var rankId = checkId.split('_')[1];
+                            var pageId = checkId.split('_')[2];
+                            $elt.html('<oda-input-checkbox oda-input-checkbox-name="'+checkId+'" oda-input-checkbox-value="'+(($.Oda.Controller.Navigation.rights[rankId][pageId])?'true':'false')+'" />');
+                            $('#'+checkId).on('change',function(e){
+                                $.Oda.Controller.Navigation.updateRight({checkId: checkId});
+                            });
                         });
                     }
                 }
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Navigation.displayMapping: " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Navigation}
+         */
+        updateRight: function(p) {
+            try {
+                var rec = ";";
+                var rankId =  p.checkId.split("_")[1];
+                var strSearch = "check_" + rankId;
+                $('[id^="'+strSearch+'"]').each(function(index){
+                    var $elt = $(this);
+                    var id = $elt.attr('id');
+                    var pageId = id.split('_')[2];
+                    if($elt.val() === "true"){
+                        rec += pageId + ";"
+                    }
+                })
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/"+rankId, {type: "PUT", callback: function(response){
+                    $.Oda.Display.Notification.successI8n('oda-navigation.updateSuccess');
+                }},{
+                    value: rec
+                });
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Navigation.updateRight: " + er.message);
                 return null;
             }
         }
