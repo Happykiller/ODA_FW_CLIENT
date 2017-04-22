@@ -2195,36 +2195,31 @@ var $;
                 show: function(){
                     try {
                         if(!this.display){
-                            var tabInput = { rang : $.Oda.Session.userInfo.profile, id_page : 0 };
-                            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMenu.php", {"callback" : function(retour){
+                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/", {"callback": function(response){
                                 var strHTML = "";
-                                if(retour.strErreur === ""){
-                                    var datas = retour.data.resultat.data;
+                                var datas = response.data;
+                                var cate = "";
 
-                                    var cate = "";
-
-                                    for (var indice in datas) {
-                                        if((datas[indice].id_categorie !== "98") && ((datas[indice].id_categorie !== "1"))){
-                                            if(datas[indice].id_categorie !== cate){
-                                                cate = datas[indice].id_categorie;
-                                                if(indice !== "0"){
-                                                    strHTML += "</ul></li>";
-                                                }
-
-                                                strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><oda-label oda-label-value="'+datas[indice].Description_cate+'"/><span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
+                                for (var indice in datas) {
+                                    if((datas[indice].id_categorie !== "98") && ((datas[indice].id_categorie !== "1"))){
+                                        if(datas[indice].id_categorie !== cate){
+                                            cate = datas[indice].id_categorie;
+                                            if(indice !== "0"){
+                                                strHTML += "</ul></li>";
                                             }
-                                            var route = datas[indice].Lien;
-                                            route = route.replace("api_page_","");
-                                            route = route.replace("page_","");
-                                            route = route.replace(".html","");
-                                            strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\"><oda-label oda-label-value='"+datas[indice].Description_courte+"'/></a></li>";
+
+                                            strHTML += '<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><oda-label oda-label-value="'+datas[indice].Description_cate+'"/><span class="caret"></span></a><ul class="dropdown-menu" role="menu">';
                                         }
+                                        var route = datas[indice].Lien;
+                                        route = route.replace("api_page_","");
+                                        route = route.replace("page_","");
+                                        route = route.replace(".html","");
+                                        strHTML += "<li><a onclick=\"$.Oda.Router.navigateTo({'route':'"+route+"','args':{}});\"><oda-label oda-label-value='"+datas[indice].Description_courte+"'/></a></li>";
                                     }
-                                    $('#menu').html(strHTML);
                                 }
-                            }
-                            }, tabInput);
-                            this.display = true;
+                                $('#menu').html(strHTML);
+                                $.Oda.Display.display = true;
+                            }});
                         }
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Menu.show : " + er.message);
@@ -5362,8 +5357,8 @@ var $;
             loadRight: function(p) {
                 try {
                     $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMenu.php", {callback: function(data){
-                        var datas = data.data.resultat.data;
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/", {callback: function(response){
+                        var datas = response.data;
                         for (var indice in datas) {
                             if((datas[indice].id_categorie !== "1")){
                                 var route = datas[indice].Lien;
