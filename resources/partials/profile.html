@@ -230,19 +230,15 @@
                     $('#input_old_password').val("");
                     $('#input_'+p_champs).val("");
 
-                    var tabInput = {
-                        code_user : $.Oda.Session.code_user
-                    };
-
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {callback : function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current/", {callback : function(response){
                         var userInfo = {
-                            "locale" : response.data.resultat.langue
-                            , "firstName" : response.data.resultat.prenom
-                            , "lastName" : response.data.resultat.nom
-                            , "mail" : response.data.resultat.mail
-                            , "profile" : response.data.resultat.profile
-                            , "profileLabel" : response.data.resultat.labelle
-                            , "showTooltip" : response.data.resultat.montrer_aide_ihm
+                            "locale" : response.data.langue
+                            , "firstName" : response.data.prenom
+                            , "lastName" : response.data.nom
+                            , "mail" : response.data.mail
+                            , "profile" : response.data.profile
+                            , "profileLabel" : response.data.labelle
+                            , "showTooltip" : response.data.montrer_aide_ihm
                         };
                         $.Oda.Session.userInfo = userInfo;
                         $.Oda.I8n.watchLanguage();
@@ -253,7 +249,7 @@
                         $('#lab_'+p_champs).html(value);
 
                         $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'updateSuccess'));
-                    }}, tabInput);
+                    }});
                 }}, tabInput);
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Profile.submitChange : " + er.message);

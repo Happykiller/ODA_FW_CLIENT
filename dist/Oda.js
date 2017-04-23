@@ -5297,23 +5297,23 @@ var $;
                             var key = response.data.resultat.keyAuthODA;
 
                             var session = {
-                                "code_user" : code_user,
-                                "key" : key
+                                "code_user": code_user,
+                                "key": key
                             };
 
-                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuthInfo.php", {callback:function(response){
+                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current/", {callback:function(response){
                                 if(response.strErreur === ""){
                                     var userInfo = {
-                                        "locale" : response.data.resultat.langue,
-                                        "firstName" : response.data.resultat.nom,
-                                        "lastName" : response.data.resultat.prenom,
-                                        "mail" : response.data.resultat.mail,
-                                        "profile" : response.data.resultat.profile,
-                                        "profileLabel" : response.data.resultat.labelle,
-                                        "showTooltip" : response.data.resultat.montrer_aide_ihm
+                                        "locale" : response.data.langue,
+                                        "firstName" : response.data.nom,
+                                        "lastName" : response.data.prenom,
+                                        "mail" : response.data.mail,
+                                        "profile" : response.data.profile,
+                                        "profileLabel" : response.data.labelle,
+                                        "showTooltip" : response.data.montrer_aide_ihm
                                     };
                                     session.userInfo = userInfo;
-                                    session.id = response.data.resultat.id_user;
+                                    session.id = response.data.id_user;
                                     $.Oda.Storage.set("ODA-SESSION",session,43200);
                                     $.Oda.Session = session;
                                     $.Oda.I8n.watchLanguage();
@@ -5334,7 +5334,7 @@ var $;
                                     }
                                 }
                             }}, { 
-                                code_user: code_user
+                                keyAuthODA: key
                             });
                         }
                     }}, { 
