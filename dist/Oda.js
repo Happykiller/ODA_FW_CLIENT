@@ -5301,7 +5301,7 @@ var $;
                                 "key": key
                             };
 
-                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current/", {callback:function(response){
+                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback:function(response){
                                 if(response.strErreur === ""){
                                     var userInfo = {
                                         "locale" : response.data.langue,
