@@ -5304,13 +5304,13 @@ var $;
                             $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback:function(response){
                                 if(response.strErreur === ""){
                                     var userInfo = {
-                                        "locale" : response.data.langue,
-                                        "firstName" : response.data.nom,
-                                        "lastName" : response.data.prenom,
-                                        "mail" : response.data.mail,
-                                        "profile" : response.data.profile,
-                                        "profileLabel" : response.data.labelle,
-                                        "showTooltip" : response.data.montrer_aide_ihm
+                                        "locale": response.data.langue,
+                                        "lastName": response.data.nom,
+                                        "firstName": response.data.prenom,
+                                        "mail": response.data.mail,
+                                        "profile": response.data.profile,
+                                        "profileLabel": response.data.labelle,
+                                        "showTooltip": response.data.montrer_aide_ihm
                                     };
                                     session.userInfo = userInfo;
                                     session.id = response.data.id_user;
