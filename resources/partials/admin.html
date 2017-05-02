@@ -291,12 +291,12 @@
         messagesDisplay : function () {
             try {
                 $('#div_messages').html('<oda-loading/>')
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessages.php", {callback : function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {callback : function(response){
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_messages"></table>';
                     strhtml += '<oda-btn oda-btn-name="bt_validerRetourMsg" oda-btn-style="primary" oda-btn-icon-before="new" oda-btn-click="$.Oda.Controller.Admin.messageNew();">oda-admin.bt-create-new-message</oda-btn>';
                     $('#div_messages').html(strhtml).trigger('create');
 
-                    var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(response.data.messages.data);
+                    var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(response.data);
                     var oTable = $('#table_messages').dataTable( {
                         "sPaginationType": "full_numbers",
                         "aaData": objDataTable.data,
@@ -366,7 +366,7 @@
                             }
                         ]
                     });
-                }}, { code_user : $.Oda.Session.code_user });
+                }});
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Admin.messagesDisplay : " + er.message);
@@ -378,12 +378,12 @@
          */
         messageNew : function (p_params) {
             try {
-                var rangs = $.Oda.Interface.getRangs();
+                var strRanks = $.Oda.Tooling.jsonToStringHtml({json:$.Oda.Controller.Admin.ranks});
 
                 var strHtml = $.Oda.Display.TemplateHtml.create({
                     template: "tplNewMessage",
                     scope: {
-                        profileList : $.Oda.Tooling.jsonToStringHtml({json:rangs})
+                        ranks: strRanks
                     }
                 });
 
@@ -421,21 +421,14 @@
          * @param p_params.id
          * @returns {$.Oda.Controller.Admin}
          */
-        messageNewSubmit : function (p_params) {
+        messageNewSubmit: function (p_params) {
             try {
                 var input_message = CKEDITOR.instances['input_message'].getData();
                 var input_niveau = $('#input_niveau').val();
                 var input_date_expiration = $('#input_date_expiration').val();
                 var input_profile = $('#input_profile').val();
 
-                var tabInput = {
-                    code_user : $.Oda.Session.code_user
-                    , message : input_message
-                    , niveau : input_niveau
-                    , date_expiration : input_date_expiration
-                    , profile : input_profile
-                };
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/addMessage.php", {callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {"type": "post", callback: function(response){
                     $('#input_message').val("");
                     $('#input_niveau').val("");
                     $('#input_date_expiration').val("");
@@ -443,7 +436,13 @@
                     $.Oda.Display.Popup.close();
                     $.Oda.Controller.Admin.messagesDisplay();
                     $.Oda.Display.Notification.info($.Oda.I8n.get("oda-admin","messageCreateOk"));
-                }}, tabInput);
+                }}, {
+                    userId: $.Oda.Session.id,
+                    message: input_message,
+                    level: input_niveau,
+                    expirationDate: input_date_expiration,
+                    rankId: input_profile
+                });
 
                 return this;
             } catch (er) {
@@ -533,9 +532,9 @@
             oda-input-select-name="input_profile" 
             oda-input-select-label="oda-admin.messageCreateProfileLevel"
             oda-input-select-value=""
-            oda-input-select-availables="{{profileList}}"
-            oda-input-select-display="elt.labelle"
-            oda-input-select-response="elt.indice"
+            oda-input-select-availables="{{ranks}}"
+            oda-input-select-display="elt.label"
+            oda-input-select-response="elt.id"
             oda-input-select-order="asc"
             required/>
     </div>

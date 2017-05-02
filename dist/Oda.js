@@ -2244,14 +2244,14 @@ var $;
                  */
                 show: function() {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getMessagesToDisplay.php", { callback : function(datas) {
-                            for(var indice in datas.data.messages.data){
-                                var message = datas.data.messages.data[indice];
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/current", { callback : function(response) {
+                            for(var indice in response.data){
+                                var message = response.data[indice];
                                 if ( ! $( "#oda-message-"+message.id ).length ) {
                                     var strHtml = $.Oda.Display.TemplateHtml.create({
                                         template: "oda-message-tpl",
                                         scope: {
-                                            alertType: message.niveau,
+                                            alertType: message.level,
                                             id: message.id,
                                             message: message.message
                                         }
@@ -2276,12 +2276,9 @@ var $;
                  */
                 hide: function(p_params) {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setMessagesLus.php", {callback : function(datas) {
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/read/"+p_params.id, {type: "PUT", callback : function(datas) {
                             $('#oda-message-'+p_params.id).remove();
-                        }}, { 
-                            code_user: $.Oda.Session.code_user,
-                            id: p_params.id 
-                        });
+                        }});
                         return this;
                     } catch (er) {
                         $.Oda.Log.error("$.Oda.Display.Message.hide  : " + er.message);

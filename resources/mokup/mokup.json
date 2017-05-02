@@ -20,7 +20,7 @@
     ]
   },
   {
-    "interface" : "getMessagesToDisplay.php",
+    "interface" : "example",
     "value"  : [
       {
         "args" : "default",

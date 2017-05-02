@@ -1,10 +1,6 @@
 [
   {
-    "key" : "getMenu.php",
+    "key" : "example",
     "ttl" : 86400
-  },
-  {
-    "key" : "getMessagesToDisplay.php",
-    "ttl" : 3600
   }
 ]
