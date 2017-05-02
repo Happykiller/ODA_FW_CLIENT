@@ -199,7 +199,7 @@
             try {
                 $.Oda.Controller.Admin.currentUser = p_code_user;
                 $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/"+$.Oda.Controller.Admin.currentUser, { callback: function(response) {
-                    var label = "Editer: "  + response.data.userCode;
+                    var label = "Editer: "  + response.data.code_user;
                     var strRanks = $.Oda.Tooling.jsonToStringHtml({json:$.Oda.Controller.Admin.ranks});
 
                     var strHtml = $.Oda.Display.TemplateHtml.create({
