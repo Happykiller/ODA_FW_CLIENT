@@ -118,19 +118,13 @@
          */
         loadingInfos: function(){
             try {
-                var tabSetting = { callback: function(p_retour){
-                    var mail = p_retour.data.detailsUser.mail;
-                    var code_user = p_retour.data.detailsUser.code_user;
-                    var nom = p_retour.data.detailsUser.nom;
-                    var prenom = p_retour.data.detailsUser.prenom;
-                    var langue = p_retour.data.detailsUser.langue;
-                    var rankLabel;
-
-                    for(var index in p_retour.data.lesRangs.data){
-                        if(p_retour.data.lesRangs.data[index].id === p_retour.data.detailsUser.id_rang){
-                            rankLabel = p_retour.data.lesRangs.data[index].labelle;
-                        }
-                    }
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", { callback: function(response){
+                    var mail = response.data.mail;
+                    var code_user = response.data.code_user;
+                    var nom = response.data.nom;
+                    var prenom = response.data.prenom;
+                    var langue = response.data.langue;
+                    var rankLabel = response.data.labelle;
 
                     $('#code_user').html(code_user);
                     $('#lab_nom').html(nom);
@@ -138,9 +132,10 @@
                     $('#lab_mail').html(mail);
                     $('#lab_langue').html(langue);
                     $('#rank').html('<oda-label oda-label-value="'+rankLabel+'"/>');
-                } };
-                var tabInput = { "code_user" : $.Oda.Session.code_user, "profile" : $.Oda.Session.userInfo.profile };
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", tabSetting, tabInput);
+                }}, { 
+                    "code_user": $.Oda.Session.code_user,
+                    "profile": $.Oda.Session.userInfo.profile
+                });
 
                 return this;
             } catch (er) {

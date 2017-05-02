@@ -49,11 +49,15 @@
 
     $.Oda.Controller.Admin = {
         currentUser: null,
+        ranks: null,
         /**
          * @returns {$.Oda.Controller.Admin}
          */
         start : function () {
             try {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/rank/", { callback: function(response) {
+                    $.Oda.Controller.Admin.ranks = response.data;
+                }});
                 $.Oda.Controller.Admin.displayListUsers();
                 $.Oda.Controller.Admin.maillingListDisplay();
                 $.Oda.Controller.Admin.messagesDisplay();
@@ -194,20 +198,18 @@
         userEdit : function (p_code_user) {
             try {
                 $.Oda.Controller.Admin.currentUser = p_code_user;
-                var tabInput = { code_user: p_code_user, profile: $.Oda.Session.userInfo.profile };
-                var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getDetailsUser.php", { callback: function(datas) {
-                    var label = "Editer : "  + $.Oda.Controller.Admin.currentUser;
-                    var ranks = datas.data.lesRangs.data;
-                    var strRanks = $.Oda.Tooling.jsonToStringHtml({json:ranks});
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/"+$.Oda.Controller.Admin.currentUser, { callback: function(response) {
+                    var label = "Editer: "  + response.data.userCode;
+                    var strRanks = $.Oda.Tooling.jsonToStringHtml({json:$.Oda.Controller.Admin.ranks});
 
                     var strHtml = $.Oda.Display.TemplateHtml.create({
-                        template: "edit-templte",
+                        template: "edit-template",
                         scope: {
-                            edit_mail: datas.data.detailsUser.mail,
-                            edit_desc: datas.data.detailsUser.description,
-                            edit_actif_selected: datas.data.detailsUser.actif,
+                            edit_mail: response.data.mail,
+                            edit_desc: response.data.description,
+                            edit_actif_selected: response.data.actif,
                             ranks: strRanks,
-                            selectedRank: datas.data.detailsUser.id_rang
+                            selectedRank: response.data.id_rang
                         }
                     });
 
@@ -233,7 +235,7 @@
                             });
                         }
                     });
-                }}, tabInput);
+                }});
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Admin.userEdit: " + er.message);
@@ -455,7 +457,7 @@
 
 </script>
 
-<script id="edit-templte" type="text/template">
+<script id="edit-template" type="text/template">
 <div class="row">
     <div class="col-md-6">
         <oda-input-text
@@ -494,7 +496,7 @@
             oda-input-select-label="oda-admin.input_rang"
             oda-input-select-value="{{selectedRank}}"
             oda-input-select-availables="{{ranks}}"
-            oda-input-select-display="elt.labelle"
+            oda-input-select-display="elt.label"
             oda-input-select-response="elt.id"
             oda-input-select-order="asc"
             required/>
