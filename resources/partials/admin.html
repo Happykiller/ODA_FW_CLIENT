@@ -35,7 +35,7 @@
                 <div class="panel-heading"><oda-label oda-label-value="oda-admin.list"/></span></div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12" id="div_listDiffusion">
+                        <div class="col-md-12" style="word-wrap: break-word;" id="div_listDiffusion">
                             <oda-loading></oda-loading>
                         </div>
                     </div>
@@ -273,10 +273,10 @@
          */
         maillingListDisplay : function () {
             try {
-                retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getListMail.php", { callback : function(response) {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/mail/", { callback: function(response) {
                     var strhtml = "";
-                    for (var index in response.data.resultat.data) {
-                        strhtml += response.data.resultat.data[index].mail + ";";
+                    for (var index in response.data) {
+                        strhtml += response.data[index].mail + ";";
                     }
                     $('#div_listDiffusion').html(strhtml);
                 }});
