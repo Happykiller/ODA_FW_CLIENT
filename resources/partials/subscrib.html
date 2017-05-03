@@ -105,20 +105,11 @@
         createAccount: function() {
             try {
                 $("#submit").btDisable();
-                var firstName = $("#firstName").val();
-                var lastName = $("#lastName").val();
-                var email = $("#email").val();
-                var mdp = $("#mdp").val();
-                var login = $("#login").text();
-
-                var tabInput = { nom: lastName, prenom: firstName, email: email, motDePasse: mdp, codeUtilisateur: login };
-                var results = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/addUtilisateur.php", {callback: function(results){
-                    var infoUser = results.data.infosUser;
-
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/", {type: "post", callback: function(response){
                     var message_html  = $.Oda.Display.TemplateHtml.create({
                         template : "mailSubscribe",
                         scope : {
-                            "code_user": infoUser.code_user,
+                            "code_user": response.data.userCode,
                             "firstName": firstName,
                             "lastName": lastName,
                             "siteUrl": $.Oda.Context.host
@@ -130,19 +121,19 @@
                     var contact_mail_administrateur = $.Oda.Interface.getParameter("contact_mail_administrateur");
 
                     var paramsMail = {
-                        email_mails_dest: infoUser.mail
-                        ,email_mail_ori: contact_mail_administrateur
-                        , email_labelle_ori: "Service Mail ODA"
-                        , email_mail_reply: contact_mail_administrateur
-                        , email_labelle_reply: "Service Mail ODA"
-                        , email_mails_cache: contact_mail_administrateur
-                        , message_html: message_html
-                        , sujet: sujet
+                        email_mails_dest: response.data.mail,
+                        email_mail_ori: contact_mail_administrateur,
+                        email_labelle_ori: "Service Mail ODA", 
+                        email_mail_reply: contact_mail_administrateur,
+                        email_labelle_reply: "Service Mail ODA", 
+                        email_mails_cache: contact_mail_administrateur, 
+                        message_html: message_html, 
+                        sujet: sujet
                     };
 
                     $.Oda.Interface.sendMail(paramsMail);
 
-                    var strHtml = "F&eacute;licitation votre compte a bien &eacute;t&eacute; cr&eacute;&eacute; (N&deg;"+infoUser.id+", identifiant : "+infoUser.code_user+").";
+                    var strHtml = "F&eacute;licitation votre compte a bien &eacute;t&eacute; cr&eacute;&eacute; (N&deg;"+response.data.id+", identifiant : "+response.data.userCode+").";
                     $.Oda.Display.Notification.success(strHtml);
 
                     $("#firstName").val("");
@@ -152,7 +143,13 @@
                     $("#login").text("");
                     
                     $("#submit").btEnable();
-                }}, tabInput);
+                }}, { 
+                    lastName: $("#lastName").val(), 
+                    firstName: $("#firstName").val(), 
+                    mail: $("#email").val(), 
+                    password: $("#mdp").val(), 
+                    userCode: $("#login").text() 
+                });
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Subscrib.createAccount: " + er.message);
