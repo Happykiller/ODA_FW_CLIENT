@@ -1779,23 +1779,23 @@ var $;
             },
             /**
              * @name $.Oda.Interface.addStat
-             * @example addStat('ADMI', 'page_home.html', 'checkAuth : ok');
+             * @example $.Oda.Interface.addStat('ADMI', 'page_home.html', 'checkAuth : ok');
              * @param {String} p_user
              * @param {String} p_page
              * @param {String} p_action
              */
             addStat: function(p_user, p_page, p_action) {
                 try {
-                    var tabSetting = { callback : function(){} };
-                    var tabInput = {
-                        user : p_user,
-                        page : p_page,
-                        action : p_action
-                    };
-                    var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/addStat.php", tabSetting, tabInput);
-                    return retour;
+                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/page/trace", {type: "post", callback: function(){
+                         $.Oda.Log.debug("$.Oda.Interface.addStat:'"+p_user+"', '"+p_page+"', '"+p_action+"'");
+                     }}, {
+                        user: p_user,
+                        page: p_page,
+                        action: p_action
+                    });
+                    return this;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Interface.addStat : " + er.message);
+                    $.Oda.Log.error("$.Oda.Interface.addStat: " + er.message);
                     return null;
                 }
             },

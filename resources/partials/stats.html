@@ -22,8 +22,8 @@
     function afficherActivite() {
         try {
             $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/report/activity", {callback: function(response) {
-                var nombre = response['nombre'];
-                var datas = response["data"];
+                var nombre = response.data.length;
+                var datas = response.data;
 
                 var pieDatas = new Array();
                 for (var indice in datas) {
@@ -82,68 +82,62 @@
      */
     function afficherPageActivite() {
         try {
-            var tabInput = {  };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getPageActivite.php", {functionRetour : function(datas) {
-                if(datas["strErreur"] === ""){
-                    var nombre = datas["data"]["resultat"]['nombre'];
-                    var datas = datas["data"]["resultat"]["data"];
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/report/page/activity", {callback: function(response) {
+                var nombre = response.data.length;
+                var datas = response.data;
 
-                    var pieDatas = new Array();
-                    for (var indice in datas) {
-                        var route = datas[indice]["page"];
-                        route = route.replace("api_page_","");
-                        route = route.replace("page_","");
-                        route = route.replace(".html","");
+                var pieDatas = new Array();
+                for (var indice in datas) {
+                    var route = datas[indice]["page"];
+                    route = route.replace("api_page_","");
+                    route = route.replace("page_","");
+                    route = route.replace(".html","");
 
-                        pieDatas[pieDatas.length] = {
-                            name : route
-                            , y : parseInt(datas[indice]["nombre"])
-                        };
-                    }
+                    pieDatas[pieDatas.length] = {
+                        name : route
+                        , y : parseInt(datas[indice]["nombre"])
+                    };
+                }
 
-                    $('#div_activityByPage').highcharts({
-                        chart: {
-                            type: 'pie',
-                            backgroundColor:'rgba(255, 255, 255, 0.1)'
-                        },
-                        title: {
-                            text: $.Oda.Tooling.decodeHtml($.Oda.I8n.get("oda-stats","activityByPage"))
-                        },
-                        subtitle :  {
-                            text : 'From : '+nombre
-                        },
-                        plotOptions: {
-                            pie: {
-                                shadow: true,
-                                center: ['50%', '50%']
-                            }
-                        },
-                        tooltip: {
+                $('#div_activityByPage').highcharts({
+                    chart: {
+                        type: 'pie',
+                        backgroundColor:'rgba(255, 255, 255, 0.1)'
+                    },
+                    title: {
+                        text: $.Oda.Tooling.decodeHtml($.Oda.I8n.get("oda-stats","activityByPage"))
+                    },
+                    subtitle :  {
+                        text : 'From : '+nombre
+                    },
+                    plotOptions: {
+                        pie: {
+                            shadow: true,
+                            center: ['50%', '50%']
+                        }
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            var s;
+                            s = this.point.name +' : '+$.Oda.Tooling.arrondir(this.point.percentage,2)+"% ("+this.y+")";
+                            return s;
+                        }
+                    },
+                    series: [{
+                        name: 'Page',
+                        data: pieDatas,
+                        dataLabels: {
                             formatter: function() {
                                 var s;
-                                s = this.point.name +' : '+$.Oda.Tooling.arrondir(this.point.percentage,2)+"% ("+this.y+")";
+                                if (this.point.percentage > 2) { // the pie chart
+                                    s = this.point.name +':'+$.Oda.Tooling.arrondir(this.point.percentage,2)+"%";
+                                }
                                 return s;
                             }
-                        },
-                        series: [{
-                            name: 'Page',
-                            data: pieDatas,
-                            dataLabels: {
-                                formatter: function() {
-                                    var s;
-                                    if (this.point.percentage > 2) { // the pie chart
-                                        s = this.point.name +':'+$.Oda.Tooling.arrondir(this.point.percentage,2)+"%";
-                                    }
-                                    return s;
-                                }
-                            }
-                        }]
-                    });
-                }else{
-                    $.Oda.Display.Notification.error(datas["strErreur"]);
-                    $('#div_activityByPage').html("&nbsp;");
-                }
-            }}, tabInput);
+                        }
+                    }]
+                });
+            }});
         }
         catch (er) {
             $.Oda.Log.error("afficherPageActivite):" + er.message);
