@@ -2244,14 +2244,14 @@ var $;
                  */
                 show: function() {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/current", { callback : function(response) {
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/current", { callback: function(response) {
                             for(var indice in response.data){
                                 var message = response.data[indice];
                                 if ( ! $( "#oda-message-"+message.id ).length ) {
                                     var strHtml = $.Oda.Display.TemplateHtml.create({
                                         template: "oda-message-tpl",
                                         scope: {
-                                            alertType: message.level,
+                                            alertType: message.niveau,
                                             id: message.id,
                                             message: message.message
                                         }
@@ -2260,7 +2260,7 @@ var $;
                                 }
                             }
                         }}, { 
-                            code_user : $.Oda.Session.code_user
+                            code_user: $.Oda.Session.code_user
                          });
                         return this;
                     } catch (er) {
@@ -2276,7 +2276,7 @@ var $;
                  */
                 hide: function(p_params) {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/read/"+p_params.id, {type: "PUT", callback : function(datas) {
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/read/"+p_params.id , {callback: function(datas) {
                             $('#oda-message-'+p_params.id).remove();
                         }});
                         return this;
