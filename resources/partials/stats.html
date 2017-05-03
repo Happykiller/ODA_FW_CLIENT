@@ -21,63 +21,57 @@
      */
     function afficherActivite() {
         try {
-            var tabInput = {  };
-            var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getUserActivite.php", {functionRetour : function(datas) {
-                if(datas["strErreur"] === ""){
-                    var nombre = datas["data"]["resultat"]['nombre'];
-                    var datas = datas["data"]["resultat"]["data"];
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/report/activity", {callback: function(response) {
+                var nombre = response['nombre'];
+                var datas = response["data"];
 
-                    var pieDatas = new Array();
-                    for (var indice in datas) {
-                        pieDatas[pieDatas.length] = {
-                            name : datas[indice]["code_user"],
-                            y : parseInt(datas[indice]["nombre"])
-                        };
-                    }
+                var pieDatas = new Array();
+                for (var indice in datas) {
+                    pieDatas[pieDatas.length] = {
+                        name : datas[indice]["code_user"],
+                        y : parseInt(datas[indice]["nombre"])
+                    };
+                }
 
-                    $('#div_activityByUser').highcharts({
-                        chart: {
-                            type: 'pie',
-                            backgroundColor:'rgba(255, 255, 255, 0.1)'
-                        },
-                        title: {
-                            text: $.Oda.Tooling.decodeHtml($.Oda.I8n.get("oda-stats","activityByUser"))
-                        },
-                        subtitle :  {
-                            text : 'From : '+nombre
-                        },
-                        plotOptions: {
-                            pie: {
-                                shadow: true,
-                                center: ['50%', '50%']
-                            }
-                        },
-                        tooltip: {
+                $('#div_activityByUser').highcharts({
+                    chart: {
+                        type: 'pie',
+                        backgroundColor:'rgba(255, 255, 255, 0.1)'
+                    },
+                    title: {
+                        text: $.Oda.Tooling.decodeHtml($.Oda.I8n.get("oda-stats","activityByUser"))
+                    },
+                    subtitle :  {
+                        text : 'From : '+nombre
+                    },
+                    plotOptions: {
+                        pie: {
+                            shadow: true,
+                            center: ['50%', '50%']
+                        }
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            var s;
+                            s = this.point.name +' : '+$.Oda.Tooling.arrondir(this.point.percentage,2)+"% ("+this.y+")";
+                            return s;
+                        }
+                    },
+                    series: [{
+                        name: 'Utilisateur',
+                        data: pieDatas,
+                        dataLabels: {
                             formatter: function() {
                                 var s;
-                                s = this.point.name +' : '+$.Oda.Tooling.arrondir(this.point.percentage,2)+"% ("+this.y+")";
+                                if (this.point.percentage > 2) { // the pie chart
+                                    s = this.point.name +':'+$.Oda.Tooling.arrondir(this.point.percentage,2)+"%";
+                                }
                                 return s;
                             }
-                        },
-                        series: [{
-                            name: 'Utilisateur',
-                            data: pieDatas,
-                            dataLabels: {
-                                formatter: function() {
-                                    var s;
-                                    if (this.point.percentage > 2) { // the pie chart
-                                        s = this.point.name +':'+$.Oda.Tooling.arrondir(this.point.percentage,2)+"%";
-                                    }
-                                    return s;
-                                }
-                            }
-                        }]
-                    });
-                }else{
-                    $.Oda.Display.Notification.error(datas["strErreur"]);
-                    $('#div_activityByUser').html("&nbsp;");
-                }
-            }}, tabInput);
+                        }
+                    }]
+                });
+            }});
         } catch (er) {
             $.Oda.Log.error("afficherActivite):" + er.message);
         }
