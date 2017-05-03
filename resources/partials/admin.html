@@ -247,19 +247,22 @@
          */
         userEditionValidate : function () {
             try {
-                var code_user = $.Oda.Controller.Admin.currentUser;
                 var mail = $('#edit_mail').val();
                 var desc = $('#edit_desc').val();
-                var actif = $('#edit_actif').val();
-                var rang = $('#input_rang').val();
+                var active = $('#edit_actif').val();
+                var rankId = $('#input_rang').val();
 
-                var tabInput = { code_user : code_user, mail : mail, actif : actif, rang : rang, desc : desc };
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/updateUser.php", {functionRetour:function(){
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/"+$.Oda.Controller.Admin.currentUser, {type: "put", callback:function(){
                     $.Oda.Controller.Admin.currentUser = null;
                     $.Oda.Display.Popup.close();
                     $.Oda.Display.Notification.info($.Oda.I8n.get("oda-admin","userUpdateOk"));
                     $.Oda.Controller.Admin.displayListUsers();
-                }}, tabInput);
+                }}, { 
+                    mail: mail,
+                    active: active,
+                    rankId: rankId,
+                    desc: desc
+                });
                 return this;
             } catch (er) {
                 $.Oda.Log.error("$.Oda.Controller.Admin.userEditionValidate : " + er.message);
@@ -428,7 +431,7 @@
                 var input_date_expiration = $('#input_date_expiration').val();
                 var input_profile = $('#input_profile').val();
 
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {"type": "post", callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {type: "post", callback: function(response){
                     $('#input_message').val("");
                     $('#input_niveau').val("");
                     $('#input_date_expiration').val("");
