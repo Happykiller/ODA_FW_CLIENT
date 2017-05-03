@@ -70,10 +70,10 @@
         /**
          * @returns {$.Oda.Controller.Admin}
          */
-        displayListUsers : function () {
+        displayListUsers: function () {
             try {
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getListutilisateurs.php", { callback: function(response) {
-                    var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(response.data.resultats.data);
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/", { callback: function(response) {
+                    var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(response.data);
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_listUtilisateurs">';
                     strhtml += '<tfoot><tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th oda-attr="select">6</th><th>7</th></tr></tfoot></table>';
                     $('#div_listUtilisateurs').html(strhtml);
@@ -172,18 +172,16 @@
                             });
                         } else {
                             $('<input type="text" placeholder="Search" size="4"/>')
-                                    .appendTo($(this).empty())
-                                    .on('keyup change', function () {
-                                        table
-                                                .column(i)
-                                                .search(this.value)
-                                                .draw();
-                                    });
+                                .appendTo($(this).empty())
+                                .on('keyup change', function () {
+                                    table
+                                        .column(i)
+                                        .search(this.value)
+                                        .draw();
+                                });
                         }
                     });
-                }}, {
-                    indice_user: $.Oda.Session.code_user
-                });
+                }});
 
                 return this;
             } catch (er) {
