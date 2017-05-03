@@ -104,21 +104,23 @@
         goInWithGoogle: function () {
             try {
                 gapi.client.oauth2.userinfo.get().execute(function(resp) {
-                    var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAccountsFromEmail.php", {callback:function(retour){
-                        if(retour.data.nombre == 0){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/search/mail/", {callback:function(retour){
+                        if(retour.data.lenght === 0){
                             $.Oda.Display.Notification.warning($.Oda.I8n.get('oda-auth','noAccount')+resp.email);
-                        }else if(retour.data.nombre == 1){
-                            $.Oda.Security.auth({"login" : retour.data.data[0].code_user, "mdp" : "authByGoogle-"+resp.email, "reload" : true});
+                        }else if(retour.data.lenght === 1){
+                            $.Oda.Security.auth({"login" : retour.data[0].code_user, "mdp" : "authByGoogle-"+resp.email, "reload" : true});
                         }else {
                             var strHtml = '<div class="list-group"">';
-                            for (var indice in retour.data.data) {
-                                var elt = retour.data.data[indice];
+                            for (var indice in retour.data) {
+                                var elt = retour.data[indice];
                                 strHtml += "<a class=\"list-group-item\" onclick=\"$.Oda.Security.auth({'login' : '"+elt.code_user+"', 'mdp' : '"+"authByGoogle-"+resp.email+"', 'reload' : true});\">"+elt.code_user+"</a>";
                             }
                             strHtml += '</div>';
                             $.Oda.Display.Popup.open({"label" : $.Oda.I8n.get('oda-auth','chooseAccount'), "details" : strHtml});
                         }
-                    }}, { "email" : resp.email});
+                    }}, { 
+                        email: resp.email
+                    });
                 });
                 return this;
             } catch (er) {
