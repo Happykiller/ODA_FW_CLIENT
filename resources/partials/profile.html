@@ -218,36 +218,35 @@
          */
          submitChange: function(p_champs){
             try {
-                var mdp = $('#input_old_password').val();
-                var value = $('#input_'+p_champs).val();
-                var tabInput = { "code_user" : $.Oda.Session.code_user, "mdp" : mdp, "champs" : p_champs, "value" : value };
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/setChangeProfile.php", {callback : function(response){
-                    $('#input_old_password').val("");
-                    $('#input_'+p_champs).val("");
-
-                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback : function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {type: "put", callback: function(response){
+                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback: function(response){
                         var userInfo = {
-                            "locale" : response.data.langue
-                            , "firstName" : response.data.prenom
-                            , "lastName" : response.data.nom
-                            , "mail" : response.data.mail
-                            , "profile" : response.data.profile
-                            , "profileLabel" : response.data.labelle
-                            , "showTooltip" : response.data.montrer_aide_ihm
+                            locale: response.data.langue, 
+                            firstName: response.data.prenom,
+                            lastName: response.data.nom,
+                            mail: response.data.mail,
+                            profile: response.data.profile,
+                            profileLabel: response.data.labelle,
+                            showTooltip: response.data.montrer_aide_ihm
                         };
                         $.Oda.Session.userInfo = userInfo;
                         $.Oda.I8n.watchLanguage();
-                        $.Oda.Storage.set("ODA-SESSION",$.Oda.Session,43200);
+                        $.Oda.Storage.set("ODA-SESSION", $.Oda.Session, 43200);
 
-                        $.Oda.Display.Popup.close({"name":"popChangeProfile"});
-
-                        $('#lab_'+p_champs).html(value);
+                        $('#lab_'+p_champs).html($('#input_'+p_champs).val());
+                        $.Oda.Display.Popup.close({name: "popChangeProfile"});
+                        $('#input_old_password').val("");
+                        $('#input_'+p_champs).val("");
 
                         $.Oda.Display.Notification.success($.Oda.I8n.get('oda-profile', 'updateSuccess'));
                     }});
-                }}, tabInput);
+                }}, {
+                    password: $('#input_old_password').val(),
+                    field: p_champs,
+                    value: $('#input_'+p_champs).val()
+                });
             } catch (er) {
-                $.Oda.Log.error("$.Oda.Controller.Profile.submitChange : " + er.message);
+                $.Oda.Log.error("$.Oda.Controller.Profile.submitChange: " + er.message);
             }
         }
     };
