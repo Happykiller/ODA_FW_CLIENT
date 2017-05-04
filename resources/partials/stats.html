@@ -21,7 +21,7 @@
      */
     function afficherActivite() {
         try {
-            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/report/activity", {callback: function(response) {
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/report/activity", {callback: function(response) {
                 var nombre = response.data.length;
                 var datas = response.data;
 
@@ -82,7 +82,7 @@
      */
     function afficherPageActivite() {
         try {
-            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/report/page/activity", {callback: function(response) {
+            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/report/page/activity", {callback: function(response) {
                 var nombre = response.data.length;
                 var datas = response.data;
 

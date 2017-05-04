@@ -104,7 +104,7 @@
         goInWithGoogle: function () {
             try {
                 gapi.client.oauth2.userinfo.get().execute(function(resp) {
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/search/mail/", {callback:function(retour){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/search/mail/", {callback:function(retour){
                         if(retour.data.lenght === 0){
                             $.Oda.Display.Notification.warning($.Oda.I8n.get('oda-auth','noAccount')+resp.email);
                         }else if(retour.data.lenght === 1){

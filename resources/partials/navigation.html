@@ -27,11 +27,11 @@
          */
         start: function() {
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/rank/", {"callback":function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/rank/", {"callback":function(response){
                     $.Oda.Controller.Navigation.ranks = response.data.data;
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/page/", {"callback":function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/page/", {"callback":function(response){
                         $.Oda.Controller.Navigation.pages = response.data.data;
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/rights/", {"callback":function(response){
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/rights/", {"callback":function(response){
                             $.Oda.Controller.Navigation.rights = $.Oda.Controller.Navigation.transformRights(response.data.data);
                             $.Oda.Controller.Navigation.displayMapping();
                         }});
@@ -145,7 +145,7 @@
                         rec += pageId + ";"
                     }
                 })
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/"+rankId, {type: "PUT", callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/right/"+rankId, {type: "PUT", callback: function(response){
                     $.Oda.Display.Notification.successI8n('oda-navigation.updateSuccess');
                 }},{
                     value: rec

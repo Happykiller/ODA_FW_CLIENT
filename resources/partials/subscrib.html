@@ -105,7 +105,7 @@
         createAccount: function() {
             try {
                 $("#submit").btDisable();
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/", {type: "post", callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/", {type: "post", callback: function(response){
                     var message_html  = $.Oda.Display.TemplateHtml.create({
                         template : "mailSubscribe",
                         scope : {

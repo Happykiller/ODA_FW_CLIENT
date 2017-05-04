@@ -118,7 +118,7 @@
          */
         loadingInfos: function(){
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", { callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/current", { callback: function(response){
                     var mail = response.data.mail;
                     var code_user = response.data.code_user;
                     var nom = response.data.nom;
@@ -218,8 +218,8 @@
          */
          submitChange: function(p_champs){
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {type: "put", callback: function(response){
-                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/current", {type: "put", callback: function(response){
+                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/current", {callback: function(response){
                         var userInfo = {
                             locale: response.data.langue, 
                             firstName: response.data.prenom,

@@ -99,7 +99,7 @@
                     "pwd" : $("#pwd").val(),
                     "email": $("#email").val()
                 };
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/pwd/", {"type": "put", callback : function(response){
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/pwd/", {"type": "put", callback : function(response){
                     $.Oda.Router.navigateTo({'route':'home','args':[]});
                 }},tabInput);
                 return this;

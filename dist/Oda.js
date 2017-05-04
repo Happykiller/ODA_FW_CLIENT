@@ -266,7 +266,7 @@ var $;
 
                     $.Oda.Router.addMiddleWare("support",function() {
                         $.Oda.Log.debug("MiddleWares : support");
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/param/maintenance", {callback: function(response){
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/param/maintenance", {callback: function(response){
                             try{
                                 var maintenance = response.data.param_value;
 
@@ -285,7 +285,7 @@ var $;
                         $.Oda.Log.debug("MiddleWares : auth");
                         if (($.Oda.Session.hasOwnProperty("code_user")) && ($.Oda.Session.code_user !== "")) {
                             if ($.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
-                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/rest/session/check", {callback: function(data){
+                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/session/check", {callback: function(data){
                                     if (data.data) {
                                     } else {
                                         $.Oda.Router.routerExit = true;
@@ -307,7 +307,7 @@ var $;
                                 $.Oda.Session = session;
                                 $.Oda.I8n.watchLanguage();
 
-                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/rest/session/check", {callback: function(data){
+                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/session/check", {callback: function(data){
                                     if (data.data) {
                                         $.Oda.Security.loadRight({callback: function(){
                                             if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
@@ -1719,7 +1719,7 @@ var $;
             getParameter: function(p_param_name) {
                 try {
                     var strResponse;
-                    var json_retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/param/"+p_param_name, {});
+                    var json_retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/param/"+p_param_name, {});
                     if(json_retour.strErreur === ""){
                         var type = json_retour.data.param_type;
                         var value = json_retour.data.param_value;
@@ -1753,7 +1753,7 @@ var $;
                 try {
                     var valeur = $.Oda.Storage.get("ODA_rangs");
                     if(valeur === null){
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/rank/", {});
+                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rank/", {});
                         if(retour.strErreur === ""){
                             valeur = retour.data;
                         }else{
@@ -1778,7 +1778,7 @@ var $;
              */
             addStat: function(p_user, p_page, p_action) {
                 try {
-                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/page/trace", {type: "post", callback: function(){
+                     $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/page/trace", {type: "post", callback: function(){
                          $.Oda.Log.debug("$.Oda.Interface.addStat:'"+p_user+"', '"+p_page+"', '"+p_action+"'");
                      }}, {
                         user: p_user,
@@ -1838,7 +1838,7 @@ var $;
              */
             traceLog: function(p_params) {
                 try {
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/log/", {type: "post", callback: function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/log/", {type: "post", callback: function(response){
                         $.Oda.Log.debug("Log success id:"+response.data);
                     }}, {
                         type: 1,
@@ -2190,7 +2190,7 @@ var $;
                 show: function(){
                     try {
                         if(!this.display){
-                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/", {"callback": function(response){
+                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/right/", {"callback": function(response){
                                 var strHTML = "";
                                 var datas = response.data;
                                 var cate = "";
@@ -2239,7 +2239,7 @@ var $;
                  */
                 show: function() {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/current", { callback: function(response) {
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/message/current", { callback: function(response) {
                             for(var indice in response.data){
                                 var message = response.data[indice];
                                 if ( ! $( "#oda-message-"+message.id ).length ) {
@@ -2271,7 +2271,7 @@ var $;
                  */
                 hide: function(p_params) {
                     try {
-                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/read/"+p_params.id , {callback: function(datas) {
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/message/read/"+p_params.id , {callback: function(datas) {
                             $('#oda-message-'+p_params.id).remove();
                         }});
                         return this;
@@ -3946,7 +3946,7 @@ var $;
                             codeUser = user;
                         }
                         
-                        var src = $.Oda.Context.rest+'vendor/happykiller/oda/resources/api/rest/avatar/'+codeUser+'?mili'+$.Oda.Tooling.getMilise();
+                        var src = $.Oda.Context.rest+'vendor/happykiller/oda/resources/api/avatar/'+codeUser+'?mili'+$.Oda.Tooling.getMilise();
 
                         var divHeight;
                         var imgHeight;
@@ -5280,7 +5280,7 @@ var $;
             auth: function(p_params) {
                 try {
                     $.Oda.Log.debug("$.Oda.Security.auth begin.");
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/session/", {type: "post", callback:function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/session/", {type: "post", callback:function(response){
                         if(response.strErreur !== ""){
                             $.Oda.Storage.remove("ODA-SESSION");
                             $.Oda.Display.Notification.warning(response.strErreur);
@@ -5293,7 +5293,7 @@ var $;
                                 "key": key
                             };
 
-                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/current", {callback:function(response){
+                            $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/current", {callback:function(response){
                                 if(response.strErreur === ""){
                                     var userInfo = {
                                         "locale": response.data.langue,
@@ -5349,7 +5349,7 @@ var $;
             loadRight: function(p) {
                 try {
                     $.Oda.Router.routesAllowed = $.Oda.Router.routesAllowedDefault.slice(0);
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/navigation/right/", {callback: function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/navigation/right/", {callback: function(response){
                         var datas = response.data;
                         for (var indice in datas) {
                             if((datas[indice].id_categorie !== "1")){
@@ -5374,7 +5374,7 @@ var $;
              */
             logout: function(){
                 try {
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/session/"+$.Oda.Session.key, {type: "delete", callback:function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/session/"+$.Oda.Session.key, {type: "delete", callback:function(response){
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
                         $.Oda.Session = $.Oda.SessionDefault;
                         $.Oda.I8n.watchLanguage();

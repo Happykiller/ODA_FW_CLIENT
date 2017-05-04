@@ -55,7 +55,7 @@
          */
         start : function () {
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/rank/", { callback: function(response) {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rank/", { callback: function(response) {
                     $.Oda.Controller.Admin.ranks = response.data;
                 }});
                 $.Oda.Controller.Admin.displayListUsers();
@@ -72,7 +72,7 @@
          */
         displayListUsers: function () {
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/", { callback: function(response) {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/", { callback: function(response) {
                     var objDataTable = $.Oda.Tooling.objDataTableFromJsonArray(response.data);
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_listUtilisateurs">';
                     strhtml += '<tfoot><tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th oda-attr="select">6</th><th>7</th></tr></tfoot></table>';
@@ -196,7 +196,7 @@
         userEdit : function (p_code_user) {
             try {
                 $.Oda.Controller.Admin.currentUser = p_code_user;
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/"+$.Oda.Controller.Admin.currentUser, { callback: function(response) {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/"+$.Oda.Controller.Admin.currentUser, { callback: function(response) {
                     var label = "Editer: "  + response.data.code_user;
                     var strRanks = $.Oda.Tooling.jsonToStringHtml({json:$.Oda.Controller.Admin.ranks});
 
@@ -250,7 +250,7 @@
                 var active = $('#edit_actif').val();
                 var rankId = $('#input_rang').val();
 
-                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/"+$.Oda.Controller.Admin.currentUser, {type: "put", callback:function(){
+                var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/"+$.Oda.Controller.Admin.currentUser, {type: "put", callback:function(){
                     $.Oda.Controller.Admin.currentUser = null;
                     $.Oda.Display.Popup.close();
                     $.Oda.Display.Notification.info($.Oda.I8n.get("oda-admin","userUpdateOk"));
@@ -273,7 +273,7 @@
          */
         maillingListDisplay : function () {
             try {
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/user/mail/", { callback: function(response) {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/mail/", { callback: function(response) {
                     var strhtml = "";
                     for (var index in response.data) {
                         strhtml += response.data[index].mail + ";";
@@ -292,7 +292,7 @@
         messagesDisplay : function () {
             try {
                 $('#div_messages').html('<oda-loading/>')
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {callback : function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/message/", {callback : function(response){
                     var strhtml = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered hover" id="table_messages"></table>';
                     strhtml += '<oda-btn oda-btn-name="bt_validerRetourMsg" oda-btn-style="primary" oda-btn-icon-before="new" oda-btn-click="$.Oda.Controller.Admin.messageNew();">oda-admin.bt-create-new-message</oda-btn>';
                     $('#div_messages').html(strhtml).trigger('create');
@@ -429,7 +429,7 @@
                 var input_date_expiration = $('#input_date_expiration').val();
                 var input_profile = $('#input_profile').val();
 
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/message/", {type: "post", callback: function(response){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/message/", {type: "post", callback: function(response){
                     $('#input_message').val("");
                     $('#input_niveau').val("");
                     $('#input_date_expiration').val("");
