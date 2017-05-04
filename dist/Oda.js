@@ -5377,7 +5377,7 @@ var $;
              */
             logout: function(){
                 try {
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/deleteSession.php", {callback:function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/session/"+$.Oda.Session.key, {type: "delete", callback:function(response){
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
                         $.Oda.Session = $.Oda.SessionDefault;
                         $.Oda.I8n.watchLanguage();
@@ -5385,11 +5385,9 @@ var $;
                         $.Oda.Display.MenuSlide.remove();
                         $.Oda.Display.Menu.remove();
                         $.Oda.Router.routes.auth.go();
-                    }}, {
-                        "key" : $.Oda.Session.key
-                    });
+                    }});
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Security.logout : " + er.message);
+                    $.Oda.Log.error("$.Oda.Security.logout: " + er.message);
                 }
             }
         },
