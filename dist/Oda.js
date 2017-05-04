@@ -1837,15 +1837,18 @@ var $;
             },
             /**
              * @name $.Oda.Interface.traceLog
+             * @example $.Oda.Interface.traceLog({msg:"hello"});
              * @param {Object} p_params
              * @param {String} p_params.msg
              * @returns {$.Oda.Interface}
              */
             traceLog: function(p_params) {
                 try {
-                    var call = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/insertLog.php", {"callback":function(response){}}, {
-                        "type":1,
-                        "msg":p_params.msg
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/log/", {type: "post", callback: function(response){
+                        $.Oda.Log.debug("Log success id:"+response.data);
+                    }}, {
+                        type: 1,
+                        msg: p_params.msg
                     });
                     return this;
                 } catch (er) {
