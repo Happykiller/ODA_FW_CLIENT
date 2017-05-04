@@ -1753,12 +1753,9 @@ var $;
                 try {
                     var valeur = $.Oda.Storage.get("ODA_rangs");
                     if(valeur === null){
-
-                        var tabInput = { "sql" : "Select `labelle`,`indice` FROM `api_tab_rangs` ORDER BY `indice` desc" };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getSQL.php", {type : 'POST'}, tabInput);
-
+                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/rank/", {});
                         if(retour.strErreur === ""){
-                            valeur = retour.data.resultat.data;
+                            valeur = retour.data;
                         }else{
                             $.Oda.Display.Notification.error(retour.strErreur);
                         }
