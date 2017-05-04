@@ -131,7 +131,7 @@
         chargerMaintenance: function(p_execution){
             try {
                 $('#div_maintenance').html('<oda-loading/>');
-                var tabSetting = { callback: function(p_retour){
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/cleanDb/", {type: "post", callback: function(p_retour){
                     var strhtml = "Volume des tables syst&egrave;mes : <br>";
                     var datas = p_retour["data"]["resultat"]["data"];
                     for (var indice in datas){
@@ -149,9 +149,9 @@
                     strhtml += '<oda-btn oda-btn-style="danger" oda-btn-icon-before="remove" oda-btn-click="$.Oda.Controller.Supervision.chargerMaintenance(true);">oda-supervision.purge</oda-btn>';
 
                     $('#div_maintenance').html(strhtml);
-                }};
-                var tabInput = { exec : p_execution };
-                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/maintenanceDb.php", tabSetting, tabInput);
+                }}, { 
+                    exec: p_execution
+                });
 
                 return this;
             } catch (er) {
