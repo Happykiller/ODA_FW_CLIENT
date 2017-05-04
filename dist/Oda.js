@@ -5285,13 +5285,13 @@ var $;
             auth: function(p_params) {
                 try {
                     $.Oda.Log.debug("$.Oda.Security.auth begin.");
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getAuth.php", {callback:function(response){
+                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/session/", {type: "post", callback:function(response){
                         if(response.strErreur !== ""){
                             $.Oda.Storage.remove("ODA-SESSION");
                             $.Oda.Display.Notification.warning(response.strErreur);
                         }else{
-                            var code_user = response.data.resultat.code_user.toUpperCase();
-                            var key = response.data.resultat.keyAuthODA;
+                            var code_user = response.data.code_user.toUpperCase();
+                            var key = response.data.keyAuthODA;
 
                             var session = {
                                 "code_user": code_user,
@@ -5335,8 +5335,8 @@ var $;
                             });
                         }
                     }}, { 
-                        login: p_params.login, 
-                        mdp: p_params.mdp 
+                        userCode: p_params.login, 
+                        password: p_params.mdp 
                     });
                     return this;
                 } catch (er) {
