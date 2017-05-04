@@ -266,10 +266,9 @@ var $;
 
                     $.Oda.Router.addMiddleWare("support",function() {
                         $.Oda.Log.debug("MiddleWares : support");
-                        var tabInput = { param_name : "maintenance" };
-                        var retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getParam.php", {callback : function(data){
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/param/maintenance", {callback: function(response){
                             try{
-                                var maintenance = data.data.leParametre.param_value;
+                                var maintenance = response.data.param_value;
 
                                 if (maintenance === "1") {
                                     $.Oda.Router.routerExit = true;
@@ -279,7 +278,7 @@ var $;
                                 $.Oda.Router.routerExit = true;
                                 $.Oda.Router.routes.support.go();
                             }
-                        }}, tabInput);
+                        }});
                     });
 
                     $.Oda.Router.addMiddleWare("auth", function() {
@@ -1720,12 +1719,10 @@ var $;
             getParameter: function(p_param_name) {
                 try {
                     var strResponse;
-
-                    var tabInput = { param_name : p_param_name };
-                    var json_retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/getParam.php", {}, tabInput);
+                    var json_retour = $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/rest/sys/param/"+p_param_name, {});
                     if(json_retour.strErreur === ""){
-                        var type = json_retour.data.leParametre.param_type;
-                        var value = json_retour.data.leParametre.param_value;
+                        var type = json_retour.data.param_type;
+                        var value = json_retour.data.param_value;
                         switch (type) {
                             case "int":
                                 strResponse = parseInt(value);
