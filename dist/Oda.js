@@ -286,17 +286,16 @@ var $;
                         $.Oda.Log.debug("MiddleWares : auth");
                         if (($.Oda.Session.hasOwnProperty("code_user")) && ($.Oda.Session.code_user !== "")) {
                             if ($.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
-                                var tabInput = {
-                                    "code_user": $.Oda.Session.code_user,
-                                    "key": $.Oda.Session.key
-                                };
-                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
+                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/rest/session/check", {callback: function(data){
                                     if (data.data) {
                                     } else {
                                         $.Oda.Router.routerExit = true;
                                         $.Oda.Security.logout();
                                     }
-                                }}, tabInput);
+                                }}, {
+                                    "code_user": $.Oda.Session.code_user,
+                                    "key": $.Oda.Session.key
+                                });
                             } else {
                                 $.Oda.Log.error("MiddleWares auth : route not allowed "+$.Oda.Router.current.route);
                                 $.Oda.Router.routerExit = true;
@@ -309,11 +308,7 @@ var $;
                                 $.Oda.Session = session;
                                 $.Oda.I8n.watchLanguage();
 
-                                var tabInput = {
-                                    "code_user": session.code_user,
-                                    "key": session.key
-                                };
-                                var retour = $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/checkSession.php", {callback : function(data){
+                                $.Oda.Interface.callRest($.Oda.Context.rest + "vendor/happykiller/oda/resources/api/rest/session/check", {callback: function(data){
                                     if (data.data) {
                                         $.Oda.Security.loadRight({callback: function(){
                                             if (!$.Oda.Tooling.isInArray($.Oda.Router.current.route, $.Oda.Router.routesAllowed)) {
@@ -325,7 +320,10 @@ var $;
                                         $.Oda.Router.routerExit = true;
                                         $.Oda.Security.logout();
                                     }
-                                }}, tabInput);
+                                }}, {
+                                    "code_user": session.code_user,
+                                    "key": session.key
+                                });
                             } else {
                                 var params = $.Oda.Router.current.args;
                                 if ((params.hasOwnProperty("getUser")) && (params.hasOwnProperty("getPass"))) {
