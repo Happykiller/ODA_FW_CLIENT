@@ -5374,15 +5374,25 @@ var $;
              */
             logout: function(){
                 try {
-                    $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/session/"+$.Oda.Session.key, {type: "delete", callback:function(response){
+                    if($.Oda.Session.key !== ""){
+                        $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/session/"+$.Oda.Session.key, {type: "delete", callback:function(response){
+                            $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
+                            $.Oda.Session = $.Oda.SessionDefault;
+                            $.Oda.I8n.watchLanguage();
+                            $.Oda.Storage.remove("ODA-SESSION");
+                            $.Oda.Display.MenuSlide.remove();
+                            $.Oda.Display.Menu.remove();
+                            $.Oda.Router.routes.auth.go();
+                        }});
+                    }else{
                         $.Oda.Storage.remove("ODA-CACHE-"+$.Oda.Session.code_user);
-                        $.Oda.Session = $.Oda.SessionDefault;
-                        $.Oda.I8n.watchLanguage();
-                        $.Oda.Storage.remove("ODA-SESSION");
-                        $.Oda.Display.MenuSlide.remove();
-                        $.Oda.Display.Menu.remove();
-                        $.Oda.Router.routes.auth.go();
-                    }});
+                            $.Oda.Session = $.Oda.SessionDefault;
+                            $.Oda.I8n.watchLanguage();
+                            $.Oda.Storage.remove("ODA-SESSION");
+                            $.Oda.Display.MenuSlide.remove();
+                            $.Oda.Display.Menu.remove();
+                            $.Oda.Router.routes.auth.go();
+                    }
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Security.logout: " + er.message);
                 }
