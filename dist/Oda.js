@@ -1204,7 +1204,7 @@ var $;
         },
 
         MokUp: {
-            mokup : [],
+            mokup: [],
             /**
              * @name $.Oda.MokUp.get
              * @param params
@@ -1212,7 +1212,7 @@ var $;
              * @param params.tabInput
              * @returns {*}
              */
-            get : function(params){
+            get: function(params){
                 try {
                     var strInterface = params.url.replace($.Oda.Context.rest,"");
 
@@ -1224,10 +1224,10 @@ var $;
                         }
                     }
 
-                    var defaultValue = null;
+                    var defaultValue = {"strErreur":"No mokup found for "+strInterface,"data":{},"statut":4};
                     var value = null;
                     if($.Oda.Tooling.isUndefined(elt)){
-                        return {"strErreur":"No mokup found for "+strInterface,"data":{},"statut":4};
+                        return defaultValue;
                     }else{
                         var attrs = $.Oda.Tooling.clone(params.tabInput);
                         if (attrs.hasOwnProperty("ctrl")) {
@@ -1240,13 +1240,13 @@ var $;
                             delete attrs.keyAuthODA;
                         }
 
-
                         for(var indice in elt.value){
-                            if(elt.value[indice].args === "default"){
-                                defaultValue = elt.value[indice].return;
+                            var valuePossible = elt.value[indice];
+                            if(valuePossible.args === "default"){
+                                defaultValue = valuePossible.return;
                             }
-                            if($.Oda.Tooling.deepEqual(elt.value[indice].args,attrs)){
-                                value = elt.value[indice].return;
+                            if($.Oda.Tooling.deepEqual(valuePossible.args,attrs)){
+                                value = valuePossible.return;
                                 break;
                             }
                         }
@@ -1444,18 +1444,26 @@ var $;
                 if(params.odaInterface.length>0){
                     var theInterface = params.odaInterface[0];
                     params.odaInterface.splice(0,1);
+                    $.Oda.Log.debug("Call "+theInterface+" begin for : "+params.url);
                     response = $.Oda.Interface.Methode[theInterface](params);
                 }
                 return response;
             },
             /**
              * @name $.Oda.Interface.callRest
-             * @desc Hello
+             * @desc For ajax call with more
              * @param {String} p_url
              * @param {Object} p_tabSetting
              * @param p_tabSetting.callback
              * @param p_tabSetting.odaCacheOnDemande
              * @param {Object} p_tabInput
+             * @example 
+             *  $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/user/search/mail/", {callback:function(response){
+             *      console.log("hello");
+             *      console.log(response);
+             *  }}, { 
+             *      email: "mail@mail.com"
+             *  });
              * @returns {Object}
              */
             callRest: function(p_url, p_tabSetting, p_tabInput) {
@@ -6472,7 +6480,7 @@ var $;
             error: function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
-                    if($.Oda.Context.rest !== ""){
+                    if(!$.Oda.Context.debug && ($.Oda.Context.rest !== "")){
                         $.Oda.Interface.traceLog({"msg":p_msg});
                     }
                     return this;
