@@ -1765,7 +1765,7 @@ var $;
 
                     return valeur;
                 } catch (er) {
-                    $.Oda.Log.error("$.Oda.Interface.geRangs : " + er.message);
+                    $.Oda.Log.error("$.Oda.Interface.getRangs: " + er.message);
                     return null;
                 }
             },
@@ -5361,10 +5361,7 @@ var $;
                             }
                         }
                         p.callback();
-                    }}, { 
-                        rang: $.Oda.Session.userInfo.profile,
-                        id_page : 0 
-                    });
+                    }});
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Security.loadRight: " + er.message);
                 }
