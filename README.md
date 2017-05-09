@@ -13,3 +13,6 @@ More ? Deploy
 3 - "npm install"
 
 4 - install the seleted mode "gulp install-full" (install-full,install-app,install-mini)
+
+# For more
+Visit: http://oda.happykiller.net/
