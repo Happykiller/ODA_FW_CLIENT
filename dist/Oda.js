@@ -167,6 +167,7 @@ var $;
                 footer: false
             },
             debug: false,
+            dev: false,
             vendorName: "bower_components",
             rootPath: "",
             projectLabel: "Project",
@@ -1475,8 +1476,8 @@ var $;
                     }
 
                     var interfaces = $.Oda.Tooling.clone($.Oda.Context.modeInterface);
-                    //remove using cache in debug mode
-                    if($.Oda.Context.debug){
+                    //remove using cache in dev mode
+                    if($.Oda.Context.dev){
                         for(var index in interfaces){
                             if(interfaces[index] === "cache"){
                                 interfaces.splice(index,1);
@@ -6549,6 +6550,11 @@ var $;
     }
     if(params.hasOwnProperty("debug")){
         $.Oda.Context.debug = params.debug;
+    }
+    if(params.hasOwnProperty("dev")){
+        $.Oda.Context.dev = params.dev;
+        $.Oda.Log.warning("Dev mode enable, cache is disabled.");
+        $.Oda.Context.debug = true;
     }
 
     // Initialize
