@@ -1,5 +1,20 @@
 [
   {
+    "interface": "/sys/test",
+    "value": [
+      {
+        "args": "default",
+        "return": {
+          "strErreur": "",
+          "data": {
+            "test": "ok"
+          },
+          "statut":5
+        }
+      }
+    ]
+  },
+  {
     "interface": "/sys/param/maintenance",
     "value": [
       {

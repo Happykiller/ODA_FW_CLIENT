@@ -582,7 +582,14 @@
     "mail-tips": "mail@dom.com",
     "mail-placeholder": "mail@dom.com",
     "mailSend": "Le mail a été envoyé",
-    "mailSubjet": "[ODA]Test mail."
+    "mailSubjet": "[ODA]Test mail.",
+    "cacheTab": "Cache",
+    "cacheHello": "Le test va récupérer le paramètre 'maintenance', avec un ttl de 60s sur le cache.",
+    "cacheAlert": "Pour tester le cache penser à être en mode DEBUG.",
+    "mockupTab": "Mockup",
+    "mockupHello": "Pour tester la fonction mockup, avec /sys/test qui n'existe pas.",
+    "offlineTab": "Offline",
+    "offlineHello": "Pour tester la fonction offline."
   },
   "en": {
     "title": "Tests",
@@ -591,7 +598,14 @@
     "mail-tips": "mail@dom.com",
     "mail-placeholder": "mail@dom.com",
     "mailSend": "The mail has been sent",
-    "mailSubjet": "[ODA]Test mail."
+    "mailSubjet": "[ODA]Test mail.",
+    "cacheTab": "Cache",
+    "cacheHello": "The test will retrieve the 'maintenance' parameter, with a tsl of 60s on the cache..",
+    "cacheAlert": "To test the cache think of being in DEBUG mode.",
+    "mockupTab": "Mockup",
+    "mockupHello": "To test the mockup function.",
+    "offlineTab": "Offline",
+    "offlineHello": "To test the offline function."
   },
   "es": {
     "title": "Pruebas",
@@ -600,7 +614,14 @@
     "mail-tips": "mail@dom.com",
     "mail-placeholder": "mail@dom.com",
     "mailSend": "El correo electrónico fue enviado",
-    "mailSubjet": "[ODA]Prueba de correo electrónico."
+    "mailSubjet": "[ODA]Prueba de correo electrónico.",
+    "cacheTab": "Cache",
+    "cacheHello": "La prueba recuperará el parámetro 'ahora', con un 60 TTL en la portada.",
+    "cacheAlert": "Para probar el pensar en estar en modo de depuración caché.",
+    "mockupTab": "Mockup",
+    "mockupHello": "Para probar la maqueta función.",
+    "offlineTab": "Offline",
+    "offlineHello": "Para probar la offline función."
   }
 },{
   "groupName": "oda-navigation",
