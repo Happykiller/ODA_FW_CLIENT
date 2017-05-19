@@ -167,7 +167,6 @@ var $;
                 footer: false
             },
             debug: false,
-            dev: false,
             vendorName: "bower_components",
             rootPath: "",
             projectLabel: "Project",
@@ -1441,11 +1440,11 @@ var $;
              * @returns {{strErreur: string, data: {}, statut: number}}
              */
             call: function(params){
-                var response = {"strErreur": "No call", "data": {}, "statut": 4}
+                var response = {strErreur: "No call", data: {}, statut: 4}
                 if(params.odaInterface.length>0){
                     var theInterface = params.odaInterface[0];
                     params.odaInterface.splice(0,1);
-                    $.Oda.Log.debug("Call "+theInterface+" begin for : "+params.url);
+                    $.Oda.Log.debug("Call "+theInterface+" begin for: "+params.url);
                     response = $.Oda.Interface.Methode[theInterface](params);
                 }
                 return response;
@@ -1476,7 +1475,7 @@ var $;
                     }
 
                     var interfaces = $.Oda.Tooling.clone($.Oda.Context.modeInterface);
-                    //remove using cache in dev mode
+                    //remove using cache in debug mode
                     if($.Oda.Context.dev){
                         for(var index in interfaces){
                             if(interfaces[index] === "cache"){
@@ -1543,20 +1542,42 @@ var $;
                     var jqXHRMaster = $.ajax(params)
                         .done(function(data, textStatus, jqXHR) {
                             if(data === undefined){
-                                data = {"strErreur": '', "data": {}, "statut": 4};
+                                data = {strErreur: '', data: {}, statut: 4};
                             }else{
                                 if (typeof data === 'object') {
                                     if ((data.hasOwnProperty("strErreur")) && ((data.strErreur == "key auth expiree.") || (data.strErreur == "key auth invalid."))) {
                                         $.Oda.Security.logout();
                                     }
                                 } else {
-                                    data = {"strErreur": data, "data": {}, "statut": 4};
+                                    data = {strErreur: data, data: {}, statut: 4};
                                 }
                             }
 
-                            if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "") && (data.statut === 4)) {
-                                $.Oda.Event.send({name : "oda-notification-flash", data : {type : "error", msg : "$.Oda.Interface.Methode.ajax : " + data.strErreur} });
+                            if((data.hasOwnProperty("strErreur")) && (data.strErreur === "not found")){
+                                //go next interface on "not found rest"" Oda response
+                                if((params.odaInterface.length>0)){
+                                    retour = $.Oda.Interface.call(params);
+                                }else{
+                                    //Display the error message
+                                    $.Oda.Event.send({
+                                        name: "oda-notification-flash", 
+                                        data: {
+                                            type: "error", 
+                                            msg: "$.Oda.Interface.Methode.ajax: " + data.strErreur
+                                        }
+                                    });
+                                }
+                            }else if ((data.hasOwnProperty("strErreur")) && (data.strErreur !== "") && (data.statut === 4)) {
+                                //Display the error message
+                                $.Oda.Event.send({
+                                    name: "oda-notification-flash", 
+                                    data: {
+                                        type: "error", 
+                                        msg: "$.Oda.Interface.Methode.ajax: " + data.strErreur
+                                    }
+                                });
                             } else if ($.Oda.Tooling.isInArray("cache", $.Oda.Context.modeInterface)){
+                                //Store for cache
                                 var attrs = $.Oda.Tooling.clone(this.odaAttrs);
                                 if (attrs.hasOwnProperty("ctrl")) {
                                     delete attrs.ctrl;
@@ -1572,26 +1593,39 @@ var $;
                                     attrs: attrs,
                                     datas: data
                                 });
-                            }
-
-                            $.Oda.Log.debug("Call ajax success for : "+params.url);
-                            data.context = this;
-                            if ($.Oda.Tooling.isUndefined(params.callback)) {
-                                retour = data;
-                            } else {
-                                params.callback(data);
+                                $.Oda.Log.debug("Call ajax success for: "+params.url);
+                                data.context = this;
+                                if ($.Oda.Tooling.isUndefined(params.callback)) {
+                                    retour = data;
+                                }else {
+                                    params.callback(data);
+                                }
+                            }else{
+                                $.Oda.Log.debug("Call ajax success for: "+params.url);
+                                data.context = this;
+                                if ($.Oda.Tooling.isUndefined(params.callback)) {
+                                    retour = data;
+                                }else {
+                                    params.callback(data);
+                                }
                             }
                         })
                         .fail(function(jqXHR, textStatus, errorThrown) {
                             var msg = textStatus + " - " + errorThrown + " on " + params.url;
-                            $.Oda.Log.error("$.Oda.Interface.Methode.ajax : " + msg);
+                            $.Oda.Log.error("$.Oda.Interface.Methode.ajax: " + msg);
 
                             var data = {"strErreur": msg, "data": {}, "statut": 404};
 
                             if((params.odaInterface.length>0)&&(textStatus === "error")){
                                 retour = $.Oda.Interface.call(params);
                             }else{
-                                $.Oda.Display.Notification.error(msg);
+                                $.Oda.Event.send({
+                                    name: "oda-notification-flash", 
+                                    data: {
+                                        type: "error", 
+                                        msg: "$.Oda.Interface.Methode.ajax: " + msg
+                                    }
+                                });
                                 data.context = this;
                                 if ($.Oda.Tooling.isUndefined(params.callback)) {
                                     retour = data;
@@ -1638,12 +1672,11 @@ var $;
                     if(attrs.hasOwnProperty("keyAuthODA")){
                         delete attrs.keyAuthODA;
                     }
-                    var retour = $.Oda.Cache.load({key: params.url, attrs: attrs, demande : params.odaCacheOnDemande});
-
+                    var retour = $.Oda.Cache.load({key: params.url, attrs: attrs, demande: params.odaCacheOnDemande});
                     if(retour){
                         var datas = retour.datas;
                         datas.context = params.context;
-                        $.Oda.Log.debug("Call cache success for : "+params.url);
+                        $.Oda.Log.debug("Call cache success for: "+params.url);
                         if ($.Oda.Tooling.isUndefined(params.callback)) {
                             return datas;
                         } else {
@@ -1654,8 +1687,15 @@ var $;
                         if(params.odaInterface.length>0){
                             return $.Oda.Interface.call(params);
                         }else{
-                            var msg = "No found in cache : "+params.url+", and cache is the last interface.";
-                            var data = {"strErreur": msg, "data": {}, "statut": 404};
+                            var msg = "No found in cache: "+params.url+", and cache is the last interface.";
+                            $.Oda.Event.send({
+                                name: "oda-notification-flash", 
+                                data: {
+                                    type: "error", 
+                                    msg: msg
+                                }
+                            });
+                            var data = {strErreur: msg, data: {}, statut: 404};
                             $.Oda.Log.error(msg);
                             data.context = params.context;
                             if ($.Oda.Tooling.isUndefined(params.callback)) {
@@ -1702,8 +1742,14 @@ var $;
                                 return $.Oda.Interface.call(params);
                             }else{
                                 var msg = "No found in offline : "+params.url+", and offline is the last interface.";
-                                var data = {"strErreur": msg, "data": {}, "statut": 404};
-                                $.Oda.Log.error(msg);
+                                $.Oda.Event.send({
+                                    name: "oda-notification-flash", 
+                                    data: {
+                                        type: "error", 
+                                        msg: msg
+                                    }
+                                });
+                                var data = {strErreur: msg, data: {}, statut: 404};
                                 data.context = params.context;
                                 if ($.Oda.Tooling.isUndefined(params.callback)) {
                                     return data;
@@ -6464,7 +6510,7 @@ var $;
              */
             debug: function(p_msg) {
                 try {
-                    if($.Oda.Context.debug){
+                    if($.Oda.Context.dev || $.Oda.Context.debug){
                         $.Oda.Context.console.debug(p_msg);
                     }
                     return this;
@@ -6481,7 +6527,7 @@ var $;
             error: function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
-                    if(!$.Oda.Context.debug && ($.Oda.Context.rest !== "")){
+                    if(!$.Oda.Context.dev && !$.Oda.Context.debug){
                         $.Oda.Interface.traceLog({"msg":p_msg});
                     }
                     return this;
@@ -6515,7 +6561,7 @@ var $;
     $.Oda.Tooling.detectBrower();
 
     //Apply the mode execution
-    var params = $.Oda.Tooling.getParamsLibrary({library : "Oda"});
+    var params = $.Oda.Tooling.getParamsLibrary({library: "Oda"});
     if (params.hasOwnProperty("modeExecution")){
         switch(params.modeExecution) {
             case "full":
@@ -6553,8 +6599,6 @@ var $;
     }
     if(params.hasOwnProperty("dev")){
         $.Oda.Context.dev = params.dev;
-        $.Oda.Log.warning("Dev mode enable, cache is disabled.");
-        $.Oda.Context.debug = true;
     }
 
     // Initialize
