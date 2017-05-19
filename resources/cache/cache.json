@@ -11,5 +11,8 @@
   },{
     "key" : "/sys/param/",
     "ttl" : 60
+  },{
+    "key" : "/sys/offline",
+    "ttl" : 1
   }
 ]

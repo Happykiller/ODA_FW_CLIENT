@@ -10,6 +10,9 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><oda-label oda-label-value="oda-tests.tabMail"/></a></li>
+                <li role="presentation"><a href="#cache" aria-controls="chache" role="tab" data-toggle="tab"><oda-label oda-label-value="oda-tests.cacheTab"/></a></li>
+                <li role="presentation"><a href="#mockup" aria-controls="mockup" role="tab" data-toggle="tab"><oda-label oda-label-value="oda-tests.mockupTab"/></a></li>
+                <li role="presentation"><a href="#offline" aria-controls="offline" role="tab" data-toggle="tab"><oda-label oda-label-value="oda-tests.offlineTab"/></a></li>
             </ul>
             <!-- end Nav tabs -->
 
@@ -32,6 +35,24 @@
                             <oda-btn oda-btn-name="submit" oda-btn-style="primary" oda-btn-enter="1" oda-btn-click="$.Oda.Controller.Tests.sendMail();" disabled>oda-main.bt-submit</oda-btn>
                         </div>
                     </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="cache">
+                    <br>
+                    <p><oda-label oda-label-value="oda-tests.cacheHello"/></p>
+                    <div id="alert-cache" class="alert alert-warning" style="display:none;"><strong><oda-label oda-label-value="oda-tests.cacheAlert"/></strong></div>
+                    <div id="divBtTestCache" style="display:none;">
+                        <oda-btn oda-btn-style="primary" oda-btn-click="$.Oda.Controller.Tests.testCache();">oda-main.bt-submit</oda-btn>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="mockup">
+                    <br>
+                    <p><oda-label oda-label-value="oda-tests.mockupHello"/></p>
+                    <oda-btn oda-btn-style="primary" oda-btn-click="$.Oda.Controller.Tests.testMockup();">oda-main.bt-submit</oda-btn>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="offline">
+                    <br>
+                    <p><oda-label oda-label-value="oda-tests.offlineHello"/></p>
+                    <oda-btn oda-btn-style="primary" oda-btn-click="$.Oda.Controller.Tests.testOffline();">oda-main.bt-submit</oda-btn>
                 </div>
             </div>
             <!-- end Tab panes -->
@@ -63,9 +84,15 @@
                     }
                 });
 
+                if($.Oda.Context.dev){
+                    $("#alert-cache").show();
+                }else{
+                    $("#divBtTestCache").show();
+                }
+
                 return this;
             } catch (er) {
-                $.Oda.Log.error("$.Oda.Controller.Tests.start : " + er.message);
+                $.Oda.Log.error("$.Oda.Controller.Tests.start: " + er.message);
                 return null;
             }
         },
@@ -110,7 +137,69 @@
                 $.Oda.Log.error("$.Oda.Controller.Tests.sendMail : " + er.message);
                 return null;
             }
-        }
+        },
+        /**
+         * @returns {$.Oda.Controller.Tests}
+         */
+        testCache: function () {
+            try {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/param/maintenance", {callback: function(response){
+                    console.log(response);
+                }});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Tests.testCache: " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Tests}
+         */
+        testMockup: function () {
+            try {
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/test", {callback: function(response){
+                    console.log(response);
+                }});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Tests.testMockup: " + er.message);
+                return null;
+            }
+        },
+        /**
+         * @returns {$.Oda.Controller.Tests}
+         */
+        testOffline: function () {
+            try {
+                params = {
+                    key: $.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/offline",
+                    attrs: {},
+                    datas: {strErreur: "", data: {}, statut: 5, id_transaction: 0, metro: Object}
+                };
+
+                var d = new Date();
+                var date = d.getTime() - 2000;
+                params.recordDate = date;
+
+                for (var indice in $.Oda.Cache.cache) {
+                    var elt = $.Oda.Cache.cache[indice];
+                    if ((elt.key === params.key) && ($.Oda.Tooling.deepEqual(elt.attrs, params.attrs))) {
+                        $.Oda.Cache.cache.splice(indice, 1);
+                    }
+                }
+
+                $.Oda.Cache.cache.push(params);
+                $.Oda.Storage.set("ODA-CACHE-" + $.Oda.Session.code_user, $.Oda.Cache.cache);
+
+                $.Oda.Interface.callRest($.Oda.Context.rest+"vendor/happykiller/oda/resources/api/sys/offline", {callback: function(response){
+                    console.log(response);
+                }});
+                return this;
+            } catch (er) {
+                $.Oda.Log.error("$.Oda.Controller.Tests.testOffline: " + er.message);
+                return null;
+            }
+        },
     };
 
     $.Oda.Controller.Tests.start();
