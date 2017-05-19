@@ -1476,7 +1476,7 @@ var $;
 
                     var interfaces = $.Oda.Tooling.clone($.Oda.Context.modeInterface);
                     //remove using cache in debug mode
-                    if($.Oda.Context.debug){
+                    if($.Oda.Context.dev){
                         for(var index in interfaces){
                             if(interfaces[index] === "cache"){
                                 interfaces.splice(index,1);
@@ -6463,7 +6463,7 @@ var $;
              */
             debug: function(p_msg) {
                 try {
-                    if($.Oda.Context.debug){
+                    if($.Oda.Context.dev || $.Oda.Context.debug){
                         $.Oda.Context.console.debug(p_msg);
                     }
                     return this;
@@ -6480,7 +6480,7 @@ var $;
             error: function(p_msg) {
                 try {
                     $.Oda.Context.console.error(p_msg);
-                    if(!$.Oda.Context.debug && ($.Oda.Context.rest !== "")){
+                    if(!$.Oda.Context.dev && !$.Oda.Context.debug){
                         $.Oda.Interface.traceLog({"msg":p_msg});
                     }
                     return this;
@@ -6514,7 +6514,7 @@ var $;
     $.Oda.Tooling.detectBrower();
 
     //Apply the mode execution
-    var params = $.Oda.Tooling.getParamsLibrary({library : "Oda"});
+    var params = $.Oda.Tooling.getParamsLibrary({library: "Oda"});
     if (params.hasOwnProperty("modeExecution")){
         switch(params.modeExecution) {
             case "full":
@@ -6549,6 +6549,9 @@ var $;
     }
     if(params.hasOwnProperty("debug")){
         $.Oda.Context.debug = params.debug;
+    }
+    if(params.hasOwnProperty("dev")){
+        $.Oda.Context.dev = params.dev;
     }
 
     // Initialize
