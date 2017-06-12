@@ -6550,6 +6550,61 @@ var $;
                     return null;
                 }
             }
+        },
+
+        Websocket:{
+            tagJson: "odaTagJson:",
+            connection: function(wsConn){
+                that = this;
+                that.wsConn = wsConn;
+                that.wsConn.onopen = function(e) { 
+                    $.Oda.Log.trace("$.Oda.Websocket.connect: Connection success.");
+                    that.onConnect();
+                }
+                that.wsConn.onmessage = function(e) { 
+                    $.Oda.Log.trace("$.Oda.Websocket.connect: Message receive from " + e.origin);
+                    var data = e.data;
+                    if(e.data.startsWith($.Oda.Websocket.tagJson)){
+                        var tmpStr = $.Oda.Tooling.replaceAll({
+                            str: e.data,
+                            find: $.Oda.Websocket.tagJson,
+                            by: ''
+                        });
+                        data = JSON.parse(tmpStr);
+                    }
+                    that.onMessage({
+                        origin: e.origin,
+                        data: data
+                    });
+                };
+                that.send = function(msg){
+                    var strMsg = msg;
+                    if(!(typeof msg === "string")){
+                        strMsg = $.Oda.Websocket.tagJson + JSON.stringify(msg);
+                    }
+                    that.wsConn.send(strMsg);
+                };
+                that.onConnect = function(){};
+                that.onMessage = function(e){};
+            },
+            /**
+             * @name $.Oda.Log.info
+             * @param {object} p
+             * @param {string} p.host
+             * @param {string} p.port
+             * @param {string} p.instance
+             * @returns {object} conn
+             */
+            connect: function(p) {
+                try {
+                    var connStr = 'ws://'+p.host+':'+p.port+'/'+p.instance;
+                    $.Oda.Log.trace('$.Oda.Websocket.connect to '+connStr);
+                    return new $.Oda.Websocket.connection(new WebSocket(connStr));
+                } catch (er) {
+                    $.Oda.Log.error("$.Oda.Websocket.connect: " + er.message);
+                    return null;
+                }
+            },
         }
     };
 
