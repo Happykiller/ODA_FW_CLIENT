@@ -11,21 +11,13 @@ var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
-var gulp = require('gulp-param')(require('gulp'), process.argv);
 
 var OdaGulpConfig = {
     "vendorName" : "bower_components"
 };
 
-gulp.task('params', function(vendorName) {
-    if(vendorName !== null){
-        OdaGulpConfig.vendorName = vendorName;
-    }
-    return;
-});
-
 //ex : gulp install-full --vendorName libs
-gulp.task('install-full', ['params'], function() {
+gulp.task('install-full', [], function() {
     gulp.src(['full/index.html','full/gulpfile.js','full/package.json','full/jsTestDriver.conf'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
@@ -35,7 +27,7 @@ gulp.task('install-full', ['params'], function() {
 });
 
 //ex : gulp install-full --vendorName libs
-gulp.task('install-app', ['params'], function() {
+gulp.task('install-app', [], function() {
     gulp.src(['app/index.html','app/gulpfile.js','app/package.json','app/jsTestDriver.conf'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
@@ -45,7 +37,7 @@ gulp.task('install-app', ['params'], function() {
 });
 
 //ex : gulp install-full --vendorName libs
-gulp.task('install-mini', ['params'], function() {
+gulp.task('install-mini', [], function() {
     gulp.src(['mini/index.html','mini/gulpfile.js','mini/package.json','mini/jsTestDriver.conf'])
         .pipe(replace(/vendor/g, OdaGulpConfig.vendorName))
         .pipe(gulp.dest('./../../../'));
