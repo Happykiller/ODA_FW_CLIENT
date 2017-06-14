@@ -20,7 +20,7 @@
      * @desc Initialize
      */
     function _init() {
-        $.Oda.Event.addListener({name : "oda-fully-loaded", callback : function(e){
+        $.Oda.Event.addListener({name: "oda-fully-loaded", callback: function(e){
             $.Oda.App.startApp();
         }});
     }
@@ -36,23 +36,23 @@
         startApp: function () {
             try {
                 $.Oda.Router.addRoute("home", {
-                    "path" : "partials/home.html",
-                    "title" : "home.title",
-                    "urls" : ["","home"],
-                    "middleWares":["support","auth"]
+                    path: "partials/home.html",
+                    title: "home.title",
+                    urls: ["","home"],
+                    middleWares:["support","auth"]
                 });
 
                 $.Oda.Router.startRooter();
 
                 return this;
             } catch (er) {
-                $.Oda.Log.error("$.Oda.App.startApp : " + er.message);
+                $.Oda.Log.error("$.Oda.App.startApp: " + er.message);
                 return null;
             }
         },
 
-        "Controller" : {
-            "Home": {
+        Controller: {
+            Home: {
                 /**
                  * @returns {$.Oda.App.Controller.Home}
                  */
@@ -60,7 +60,7 @@
                     try {
                         return this;
                     } catch (er) {
-                        $.Oda.Log.error("$.Oda.App.Controller.Home.start : " + er.message);
+                        $.Oda.Log.error("$.Oda.App.Controller.Home.start: " + er.message);
                         return null;
                     }
                 }

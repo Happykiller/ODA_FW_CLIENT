@@ -1,7 +1,23 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 plugins.browserSync = require('browser-sync');
 plugins.minCss = require('gulp-minify-css');
+
+/**
+ * Compress
+ * For build the OdaApp.min.js
+ */
+gulp.task('compress', function() {
+    gulp.src("js/OdaApp.js")
+        .pipe(uglify({mangle: false}))
+        .pipe(rename({
+            extname: '.min.js'
+        }))
+        .pipe(gulp.dest('js/'));
+    return;
+});
 
 gulp.task('browser-sync', function() {
     plugins.browserSync.init({
