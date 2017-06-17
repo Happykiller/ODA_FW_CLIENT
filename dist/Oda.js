@@ -4960,11 +4960,20 @@ var $;
             isOdaConpatible: function() {
                 try {
                     var boolRetour = true;
-                    if(
-                        ($.Oda.Context.window.ui.browser === "Internet Explorer") && (parseFloat($.Oda.Context.window.ui.version) < 11)
-                    ){
+                    if(($.Oda.Context.window.ui.browser === "Internet Explorer") && (parseFloat($.Oda.Context.window.ui.version) < 11)){
+                        console.error("Oda fatal error: Internet Explorer before 11 not supported.");
                         boolRetour = false;
                     }
+
+                    if(!document.registerElement){
+                        console.error("Oda fatal error: Webcomposant not supported.");
+                        boolRetour = false;
+                        if($.Oda.Context.window.ui.browser === "Firefox"){
+                            console.log("You can activate Webcomposant: https://developer.mozilla.org/en-US/docs/Web/Web_Components#Enabling_Web_Components_in_Firefox");
+                            console.log("'about:config' in url, and activate 'dom.webcomponents.enabled' by double click.");
+                        }
+                    }
+
                     return boolRetour;
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Tooling.isOdaConpatible : " + er.message);
@@ -6661,7 +6670,7 @@ var $;
         if($.Oda.Tooling.isOdaConpatible()){
             $.Oda.init();
         }else{
-            $( "body" ).append('Brower not compatible with Oda.');
+            $("body").append('<p style="text-align:center;font-weight: bold;">Brower not compatible for Oda. Please check the console for more details.</p>');
         }
     }
 })($ || ($ = {
