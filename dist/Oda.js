@@ -6655,8 +6655,8 @@ var $;
                 break;
         }
     }
-    if(params.hasOwnProperty("vandorName")){
-        $.Oda.Context.vendorName = params.vandorName;
+    if(params.hasOwnProperty("vendorName")){
+        $.Oda.Context.vendorName = params.vendorName;
     }
     if(params.hasOwnProperty("debug")){
         $.Oda.Context.debug = params.debug;
