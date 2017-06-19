@@ -6567,11 +6567,11 @@ var $;
                 that = this;
                 that.wsConn = wsConn;
                 that.wsConn.onopen = function(e) { 
-                    $.Oda.Log.trace("$.Oda.Websocket.connect: Connection success.");
+                    $.Oda.Log.debug("$.Oda.Websocket.connect: Connection success.");
                     that.onConnect();
                 }
                 that.wsConn.onmessage = function(e) { 
-                    $.Oda.Log.trace("$.Oda.Websocket.connect: Message receive from " + e.origin);
+                    $.Oda.Log.debug("$.Oda.Websocket.connect: Message receive from " + e.origin);
                     var data = e.data;
                     if(e.data.startsWith($.Oda.Websocket.tagJson)){
                         var tmpStr = $.Oda.Tooling.replaceAll({
@@ -6607,7 +6607,7 @@ var $;
             connect: function(p) {
                 try {
                     var connStr = 'ws://'+p.host+':'+p.port+'/'+p.instance;
-                    $.Oda.Log.trace('$.Oda.Websocket.connect to '+connStr);
+                    $.Oda.Log.debug('$.Oda.Websocket.connect to '+connStr);
                     return new $.Oda.Websocket.connection(new WebSocket(connStr));
                 } catch (er) {
                     $.Oda.Log.error("$.Oda.Websocket.connect: " + er.message);
