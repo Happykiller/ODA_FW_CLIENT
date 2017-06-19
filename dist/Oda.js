@@ -167,6 +167,8 @@ var $;
                 footer: false
             },
             debug: false,
+            dev: false,
+            appLibName: false,
             vendorName: "bower_components",
             rootPath: "",
             projectLabel: "Project",
@@ -225,12 +227,18 @@ var $;
                 }
 
                 if($.Oda.Context.ModeExecution.app){
+
+                    var libName = "OdaApp.js";
+                    if(!$.Oda.Context.dev && $.Oda.Context.appLibName){
+                        libName = $.Oda.Context.appLibName;
+                    }
+
                     var listDependsApp = [
                         {"name": "app", ordered: false, "list": [
                             { "elt" : $.Oda.Context.rootPath + "config/config.js", "type" : "script" },
                             { "elt" : $.Oda.Context.rootPath + "css/css.css", "type" : "css" },
                             { "elt" : $.Oda.Context.rootPath + "i8n/i8n.json", "type" : "json", "target" : function(p_json){$.Oda.I8n.datas = $.Oda.I8n.datas.concat(p_json);}},
-                            { "elt" : $.Oda.Context.rootPath + "js/OdaApp.js", "type": "script"}
+                            { "elt" : $.Oda.Context.rootPath + "js/"+libName, "type": "script"}
                         ]}
                     ];
 
@@ -6663,6 +6671,9 @@ var $;
     }
     if(params.hasOwnProperty("dev")){
         $.Oda.Context.dev = params.dev;
+    }
+    if(params.hasOwnProperty("appLibName")){
+        $.Oda.Context.appLibName = params.appLibName;
     }
 
     // Initialize
