@@ -110,8 +110,8 @@
                         template : "mailSubscribe",
                         scope : {
                             "code_user": response.data.userCode,
-                            "firstName": firstName,
-                            "lastName": lastName,
+                            "firstName": $("#firstName").val(),
+                            "lastName": $("#lastName").val(),
                             "siteUrl": $.Oda.Context.host
                         }
                     });
