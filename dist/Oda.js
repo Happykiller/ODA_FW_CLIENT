@@ -6614,7 +6614,11 @@ var $;
              */
             connect: function(p) {
                 try {
-                    var connStr = 'ws://'+p.host+':'+p.port+'/'+p.instance;
+                    var protocol = 'ws://'; 
+                    if (window.location.protocol === 'https:') {
+                        protocol = 'wss://';
+                    }
+                    var connStr = protocol + p.host + ((p.port!=="" && p.port!==null)?':'+p.port:'') +'/'+p.instance;
                     $.Oda.Log.debug('$.Oda.Websocket.connect to '+connStr);
                     return new $.Oda.Websocket.connection(new WebSocket(connStr));
                 } catch (er) {
