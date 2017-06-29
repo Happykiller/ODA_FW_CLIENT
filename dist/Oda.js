@@ -6615,7 +6615,7 @@ var $;
             connect: function(p) {
                 try {
                     var protocol = 'ws://'; 
-                    if (window.location.protocol === 'https:') {
+                    if ((window.location.protocol === 'https:') || (window.location.protocol === 'file:')) {
                         protocol = 'wss://';
                     }
                     var connStr = protocol + p.host + ((p.port!=="" && p.port!==null)?':'+p.port:'') +'/'+p.instance;
